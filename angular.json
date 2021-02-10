@@ -53,7 +53,8 @@
               "apps/visualisation/src/assets"
             ],
             "styles": [
-              "apps/visualisation/src/styles.scss"
+              "apps/visualisation/src/styles.scss",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": []
           },
