@@ -48,10 +48,7 @@
             "polyfills": "apps/visualisation/src/polyfills.ts",
             "tsConfig": "apps/visualisation/tsconfig.app.json",
             "aot": true,
-            "assets": [
-              "apps/visualisation/src/favicon.ico",
-              "apps/visualisation/src/assets"
-            ],
+            "assets": ["apps/visualisation/src/favicon.ico", "apps/visualisation/src/assets"],
             "styles": [
               "apps/visualisation/src/styles.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css"
@@ -116,9 +113,7 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/visualisation"
-          ],
+          "outputs": ["coverage/apps/visualisation"],
           "options": {
             "jestConfig": "apps/visualisation/jest.config.js",
             "passWithNoTests": true
@@ -147,9 +142,51 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/visualisation-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/visualisation-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "stack": {
+      "projectType": "library",
+      "root": "libs/stack",
+      "sourceRoot": "libs/stack/src",
+      "prefix": "major-project",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/stack/src/**/*.ts", "libs/stack/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/stack"],
+          "options": {
+            "jestConfig": "libs/stack/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "common": {
+      "projectType": "library",
+      "root": "libs/common",
+      "sourceRoot": "libs/common/src",
+      "prefix": "major-project",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/common/src/**/*.ts", "libs/common/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/common"],
+          "options": {
+            "jestConfig": "libs/common/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }
