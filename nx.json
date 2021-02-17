@@ -17,9 +17,8 @@
   },
   "projects": {
     "visualisation": { "tags": [] },
-    "visualisation-e2e": {
-      "tags": [],
-      "implicitDependencies": ["visualisation"]
-    }
+    "visualisation-e2e": { "tags": [], "implicitDependencies": ["visualisation"] },
+    "stack": { "tags": [] },
+    "common": { "tags": [] }
   }
 }

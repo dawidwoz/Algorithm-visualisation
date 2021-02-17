@@ -1,34 +1,79 @@
-<form class="form-inline row mb-2" id="creation-panel">
-    <input class="btn btn-primary mr-1" type="button"
-           onclick="createADT('stack');"
-           value="Create Stack" id="create_adt" disabled/>
+<div class="stack">
+  <div class="form-inline row mb-2">
+    <button
+      type="button"
+      class="btn btn-primary mr-1"
+      [disabled]="!implementation"
+      (click)="createStack()"
+    >
+      Create Stack
+    </button>
     <div class="form-group">
-        <label class="mr-1" for="datastructure">using</label>
-        <select class="form-control mr-1" id="datastructure"
-                onchange="handleImplementationDropdownChange(this);">
-            <option value="select">Select implementation</option>
-            <option value="simple-array">Simple array</option>
-            <option value="singly-linked-list">Singly linked list</option>
-        </select>
+      <label class="mr-1" for="datastructure">using</label>
+      <select class="form-control mr-1" (change)="setImplementation($event.target.value)">
+        <option value="select" selected hidden>Select implementation</option>
+        <option value="simple-array">Simple array</option>
+        <option value="singly-linked-list">Singly linked list</option>
+      </select>
     </div>
     <div class="form-group">
-        <label class="mr-1" for="adt_size">of size</label>
-        <input class="form-control mr-1" type="number" id="adt_size" value="5" min="5" max="20"/>
+      <label class="mr-1" for="adt_size">of size</label>
+      <input class="form-control mr-1" [disabled]="implementation === 'singly-linked-list'" type="number" value="5" min="5" max="20" #size />
     </div>
-</form>
+  </div>
+  <div class="stack __animationWrapper">
+    <div class="stack __animationArea">
+      <template #animationArea></template>
+    </div>
+  </div>
 
-<canvas class="row" id="canvas-area" style="border:1px solid #c3c3c3; width:100%; height:auto;"></canvas>
-
-<form class="form-inline row mt-2" id="interaction-panel">
-    <input class="btn mr-1" type="button" onclick="adtController.push(+document.getElementById('add_value').value);" value="Push" />
-    <input class="form-control mr-1" type="number" name="add_value" id="add_value" title="value to insert" placeholder="Numeric element value"/>
-    <input class="btn mr-1" type="button" onclick="adtController.pop();" value="Pop"/>
-    <input class="btn mr-1" type="button" onclick="adtController.peek();" value="Peek"/>
-    <label class="mr-1" id="output_msg"></label>
-</form>
-    <form class="form-inline row" id="visualization-control-panel">
-        <div class="form-group">
-            <label for="anim_speed">Animation speed</label>
-            <input class="input-control" type="range" min="2" max="200" id="anim_speed" onchange="animationSteps=this.value;" style="direction: rtl"/>
-        </div>
-    </form>
+  <div class="form-inline row mt-2">
+    <button
+      type="button"
+      class="btn mr-1 btn-primary"
+      [disabled]="stackElements.length == 0"
+      (click)="pushStack()"
+    >
+      Push
+    </button>
+    <input
+      class="form-control mr-1"
+      type="number"
+      name="add_value"
+      title="value to insert"
+      #newElement
+      [disabled]="stackElements.length == 0"
+      placeholder="Numeric element value"
+    />
+    <button
+      type="button"
+      class="btn mr-1 btn-primary"
+      [disabled]="stackElements.length == 0"
+      (click)="lastElementStack(true)"
+    >
+      Pop
+    </button>
+    <button
+      type="button"
+      class="btn mr-1 btn-primary"
+      [disabled]="stackElements.length == 0"
+      (click)="lastElementStack(false)"
+    >
+      Peek
+    </button>
+    <b #result></b>
+  </div>
+  <div class="form-inline row">
+    <div class="form-group">
+      <label for="anim_speed">Animation speed</label>
+      <input
+        class="input-control"
+        [disabled]="stackElements.length == 0"
+        type="range"
+        min="2"
+        max="200"
+        style="direction: rtl"
+      />
+    </div>
+  </div>
+</div>

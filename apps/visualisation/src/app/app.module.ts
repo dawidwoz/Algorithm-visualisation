@@ -6,7 +6,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { StackComponent } from './stack/stack.component';
 import { QueueComponent } from './queue/queue.component';
 import { PriorityQueueComponent } from './priority-queue/priority-queue.component';
-import { WelcomeComponent } from './welcome/welcome.component'; 
+import { WelcomeComponent } from './welcome/welcome.component';
+import { StackModule } from '@major-project/stack';
+import { LocalCommonModule } from '@major-project/common';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { WelcomeComponent } from './welcome/welcome.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    StackModule,
+    LocalCommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

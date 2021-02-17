@@ -1,0 +1,19 @@
+.stack-element {
+
+    &.__wrapper {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 1.5rem;
+    }
+
+    &.__value {
+        padding: 1.5rem;
+        border: 3px solid #000000;
+    }
+
+    &.__number {
+        margin-top: 0.5rem;
+    }
+
+}

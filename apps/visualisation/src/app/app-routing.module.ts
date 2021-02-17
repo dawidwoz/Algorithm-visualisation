@@ -9,7 +9,7 @@ const routes: Routes = [
     { path: 'stack', component: StackComponent },
     { path: 'queue', component: QueueComponent },
     { path: 'priority-queue', component: PriorityQueueComponent },
-    { path: 'welcome', component: WelcomeComponent },
+    { path: 'welcome', component: StackComponent }, //NoCommit
 ];
 
 
