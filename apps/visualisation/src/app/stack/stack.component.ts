@@ -20,6 +20,7 @@ export class StackComponent implements OnInit {
   @ViewChild('animationArea', { static: true, read: ViewContainerRef })
   animationArea: ViewContainerRef;
   @ViewChild('size', { static: true, read: ViewContainerRef }) sizeInput: ViewContainerRef;
+  @ViewChild('animationSpeed', { static: true, read: ViewContainerRef }) animationSpeedInput: ViewContainerRef;
   @ViewChild('result', { static: true, read: ViewContainerRef }) result: ViewContainerRef;
   @ViewChild('newElement', { static: true, read: ViewContainerRef })
   newElementInput: ViewContainerRef;
@@ -27,6 +28,8 @@ export class StackComponent implements OnInit {
   public implementation?: string;
   public stackElements: ComponentRef<StackElementComponent>[] = [];
   public arrowElements: ComponentRef<ArrowComponent>[] = [];
+  public usedImplementation?: string;
+  public inProgress: boolean = false;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -34,8 +37,7 @@ export class StackComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.listImplementation();
-    this.implementation = 'singly-linked-list';
+    console.log(this.animationSpeedInput.element.nativeElement.value)
   }
 
   setImplementation(implementation: string): void {
@@ -46,9 +48,10 @@ export class StackComponent implements OnInit {
   }
 
   createStack(): void {
+    this.usedImplementation = this.implementation;
     this.animationArea.clear();
     this.stackElements = [];
-    switch (this.implementation) {
+    switch (this.usedImplementation) {
       case 'simple-array':
         this.arrayImplementation();
         break;
@@ -76,6 +79,7 @@ export class StackComponent implements OnInit {
       const componentRef = this.animationArea.createComponent<StackElementComponent>(
         componentFactory
       );
+      componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
       componentRef.instance.number = i;
       componentRef.instance.value = NULL;
       this.stackElements.push(componentRef);
@@ -95,6 +99,7 @@ export class StackComponent implements OnInit {
     const componentRef = this.animationArea.createComponent<StackElementComponent>(
       componentFactory
     );
+    componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
     componentRef.instance.value = value;
     this.stackElements.push(componentRef);
   }
@@ -102,8 +107,7 @@ export class StackComponent implements OnInit {
   pushStack(): void {
     const value = this.newElementInput.element.nativeElement.value;
     if (value === '') return;
-    console.log(this.implementation);
-    switch (this.implementation) {
+    switch (this.usedImplementation) {
       case 'simple-array':
         this.pushArrayImplementation(value);
         break;
@@ -114,7 +118,9 @@ export class StackComponent implements OnInit {
   }
 
   pushListImplementation(value: string): void {
-    this.stackElements[this.stackElements.length - 1].instance.value = value;
+    this.stackElements[this.stackElements.length - 1].destroy();
+    this.stackElements = this.stackElements.slice(0, this.stackElements.length - 1);
+    this.addStackElement(value);
     this.addStackElement('next');
     this.addArrow();
     this.addStackElement('tail');
@@ -125,6 +131,7 @@ export class StackComponent implements OnInit {
       const instance = stackElement.instance;
       if (instance.value === NULL) {
         instance.value = value;
+        instance.triggerEnterAnimation();
         return;
       }
     }
@@ -143,7 +150,8 @@ export class StackComponent implements OnInit {
       ) {
         this.result.element.nativeElement.innerHTML = instance.value;
         if (removeElement) {
-          this.removeElement(instance);
+          this.inProgress = true;
+          this.removeElement(instance).then(() => (this.inProgress = false));
         }
         return;
       }
@@ -151,23 +159,41 @@ export class StackComponent implements OnInit {
     this.result.element.nativeElement.innerHTML = 'Stack is empty!';
   }
 
-  removeElement(instance: StackElementComponent): void {
-    switch (this.implementation) {
+  async removeElement(instance: StackElementComponent): Promise<void> {
+    switch (this.usedImplementation) {
       case 'simple-array':
-        instance.value = NULL;
+        {
+          instance.value = NULL;
+          instance.triggerEnterAnimation();
+        }
         break;
       case 'singly-linked-list':
         {
-          instance.value = 'tail';
-          for (let i = this.stackElements.length-1; i != 0 ; i--) {
+          let isArrowRemoved = false;
+          for (let i = this.stackElements.length - 1; i != 0; i--) {
             const stackElement = this.stackElements[i];
             if (stackElement.instance === instance) break;
-            stackElement.destroy();
+            stackElement.instance.triggerExitAnimation();
+            await new Promise<boolean>(resolve =>
+              setTimeout(() => {
+                stackElement.destroy();
+                resolve(true);
+              }, 1500)
+            );
             this.stackElements = this.stackElements.slice(0, i);
+            if (!isArrowRemoved) {
+              this.arrowElements[this.arrowElements.length - 1].destroy();
+              this.arrowElements = this.arrowElements.slice(0, this.arrowElements.length - 1);
+              isArrowRemoved = true;
+            }
           }
-          this.arrowElements[this.arrowElements.length - 1].destroy();
-          this.arrowElements = this.arrowElements.slice(0, this.arrowElements.length - 1);
-          console.log(this.arrowElements);
+          instance.triggerEnterAnimation();
+          instance.value = 'tail';
+          await new Promise<boolean>(resolve =>
+            setTimeout(() => {
+              resolve(true);
+            }, 750)
+          );
         }
         break;
     }
