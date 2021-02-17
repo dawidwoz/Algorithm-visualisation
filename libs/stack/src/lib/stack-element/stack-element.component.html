@@ -1,4 +1,10 @@
 <div class="stack-element __wrapper">
-  <span class="stack-element __value">{{ value }}</span>
-  <span class="stack-element __number" *ngIf="number">{{ number }}</span>
+  <span
+    class="stack-element __value"
+    [@onStart]="{value: undefined, params: {time: time !== undefined ? time + 'ms' : '1500ms'}}"
+    [@onChange]="{value: onChange ? true : false, params: {time: time !== undefined ?  time + 'ms' : '1500ms'}}"
+    [@onExit]="{value: onExit ? true : false, params: {time: time !== undefined ?  time + 'ms' : '1500ms'}}"
+    >{{ value }}</span
+  >
+  <span class="stack-element __number" *ngIf="number !== undefined">{{ number }}</span>
 </div>
