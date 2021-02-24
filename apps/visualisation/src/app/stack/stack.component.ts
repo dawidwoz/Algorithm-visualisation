@@ -64,7 +64,7 @@ export class StackComponent implements OnInit {
   listImplementation(): void {
     this.addStackElement('head');
     this.addArrow();
-    this.addStackElement('tail');
+    this.addStackElement('tail', true);
   }
 
   arrayImplementation(): void {
@@ -82,7 +82,19 @@ export class StackComponent implements OnInit {
       componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
       componentRef.instance.number = i;
       componentRef.instance.value = NULL;
+      componentRef.instance.active = true;
       this.stackElements.push(componentRef);
+    }
+  }
+
+  setActiveElement(instance: StackElementComponent, keepCurrent: boolean = false) {
+    for (const stackElement of this.stackElements) {
+      const currentInstance = stackElement.instance;
+      if(currentInstance === instance) {
+        currentInstance.active = true;
+      } else if(!keepCurrent) {
+        currentInstance.active = false;
+      }
     }
   }
 
@@ -92,7 +104,7 @@ export class StackComponent implements OnInit {
     this.arrowElements.push(componentRef);
   }
 
-  addStackElement(value: string): void {
+  addStackElement(value: string, keepCurrentActive: boolean = false): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       StackElementComponent
     );
@@ -102,6 +114,7 @@ export class StackComponent implements OnInit {
     componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
     componentRef.instance.value = value;
     this.stackElements.push(componentRef);
+    this.setActiveElement(componentRef.instance, keepCurrentActive);
   }
 
   pushStack(): void {
@@ -121,9 +134,9 @@ export class StackComponent implements OnInit {
     this.stackElements[this.stackElements.length - 1].destroy();
     this.stackElements = this.stackElements.slice(0, this.stackElements.length - 1);
     this.addStackElement(value);
-    this.addStackElement('next');
+    this.addStackElement('next', true);
     this.addArrow();
-    this.addStackElement('tail');
+    this.addStackElement('tail', true);
   }
 
   pushArrayImplementation(value: string): void {
@@ -132,6 +145,7 @@ export class StackComponent implements OnInit {
       if (instance.value === NULL) {
         instance.value = value;
         instance.triggerEnterAnimation();
+        this.setActiveElement(instance);
         return;
       }
     }
@@ -164,6 +178,7 @@ export class StackComponent implements OnInit {
       case 'simple-array':
         {
           instance.value = NULL;
+          this.setActiveElement(instance);
           instance.triggerEnterAnimation();
         }
         break;
@@ -189,6 +204,7 @@ export class StackComponent implements OnInit {
           }
           instance.triggerEnterAnimation();
           instance.value = 'tail';
+          this.setActiveElement(instance);
           await new Promise<boolean>(resolve =>
             setTimeout(() => {
               resolve(true);

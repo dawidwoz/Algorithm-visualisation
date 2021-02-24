@@ -1,6 +1,6 @@
 <div class="stack-element __wrapper">
   <span
-    class="stack-element __value"
+    class="stack-element __value" [class.--active]="active"
     [@onStart]="{value: undefined, params: {time: time !== undefined ? time + 'ms' : '1500ms'}}"
     [@onChange]="{value: onChange ? true : false, params: {time: time !== undefined ?  time + 'ms' : '1500ms'}}"
     [@onExit]="{value: onExit ? true : false, params: {time: time !== undefined ?  time + 'ms' : '1500ms'}}"
