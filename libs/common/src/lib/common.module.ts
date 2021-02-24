@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ArrowComponent } from './arrow/arrow.component';
-import { NgxBootstrapIconsModule, arrowRight } from 'ngx-bootstrap-icons';
+import { NgxBootstrapIconsModule, arrowRight, arrowLeft } from 'ngx-bootstrap-icons';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const icons = {
-  arrowRight
+  arrowRight,
+  arrowLeft
 };
 
 @NgModule({

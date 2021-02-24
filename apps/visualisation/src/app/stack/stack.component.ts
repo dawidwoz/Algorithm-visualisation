@@ -64,6 +64,8 @@ export class StackComponent implements OnInit {
   listImplementation(): void {
     this.addStackElement('head');
     this.addArrow();
+    this.addStackElement('NULL', true);
+    this.addArrow();
     this.addStackElement('tail', true);
   }
 
@@ -87,7 +89,8 @@ export class StackComponent implements OnInit {
     }
   }
 
-  setActiveElement(instance: StackElementComponent, keepCurrent: boolean = false) {
+  setActiveElement(instance: StackElementComponent, keepCurrent: boolean = false): void {
+    console.log(this.stackElements);
     for (const stackElement of this.stackElements) {
       const currentInstance = stackElement.instance;
       if(currentInstance === instance) {
@@ -98,10 +101,24 @@ export class StackComponent implements OnInit {
     }
   }
 
+  setArrowDirection(): void {
+    const arrowLength = this.arrowElements.length;
+    if (1 > arrowLength) return;
+    for (const arrowElement of this.arrowElements) {
+      const arrowInstance = arrowElement.instance;
+      if(arrowInstance === this.arrowElements[arrowLength-1].instance) {
+        arrowInstance.direction = 'left';
+      } else {
+        arrowInstance.direction = 'right';
+      }
+    }
+  }
+
   addArrow(): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ArrowComponent);
     const componentRef = this.animationArea.createComponent<ArrowComponent>(componentFactory);
     this.arrowElements.push(componentRef);
+    this.setArrowDirection();
   }
 
   addStackElement(value: string, keepCurrentActive: boolean = false): void {
@@ -131,6 +148,14 @@ export class StackComponent implements OnInit {
   }
 
   pushListImplementation(value: string): void {
+    for(const stackElement of this.stackElements) {
+      if (stackElement.instance.value === 'NULL') {
+        stackElement.destroy();
+        this.stackElements = this.stackElements.filter(item => item.instance != stackElement.instance);
+        this.arrowElements[this.arrowElements.length-1].destroy();
+      }
+    }
+
     this.stackElements[this.stackElements.length - 1].destroy();
     this.stackElements = this.stackElements.slice(0, this.stackElements.length - 1);
     this.addStackElement(value);
@@ -160,7 +185,8 @@ export class StackComponent implements OnInit {
         instance.value !== NULL &&
         instance.value !== 'tail' &&
         instance.value !== 'next' &&
-        instance.value !== 'head'
+        instance.value !== 'head' &&
+        instance.value !== 'NULL'
       ) {
         this.result.element.nativeElement.innerHTML = instance.value;
         if (removeElement) {
@@ -205,6 +231,10 @@ export class StackComponent implements OnInit {
           instance.triggerEnterAnimation();
           instance.value = 'tail';
           this.setActiveElement(instance);
+          if (this.stackElements.length == 2) {
+            this.createStack()
+          } 
+          this.setArrowDirection();
           await new Promise<boolean>(resolve =>
             setTimeout(() => {
               resolve(true);
