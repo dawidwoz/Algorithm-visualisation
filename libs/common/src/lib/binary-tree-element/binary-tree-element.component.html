@@ -1,0 +1,18 @@
+<div class="element __break" *ngIf="break"></div>
+<div class="element __wrapper" [class.--right]="right" [class.--left]="left">
+  <span
+    class="element __value"
+    [class.--active]="active"
+    [class.--hidden]="value === undefined"
+    [@onStart]="{ value: undefined, params: { time: time !== undefined ? time + 'ms' : '1500ms' } }"
+    [@onChange]="{
+      value: onChange ? true : false,
+      params: { time: time !== undefined ? time + 'ms' : '1500ms' }
+    }"
+    [@onExit]="{
+      value: onExit ? true : false,
+      params: { time: time !== undefined ? time + 'ms' : '1500ms' }
+    }"
+    >{{ value }}</span
+  >
+</div>

@@ -1,0 +1,22 @@
+<div class="binary-tree">
+  <ng-containter *ngFor="let value of values; index as row">
+    <div class="row" *ngIf="powerOfTwo(row + 1)">
+      <div *ngFor="let number of [].constructor(row + 1); index as element">
+        <major-project-binary-tree-element
+          [value]="values[row + element]"
+        ></major-project-binary-tree-element>
+        <div class="row-array" *ngIf="values[2 * (row + element) + 1]">
+          <major-project-arrow
+            class="row-array __left-arrow"
+            direction="right"
+          ></major-project-arrow>
+          <major-project-arrow
+            class="row-array __right-arrow"
+            [class.--hidden]="!values[2 * (row + element) + 2]"
+            direction="right"
+          ></major-project-arrow>
+        </div>
+      </div>
+    </div>
+  </ng-containter>
+</div>

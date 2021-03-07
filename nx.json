@@ -19,6 +19,11 @@
     "visualisation": { "tags": [] },
     "visualisation-e2e": { "tags": [], "implicitDependencies": ["visualisation"] },
     "stack": { "tags": [] },
-    "common": { "tags": [] }
+    "common": { "tags": [] },
+    "queue": { "tags": [] },
+    "queue-priority": { "tags": [] },
+    "hash-function": { "tags": [] },
+    "binary-tree": { "tags": [] },
+    "markov-model": { "tags": [] }
   }
 }

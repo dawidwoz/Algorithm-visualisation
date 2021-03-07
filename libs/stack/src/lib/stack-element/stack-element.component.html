@@ -1,10 +1,24 @@
-<div class="stack-element __wrapper">
+<div class="element __wrapper">
+  <mat-chip-list class="element __badges mat-chip-list-stacked">
+    <ng-tempalte *ngFor="let text of texts">
+      <mat-chip class="element __badges __text">
+        {{ text.trim() }}
+      </mat-chip>
+    </ng-tempalte>
+  </mat-chip-list>
   <span
-    class="stack-element __value" [class.--active]="active"
-    [@onStart]="{value: undefined, params: {time: time !== undefined ? time + 'ms' : '1500ms'}}"
-    [@onChange]="{value: onChange ? true : false, params: {time: time !== undefined ?  time + 'ms' : '1500ms'}}"
-    [@onExit]="{value: onExit ? true : false, params: {time: time !== undefined ?  time + 'ms' : '1500ms'}}"
+    class="element __value"
+    [class.--active]="active"
+    [@onStart]="{ value: undefined, params: { time: time !== undefined ? time + 'ms' : '1500ms' } }"
+    [@onChange]="{
+      value: onChange ? true : false,
+      params: { time: time !== undefined ? time + 'ms' : '1500ms' }
+    }"
+    [@onExit]="{
+      value: onExit ? true : false,
+      params: { time: time !== undefined ? time + 'ms' : '1500ms' }
+    }"
     >{{ value }}</span
   >
-  <span class="stack-element __number" *ngIf="number !== undefined">{{ number }}</span>
+  <span class="element __number" *ngIf="number !== undefined">{{ number }}</span>
 </div>
