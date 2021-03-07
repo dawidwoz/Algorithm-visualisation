@@ -1,0 +1,24 @@
+.queue {
+    &.__animationWrapper {
+      min-height: 80vh;
+      width: 100%;
+      border: 1px solid #c3c3c3;
+      display: inline-flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+    &.__animationArea {
+      display: inline-flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      width: 100%;
+  
+      *:nth-child(n + 2) {
+        margin-left: -3px;
+      }
+    }
+  }
+  

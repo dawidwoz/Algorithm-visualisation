@@ -65,14 +65,16 @@ import { Component, HostBinding, Input, OnInit} from '@angular/core';
 })
 export class StackElementComponent {
   @Input() value: string;
+  @Input() texts: string[] = [];
   @Input() number: number | undefined;
   @Input() time: number | undefined;
   @Input() active: boolean = false;
+  
 
   public onChange: boolean = false;
   public onExit: boolean = false;
 
-  triggerEnterAnimation() { this.onChange=!this.onChange; console.log(this.time);}
+  triggerEnterAnimation() { this.onChange=!this.onChange;}
 
-  triggerExitAnimation() { this.onExit=!this.onExit; console.log(this.time);}
+  triggerExitAnimation() { this.onExit=!this.onExit;}
 }

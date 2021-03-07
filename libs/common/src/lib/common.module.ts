@@ -4,6 +4,8 @@ import { ArrowComponent } from './arrow/arrow.component';
 import { NgxBootstrapIconsModule, arrowRight, arrowLeft } from 'ngx-bootstrap-icons';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BinaryTreeElementComponent } from './binary-tree-element/binary-tree-element.component';
+import { BinaryTreeComponent } from './binary-tree/binary-tree.component';
 
 const icons = {
   arrowRight,
@@ -15,7 +17,7 @@ const icons = {
     width: '2rem', 
     height: '2rem' 
   })],
-  declarations: [ArrowComponent],
-  exports: [ArrowComponent]
+  declarations: [ArrowComponent, BinaryTreeElementComponent, BinaryTreeComponent],
+  exports: [ArrowComponent, BinaryTreeElementComponent, BinaryTreeComponent]
 })
 export class LocalCommonModule {}

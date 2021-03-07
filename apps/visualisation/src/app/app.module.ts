@@ -9,6 +9,11 @@ import { PriorityQueueComponent } from './priority-queue/priority-queue.componen
 import { WelcomeComponent } from './welcome/welcome.component';
 import { StackModule } from '@major-project/stack';
 import { LocalCommonModule } from '@major-project/common';
+import { BinaryTreeModule } from '@major-project/binary-tree';
+import { HashFunctionModule } from '@major-project/hash-function';
+import { MarkovModelModule } from '@major-project/markov-model';
+import { QueuePriorityModule } from '@major-project/queue-priority';
+import { QueueModule } from '@major-project/queue';
 
 @NgModule({
   declarations: [
@@ -23,6 +28,11 @@ import { LocalCommonModule } from '@major-project/common';
     BrowserAnimationsModule,
     AppRoutingModule,
     StackModule,
+    BinaryTreeModule,
+    HashFunctionModule,
+    MarkovModelModule,
+    QueuePriorityModule,
+    QueueModule,
     LocalCommonModule
   ],
   providers: [],

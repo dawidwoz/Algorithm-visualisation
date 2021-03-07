@@ -2,7 +2,6 @@ import {
   Component,
   ComponentFactoryResolver,
   ComponentRef,
-  OnInit,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
@@ -16,7 +15,7 @@ const NULL = 'null';
   templateUrl: './stack.component.html',
   styleUrls: ['./stack.component.scss']
 })
-export class StackComponent implements OnInit {
+export class StackComponent {
   @ViewChild('animationArea', { static: true, read: ViewContainerRef })
   animationArea: ViewContainerRef;
   @ViewChild('size', { static: true, read: ViewContainerRef }) sizeInput: ViewContainerRef;
@@ -35,10 +34,6 @@ export class StackComponent implements OnInit {
     private componentFactoryResolver: ComponentFactoryResolver,
     protected readonly target: ViewContainerRef
   ) {}
-
-  ngOnInit(): void {
-    console.log(this.animationSpeedInput.element.nativeElement.value)
-  }
 
   setImplementation(implementation: string): void {
     this.implementation = implementation;

@@ -16,7 +16,12 @@
     "baseUrl": ".",
     "paths": {
       "@major-project/stack": ["libs/stack/src/index.ts"],
-      "@major-project/common": ["libs/common/src/index.ts"]
+      "@major-project/common": ["libs/common/src/index.ts"],
+      "@major-project/queue": ["libs/queue/src/index.ts"],
+      "@major-project/queue-priority": ["libs/queue-priority/src/index.ts"],
+      "@major-project/hash-function": ["libs/hash-function/src/index.ts"],
+      "@major-project/binary-tree": ["libs/binary-tree/src/index.ts"],
+      "@major-project/markov-model": ["libs/markov-model/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

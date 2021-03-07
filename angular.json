@@ -190,6 +190,122 @@
           }
         }
       }
+    },
+    "queue": {
+      "projectType": "library",
+      "root": "libs/queue",
+      "sourceRoot": "libs/queue/src",
+      "prefix": "major-project",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/queue/src/**/*.ts", "libs/queue/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/queue"],
+          "options": {
+            "jestConfig": "libs/queue/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "queue-priority": {
+      "projectType": "library",
+      "root": "libs/queue-priority",
+      "sourceRoot": "libs/queue-priority/src",
+      "prefix": "major-project",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/queue-priority/src/**/*.ts",
+              "libs/queue-priority/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/queue-priority"],
+          "options": {
+            "jestConfig": "libs/queue-priority/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "hash-function": {
+      "projectType": "library",
+      "root": "libs/hash-function",
+      "sourceRoot": "libs/hash-function/src",
+      "prefix": "major-project",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/hash-function/src/**/*.ts",
+              "libs/hash-function/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/hash-function"],
+          "options": {
+            "jestConfig": "libs/hash-function/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "binary-tree": {
+      "projectType": "library",
+      "root": "libs/binary-tree",
+      "sourceRoot": "libs/binary-tree/src",
+      "prefix": "major-project",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/binary-tree/src/**/*.ts", "libs/binary-tree/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/binary-tree"],
+          "options": {
+            "jestConfig": "libs/binary-tree/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "markov-model": {
+      "projectType": "library",
+      "root": "libs/markov-model",
+      "sourceRoot": "libs/markov-model/src",
+      "prefix": "major-project",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/markov-model/src/**/*.ts", "libs/markov-model/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/markov-model"],
+          "options": {
+            "jestConfig": "libs/markov-model/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }
