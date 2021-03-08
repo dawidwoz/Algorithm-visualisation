@@ -1,33 +1,29 @@
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-1">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="index.html">DSAV</a>
-</nav>
-
-<div class="container-fluid">
-    <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column text-center">
-                    <li class="nav-item">
-                        <a class="nav-link active" routerLink="/stack">
-                            Stack
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" routerLink="/queue">
-                            Queue
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" routerLink="/priority-queue">
-                            Priority Queue
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <main role="main" class="col pt-1 px-4">
-            <router-outlet></router-outlet>
-        </main>
-    </div>
+<div class="app-top-bar __wrapper">
+  <div class="app-top-bar __menu">
+    <i-bs name="list"></i-bs>
+  </div>
+  <div class="app-top-bar __title">
+    <h6>Aberystwyth University</h6>
+    <h1>Visualisation of Data Structures and Algorithms</h1>
+  </div>
+  <div class="app-top-bar __logo">
+    <img src="/assets/Logo.png" />
+  </div>
+  <div class="app-top-bar __language">
+    <mat-form-field floatLabel="never">
+      <mat-select value="EN">
+        <mat-option value="EN">EN</mat-option>
+        <mat-option value="DE">DE</mat-option>
+        <mat-option value="FR">FR</mat-option>
+        <mat-option value="PL">PL</mat-option>
+        <mat-option value="CY">CY</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>
+<hr />
+<hr />
+  <div class="app-footer __wrapper">
+    <p>Ver.1.00</p>
+    <p>Author: <a href="http://dawidwozniak.online/">Dawid Wozniak</a></p>
+  </div>
