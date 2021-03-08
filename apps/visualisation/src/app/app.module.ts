@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { StackComponent } from './stack/stack.component';
 import { QueueComponent } from './queue/queue.component';
 import { PriorityQueueComponent } from './priority-queue/priority-queue.component';
-import { WelcomeComponent } from './welcome/welcome.component';
 import { StackModule } from '@major-project/stack';
 import { LocalCommonModule } from '@major-project/common';
 import { BinaryTreeModule } from '@major-project/binary-tree';
@@ -25,8 +24,7 @@ const icons = {
     AppComponent,
     StackComponent,
     QueueComponent,
-    PriorityQueueComponent,
-    WelcomeComponent
+    PriorityQueueComponent
   ],
   imports: [
     BrowserModule,
