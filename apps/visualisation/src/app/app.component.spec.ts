@@ -1,4 +1,3 @@
-import { APP_BASE_HREF } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,7 +8,6 @@ import { MarkovModelModule } from '@major-project/markov-model';
 import { QueueModule } from '@major-project/queue';
 import { QueuePriorityModule } from '@major-project/queue-priority';
 import { StackModule } from '@major-project/stack';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -19,7 +17,6 @@ describe('AppComponent', () => {
       imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        AppRoutingModule,
         StackModule,
         BinaryTreeModule,
         HashFunctionModule,
@@ -27,8 +24,7 @@ describe('AppComponent', () => {
         QueuePriorityModule,
         QueueModule,
         LocalCommonModule
-      ],
-      providers: [{provide: APP_BASE_HREF, useValue : '/' }]
+      ]
     }).compileComponents();
   });
 
