@@ -14,6 +14,12 @@ import { HashFunctionModule } from '@major-project/hash-function';
 import { MarkovModelModule } from '@major-project/markov-model';
 import { QueuePriorityModule } from '@major-project/queue-priority';
 import { QueueModule } from '@major-project/queue';
+import { NgxBootstrapIconsModule, list } from 'ngx-bootstrap-icons';
+import { MatSelectModule } from '@angular/material/select';
+
+const icons = {
+  list
+};
 
 @NgModule({
   declarations: [
@@ -33,7 +39,12 @@ import { QueueModule } from '@major-project/queue';
     MarkovModelModule,
     QueuePriorityModule,
     QueueModule,
-    LocalCommonModule
+    LocalCommonModule,
+    MatSelectModule,
+    NgxBootstrapIconsModule.forRoot(icons, {
+      width: '6rem', 
+      height: '6rem' 
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
