@@ -112,9 +112,11 @@ export class PriorityQueueComponent {
     this.heapify();
   }
 
-  pushStack(): void {
-    const value = this.newElementInput.element.nativeElement.value;
+  pushElement(): void {
+    let value = this.newElementInput.element.nativeElement.value;
     if (value === '') return;
+    value = parseInt(value);
+    value = value > 999 ? 999 : value;
     switch (this.usedImplementation) {
       case 'min-heap-array':
         this.pushArrayImplementation(value);

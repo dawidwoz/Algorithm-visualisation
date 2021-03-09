@@ -47,7 +47,7 @@
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0"
-      (click)="pushStack()"
+      (click)="pushElement()"
     >
       INSERT
     </button>
@@ -56,9 +56,10 @@
       type="number"
       name="add_value"
       title="value to insert"
+      max="999"
       #newElement
       [disabled]="elements.length == 0"
-      placeholder="Numeric element value"
+      placeholder="Number - max 999"
     />
     <button
       mat-raised-button
