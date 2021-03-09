@@ -82,6 +82,7 @@ export class PriorityQueueComponent {
       componentRef.instance.value = NULL;
       componentRef.instance.active = true;
       this.elements.push(componentRef);
+      this.updateBinaryTree();
     }
   }
 
@@ -177,7 +178,7 @@ export class PriorityQueueComponent {
         instance.value !== 'head' &&
         instance.value !== 'NULL'
       ) {
-        this.result.element.nativeElement.innerHTML = instance.value;
+        this.result.element.nativeElement.value = instance.value;
         if (removeElement) {
           element.destroy();
           this.elements = this.elements.slice(1, this.elements.length);
@@ -186,7 +187,7 @@ export class PriorityQueueComponent {
         return;
       }
     }
-    this.result.element.nativeElement.innerHTML = 'Queue is empty!';
+    this.result.element.nativeElement.value = 'Queue is empty!';
   }
 
   async removeElement(instance: StackElementComponent): Promise<void> {

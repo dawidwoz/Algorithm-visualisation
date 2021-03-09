@@ -169,7 +169,7 @@ export class StackComponent {
         return;
       }
     }
-    this.result.element.nativeElement.innerHTML = 'Stack is full!';
+    this.result.element.nativeElement.value = 'Stack is full!';
   }
 
   lastElementStack(removeElement: boolean): void {
@@ -183,7 +183,7 @@ export class StackComponent {
         instance.value !== 'head' &&
         instance.value !== 'NULL'
       ) {
-        this.result.element.nativeElement.innerHTML = instance.value;
+        this.result.element.nativeElement.value = instance.value;
         if (removeElement) {
           this.inProgress = true;
           this.removeElement(instance).then(() => (this.inProgress = false));
@@ -191,7 +191,7 @@ export class StackComponent {
         return;
       }
     }
-    this.result.element.nativeElement.innerHTML = 'Stack is empty!';
+    this.result.element.nativeElement.value = 'Stack is empty!';
   }
 
   async removeElement(instance: StackElementComponent): Promise<void> {
