@@ -1,22 +1,3 @@
 .row {
   justify-content: space-around;
 }
-.row-array {
-  display: flex;
-  justify-content: space-around;
-  visibility: hidden;
-
-  &.__left-arrow {
-    transform: rotate(120deg);
-    display: inline-flex;
-  }
-
-  &.__right-arrow {
-    transform: rotate(60deg);
-    display: inline-flex;
-
-    &.--hidden {
-      visibility: hidden;
-    }
-  }
-}
