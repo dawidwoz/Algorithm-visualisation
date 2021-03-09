@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { LocalCommonModule } from '../common.module';
 
 import { BinaryTreeElementComponent } from './binary-tree-element.component';
 
@@ -8,7 +9,7 @@ describe('BinaryTreeElementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BinaryTreeElementComponent ]
+      imports: [ LocalCommonModule ]
     })
     .compileComponents();
   });

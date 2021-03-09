@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { StackElementComponent } from './stack-element.component';
+import { StackModule } from '../stack.module';
 
 describe('StackElementComponent', () => {
   let component: StackElementComponent;
@@ -8,7 +8,7 @@ describe('StackElementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StackElementComponent ]
+      imports: [ StackModule ]
     })
     .compileComponents();
   });
