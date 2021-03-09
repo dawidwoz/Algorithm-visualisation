@@ -1,82 +1,102 @@
 <div class="queue">
-    <div class="form-inline row mb-2">
-      <button
-        type="button"
-        class="btn btn-primary mr-1"
-        [disabled]="!implementation"
-        (click)="createQueue()"
-      >
-        Create Queue
-      </button>
-      <div class="form-group">
-        <label class="mr-1" for="datastructure">using</label>
-        <select class="form-control mr-1" (change)="setImplementation($event.target.value)">
-          <option value="select" selected hidden>Select implementation</option>
-          <option value="simple-array">Circular array</option>
-          <option value="singly-linked-list">Single linked list</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="mr-1" for="adt_size">of size</label>
-        <input class="form-control mr-1" [disabled]="implementation === 'singly-linked-list'" type="number" value="5" min="5" max="20" #size />
-      </div>
+  <div class="form-inline row mb-2">
+    <button
+      mat-raised-button
+      color="primary"
+      class="mr-1"
+      [disabled]="!implementation"
+      (click)="createQueue()"
+    >
+      CREATE QUEUE
+    </button>
+    <div class="form-group">
+      <label class="mr-1" for="datastructure">using</label>
+      <select class="form-control mr-1" (change)="setImplementation($event.target.value)">
+        <option value="select" selected hidden>Select implementation</option>
+        <option value="simple-array">Circular array</option>
+        <option value="singly-linked-list">Single linked list</option>
+      </select>
     </div>
-    <div class="queue __animationWrapper">
-      <div class="queue __animationArea">
-        <template #animationArea></template>
-      </div>
-    </div>
-  
-    <div class="form-inline row mt-2">
-      <button
-        type="button"
-        class="btn mr-1 btn-primary"
-        [disabled]="elements.length == 0 || inProgress"
-        (click)="pushStack()"
-      >
-        Enqueue
-      </button>
-      <input
-        class="form-control mr-1"
-        type="number"
-        name="add_value"
-        title="value to insert"
-        #newElement
-        [disabled]="elements.length == 0 || inProgress"
-        placeholder="Numeric element value"
-      />
-      <button
-        type="button"
-        class="btn mr-1 btn-primary"
-        [disabled]="elements.length == 0 || inProgress"
-        (click)="lastElement(true)"
-      >
-        Dequeue
-      </button>
-      <button
-        type="button"
-        class="btn mr-1 btn-primary"
-        [disabled]="elements.length == 0 || inProgress"
-        (click)="lastElement(false)"
-      >
-        Peek
-      </button>
-      <b #result></b>
-    </div>
-    <div class="form-inline row">
-      <div class="form-group">
-        <label for="anim_speed">Animation speed:&nbsp;</label>
+    <div class="form-group">
+      <label class="mr-2" for="adt_size">of size</label>
+      <mat-form-field class="size_input">
         <input
-          class="input-control"
-          [disabled]="inProgress"
-          type="range"
-          min="10"
-          max="5000"
-          value="1500"
-          style="direction: rtl"
-          #animationSpeed
+          matInput
+          class="form-control mr-1"
+          [disabled]="implementation === 'singly-linked-list'"
+          type="number"
+          value="5"
+          min="5"
+          max="20"
+          #size
         />
-      </div>
+      </mat-form-field>
     </div>
   </div>
-  
+  <div class="queue __animationWrapper">
+    <div class="queue __animationArea">
+      <template #animationArea></template>
+    </div>
+  </div>
+
+  <div class="form-inline row mt-2">
+    <button
+      mat-raised-button
+      color="primary"
+      class="mr-1"
+      [disabled]="elements.length == 0 || inProgress"
+      (click)="pushStack()"
+    >
+      ENQUEUE
+    </button>
+    <input
+      class="form-control mr-1"
+      type="number"
+      name="add_value"
+      title="value to insert"
+      #newElement
+      [disabled]="elements.length == 0 || inProgress"
+      placeholder="Numeric element value"
+    />
+    <button
+      mat-raised-button
+      color="primary"
+      class="mr-1"
+      [disabled]="elements.length == 0 || inProgress"
+      (click)="lastElement(true)"
+    >
+      DEQUEUE
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="mr-1"
+      [disabled]="elements.length == 0 || inProgress"
+      (click)="lastElement(false)"
+    >
+      PEEK
+    </button>
+    <input
+          matInput
+          class="form-control mr-1"
+          disabled
+          type="text"
+          #result
+        />
+    <div class="form-group">
+      <label for="anim_speed">Animation speed:&nbsp;</label>
+      <mat-slider
+        class="input-control"
+        thumbLabel
+        color="primary"
+        invert
+        [disabled]="inProgress"
+        tickInterval="1000"
+        value="1500"
+        min="10"
+        max="5000"
+        #animationSpeed
+      ></mat-slider>
+    </div>
+  </div>
+</div>

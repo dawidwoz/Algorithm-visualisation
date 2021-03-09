@@ -14,6 +14,10 @@ import { QueuePriorityModule } from '@major-project/queue-priority';
 import { QueueModule } from '@major-project/queue';
 import { NgxBootstrapIconsModule, list } from 'ngx-bootstrap-icons';
 import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatSliderModule } from '@angular/material/slider';
 
 const icons = {
   list
@@ -37,6 +41,10 @@ const icons = {
     QueueModule,
     LocalCommonModule,
     MatSelectModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSliderModule,
     NgxBootstrapIconsModule.forRoot(icons, {
       width: '6rem', 
       height: '6rem' 
