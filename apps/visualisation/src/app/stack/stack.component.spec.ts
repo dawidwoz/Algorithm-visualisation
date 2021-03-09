@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AppModule } from '../app.module';
 
 import { StackComponent } from './stack.component';
 
@@ -8,7 +9,7 @@ describe('StackComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StackComponent ]
+      imports: [AppModule]
     })
     .compileComponents();
   });
