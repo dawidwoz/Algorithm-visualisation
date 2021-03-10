@@ -44,7 +44,7 @@
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="stackElements.length == 0 || inProgress"
+      [disabled]="elements.length == 0 || inProgress"
       (click)="pushStack()"
     >
       PUSH
@@ -54,15 +54,16 @@
       type="number"
       name="add_value"
       title="value to insert"
+      max="999"
       #newElement
-      [disabled]="stackElements.length == 0 || inProgress"
-      placeholder="Numeric element value"
+      [disabled]="elements.length == 0 || inProgress"
+      placeholder="Number - max 999"
     />
     <button
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="stackElements.length == 0 || inProgress"
+      [disabled]="elements.length == 0 || inProgress"
       (click)="lastElementStack(true)"
     >
       POP
@@ -71,7 +72,7 @@
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="stackElements.length == 0 || inProgress"
+      [disabled]="elements.length == 0 || inProgress"
       (click)="lastElementStack(false)"
     >
       PEEK
