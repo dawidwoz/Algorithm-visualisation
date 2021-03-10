@@ -85,7 +85,6 @@ export class StackComponent {
   }
 
   setActiveElement(instance: StackElementComponent, keepCurrent: boolean = false): void {
-    console.log(this.stackElements);
     for (const stackElement of this.stackElements) {
       const currentInstance = stackElement.instance;
       if(currentInstance === instance) {

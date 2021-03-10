@@ -19,6 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { CommonModule } from '@angular/common';
+import { HashFunctionComponent } from './hash-function/hash-function.component';
 
 const icons = {
   list
@@ -29,7 +30,8 @@ const icons = {
     AppComponent,
     StackComponent,
     QueueComponent,
-    PriorityQueueComponent
+    PriorityQueueComponent,
+    HashFunctionComponent
   ],
   imports: [
     CommonModule,

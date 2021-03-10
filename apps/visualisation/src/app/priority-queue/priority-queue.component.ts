@@ -87,7 +87,6 @@ export class PriorityQueueComponent {
   }
 
   setActiveElement(instance: StackElementComponent, keepCurrent: boolean = false): void {
-    console.log(this.elements);
     for (const element of this.elements) {
       const currentInstance = element.instance;
       if (currentInstance === instance) {
@@ -199,7 +198,6 @@ export class PriorityQueueComponent {
           instance.value = NULL;
           this.setActiveElement(instance);
           this.elements = this.elements.slice(1, this.elements.length);
-          console.log(this.elements);
           instance.triggerEnterAnimation();
         }
         break;
