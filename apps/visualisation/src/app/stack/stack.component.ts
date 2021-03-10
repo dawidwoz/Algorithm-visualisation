@@ -59,11 +59,11 @@ export class StackComponent {
   }
 
   listImplementation(): void {
-    this.addStackElement('head');
+    this.addElement('tail', false);
     this.addArrow();
-    this.addStackElement('NULL', true);
+    this.addElement('NULL', true);
     this.addArrow();
-    this.addStackElement('tail', true);
+    this.addElement('head', true)
   }
 
   arrayImplementation(): void {
@@ -118,9 +118,9 @@ export class StackComponent {
     for (const arrowElement of this.arrowElements) {
       const arrowInstance = arrowElement.instance;
       if(arrowInstance === this.arrowElements[arrowLength-1].instance) {
-        arrowInstance.direction = 'left';
-      } else {
         arrowInstance.direction = 'right';
+      } else {
+        arrowInstance.direction = 'left';
       }
     }
   }
@@ -132,7 +132,7 @@ export class StackComponent {
     this.setArrowDirection();
   }
 
-  addStackElement(value: string, keepCurrentActive: boolean = false): void {
+  addElement(value: string, keepCurrentActive: boolean = false): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       StackElementComponent
     );
@@ -141,7 +141,7 @@ export class StackComponent {
     );
     componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
     componentRef.instance.value = value;
-    this.elements.push(componentRef);
+    this.elements.splice(0, 0, componentRef);
     this.setActiveElement(componentRef.instance, keepCurrentActive);
   }
 
@@ -167,12 +167,12 @@ export class StackComponent {
       }
     }
 
-    this.elements[this.elements.length - 1].destroy();
-    this.elements = this.elements.slice(0, this.elements.length - 1);
-    this.addStackElement(value);
-    this.addStackElement('next', true);
+    this.elements[0].destroy();
+    this.elements = this.elements.slice(1, this.elements.length);
+    this.addElement('next', true);
+    this.addElement(value);
     this.addArrow();
-    this.addStackElement('tail', true);
+    this.addElement('head', true);
   }
 
   pushArrayImplementation(value: string): void {
@@ -190,9 +190,8 @@ export class StackComponent {
     this.result.element.nativeElement.value = 'Stack is full!';
   }
 
-  lastElementStack(removeElement: boolean): void {
-    const reverse = [...this.elements];
-    for (const stackElement of reverse.reverse()) {
+  firstElementStack(removeElement: boolean): void {
+    for (const stackElement of this.elements) {
       const instance = stackElement.instance;
       if (
         instance.value !== NULL &&
@@ -226,9 +225,10 @@ export class StackComponent {
       case 'singly-linked-list':
         {
           let isArrowRemoved = false;
-          for (let i = this.elements.length - 1; i != 0; i--) {
+          let i = 0;
+          for (i = 0; i < this.elements.length; i++) {
             const stackElement = this.elements[i];
-            if (stackElement.instance === instance) break;
+            if (stackElement.instance.value === 'next') break;
             stackElement.instance.triggerExitAnimation();
             await new Promise<boolean>(resolve =>
               setTimeout(() => {
@@ -236,16 +236,18 @@ export class StackComponent {
                 resolve(true);
               }, 1500)
             );
-            this.elements = this.elements.slice(0, i);
             if (!isArrowRemoved) {
               this.arrowElements[this.arrowElements.length - 1].destroy();
               this.arrowElements = this.arrowElements.slice(0, this.arrowElements.length - 1);
               isArrowRemoved = true;
             }
           }
-          instance.triggerEnterAnimation();
-          instance.value = 'tail';
-          this.setActiveElement(instance);
+          this.elements = this.elements.slice(i, this.elements.length);
+          const currentElement = this.elements[0].instance;
+          currentElement.triggerEnterAnimation();
+          currentElement.value = 'head';
+          this.setActiveElement(currentElement);
+          console.log(this.elements);
           if (this.elements.length == 2) {
             this.createStack()
           } 

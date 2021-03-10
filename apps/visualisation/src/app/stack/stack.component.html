@@ -64,7 +64,7 @@
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0 || inProgress"
-      (click)="lastElementStack(true)"
+      (click)="firstElementStack(true)"
     >
       POP
     </button>
@@ -73,7 +73,7 @@
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0 || inProgress"
-      (click)="lastElementStack(false)"
+      (click)="firstElementStack(false)"
     >
       PEEK
     </button>
