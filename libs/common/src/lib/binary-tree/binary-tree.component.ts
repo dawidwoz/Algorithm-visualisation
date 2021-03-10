@@ -43,6 +43,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnDestroy {
             this.document.getElementById(leftChild + '__element')
           );
           line.path = 'straight';
+          line.color = 'grey';
           line.setOptions({ startSocket: 'bottom', endSocket: 'top' });
           this.lines.push(line);
         }
@@ -52,6 +53,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnDestroy {
             this.document.getElementById(rightChild + '__element')
           );
           line.path = 'straight';
+          line.color = 'grey';
           line.setOptions({ startSocket: 'bottom', endSocket: 'top' });
           this.lines.push(line);
         }

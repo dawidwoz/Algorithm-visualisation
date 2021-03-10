@@ -32,6 +32,7 @@ export class PriorityQueueComponent {
   public binaryTree?: ComponentRef<BinaryTreeComponent>; 
   public values: string[] = [];
   public usedImplementation?: string;
+  public addedValue: number = 0;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -46,6 +47,7 @@ export class PriorityQueueComponent {
     this.usedImplementation = this.implementation;
     this.animationArea.clear();
     this.elements = [];
+    this.addedValue = 0;
     switch (this.usedImplementation) {
       case 'min-heap-array':
         this.arrayImplementation();
@@ -114,6 +116,7 @@ export class PriorityQueueComponent {
   pushElement(): void {
     let value = this.newElementInput.element.nativeElement.value;
     if (value === '') return;
+    this.addedValue++;
     value = parseInt(value);
     value = value > 999 ? 999 : value;
     switch (this.usedImplementation) {
@@ -181,8 +184,14 @@ export class PriorityQueueComponent {
       ) {
         this.result.element.nativeElement.value = instance.value;
         if (removeElement) {
-          element.destroy();
-          this.elements = this.elements.slice(1, this.elements.length);
+          if (this.addedValue === 1) {
+            this.createPriorityQueue();
+            return;
+          }
+          this.elements[0].instance.value = this.elements[this.addedValue-1].instance.value;
+          this.elements[this.addedValue-1].destroy();
+          this.elements = this.elements.slice(0, this.addedValue-1);
+          this.addedValue--;
           this.heapify();
         }
         return;

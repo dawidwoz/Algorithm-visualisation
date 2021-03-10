@@ -7,7 +7,7 @@
       [disabled]="!implementation"
       (click)="createPriorityQueue()"
     >
-      CREATE QUEUE
+      CREATE PRIORITY QUEUE
     </button>
     <div class="form-group">
       <label class="mr-1" for="datastructure">using</label>
@@ -46,7 +46,7 @@
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elements.length == 0"
+      [disabled]="!implementation"
       (click)="pushElement()"
     >
       INSERT
@@ -58,14 +58,14 @@
       title="value to insert"
       max="999"
       #newElement
-      [disabled]="elements.length == 0"
+      [disabled]="!implementation"
       placeholder="Number - max 999"
     />
     <button
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elements.length == 0"
+      [disabled]="!implementation"
       (click)="getMinimum(true)"
     >
       REMOVE MINIMUM
@@ -74,7 +74,7 @@
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elements.length == 0"
+      [disabled]="!implementation"
       (click)="getMinimum(false)"
     >
       GET MINIMUM
