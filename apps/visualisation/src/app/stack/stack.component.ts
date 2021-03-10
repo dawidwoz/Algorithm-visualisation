@@ -249,7 +249,7 @@ export class StackComponent {
           this.setActiveElement(currentElement);
           console.log(this.elements);
           if (this.elements.length == 2) {
-            this.createStack()
+            this.createStack();
           } 
           this.setArrowDirection();
           await new Promise<boolean>(resolve =>
