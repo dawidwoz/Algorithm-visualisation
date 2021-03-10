@@ -28,7 +28,6 @@ export class BinaryTreeComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     for (let i = 0; i < this.lines.length; i++) {
-      console.log(this.lines[i]);
       this.lines[i].remove();
     }
   }
