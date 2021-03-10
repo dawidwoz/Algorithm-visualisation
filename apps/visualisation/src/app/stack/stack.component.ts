@@ -25,10 +25,12 @@ export class StackComponent {
   newElementInput: ViewContainerRef;
 
   public implementation?: string;
-  public stackElements: ComponentRef<StackElementComponent>[] = [];
+  public elements: ComponentRef<StackElementComponent>[] = [];
   public arrowElements: ComponentRef<ArrowComponent>[] = [];
   public usedImplementation?: string;
   public inProgress: boolean = false;
+  public headPosition: number = 0;
+  public tailPosition: number = 0;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -45,7 +47,7 @@ export class StackComponent {
   createStack(): void {
     this.usedImplementation = this.implementation;
     this.animationArea.clear();
-    this.stackElements = [];
+    this.elements = [];
     switch (this.usedImplementation) {
       case 'simple-array':
         this.arrayImplementation();
@@ -69,6 +71,8 @@ export class StackComponent {
       this.sizeInput.element.nativeElement.value !== ''
         ? this.sizeInput.element.nativeElement.value
         : (this.sizeInput.element.nativeElement.value = 5);
+    this.headPosition = 0;
+    this.tailPosition = 0;
     for (let i = 0; i < size; i++) {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
         StackElementComponent
@@ -80,12 +84,25 @@ export class StackComponent {
       componentRef.instance.number = i;
       componentRef.instance.value = NULL;
       componentRef.instance.active = true;
-      this.stackElements.push(componentRef);
+      this.elements.push(componentRef);
     }
+    this.setHeadTail();
+  }
+
+  setHeadTail(): void {
+    this.elements.forEach(element => {
+      element.instance.texts = [];
+    });
+    if (this.headPosition === this.tailPosition) {
+      this.elements[this.headPosition].instance.texts = ['head', 'tail'];
+      return;
+    }
+    this.elements[this.headPosition].instance.texts = ['head'];
+    this.elements[this.tailPosition].instance.texts = ['tail'];
   }
 
   setActiveElement(instance: StackElementComponent, keepCurrent: boolean = false): void {
-    for (const stackElement of this.stackElements) {
+    for (const stackElement of this.elements) {
       const currentInstance = stackElement.instance;
       if(currentInstance === instance) {
         currentInstance.active = true;
@@ -124,7 +141,7 @@ export class StackComponent {
     );
     componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
     componentRef.instance.value = value;
-    this.stackElements.push(componentRef);
+    this.elements.push(componentRef);
     this.setActiveElement(componentRef.instance, keepCurrentActive);
   }
 
@@ -142,16 +159,16 @@ export class StackComponent {
   }
 
   pushListImplementation(value: string): void {
-    for(const stackElement of this.stackElements) {
+    for(const stackElement of this.elements) {
       if (stackElement.instance.value === 'NULL') {
         stackElement.destroy();
-        this.stackElements = this.stackElements.filter(item => item.instance != stackElement.instance);
+        this.elements = this.elements.filter(item => item.instance != stackElement.instance);
         this.arrowElements[this.arrowElements.length-1].destroy();
       }
     }
 
-    this.stackElements[this.stackElements.length - 1].destroy();
-    this.stackElements = this.stackElements.slice(0, this.stackElements.length - 1);
+    this.elements[this.elements.length - 1].destroy();
+    this.elements = this.elements.slice(0, this.elements.length - 1);
     this.addStackElement(value);
     this.addStackElement('next', true);
     this.addArrow();
@@ -159,12 +176,14 @@ export class StackComponent {
   }
 
   pushArrayImplementation(value: string): void {
-    for (const stackElement of this.stackElements) {
+    for (const stackElement of this.elements) {
       const instance = stackElement.instance;
       if (instance.value === NULL) {
         instance.value = value;
         instance.triggerEnterAnimation();
         this.setActiveElement(instance);
+        this.tailPosition = this.elements[this.tailPosition + 1] ? this.tailPosition + 1 : 0;
+        this.setHeadTail();
         return;
       }
     }
@@ -172,7 +191,7 @@ export class StackComponent {
   }
 
   lastElementStack(removeElement: boolean): void {
-    const reverse = [...this.stackElements];
+    const reverse = [...this.elements];
     for (const stackElement of reverse.reverse()) {
       const instance = stackElement.instance;
       if (
@@ -199,14 +218,16 @@ export class StackComponent {
         {
           instance.value = NULL;
           this.setActiveElement(instance);
+          this.tailPosition = this.elements[this.tailPosition - 1] ? this.tailPosition - 1 : this.elements.length-1;
+          this.setHeadTail();
           instance.triggerEnterAnimation();
         }
         break;
       case 'singly-linked-list':
         {
           let isArrowRemoved = false;
-          for (let i = this.stackElements.length - 1; i != 0; i--) {
-            const stackElement = this.stackElements[i];
+          for (let i = this.elements.length - 1; i != 0; i--) {
+            const stackElement = this.elements[i];
             if (stackElement.instance === instance) break;
             stackElement.instance.triggerExitAnimation();
             await new Promise<boolean>(resolve =>
@@ -215,7 +236,7 @@ export class StackComponent {
                 resolve(true);
               }, 1500)
             );
-            this.stackElements = this.stackElements.slice(0, i);
+            this.elements = this.elements.slice(0, i);
             if (!isArrowRemoved) {
               this.arrowElements[this.arrowElements.length - 1].destroy();
               this.arrowElements = this.arrowElements.slice(0, this.arrowElements.length - 1);
@@ -225,7 +246,7 @@ export class StackComponent {
           instance.triggerEnterAnimation();
           instance.value = 'tail';
           this.setActiveElement(instance);
-          if (this.stackElements.length == 2) {
+          if (this.elements.length == 2) {
             this.createStack()
           } 
           this.setArrowDirection();
