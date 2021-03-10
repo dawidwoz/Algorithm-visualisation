@@ -10,7 +10,7 @@
   }
   &.__animationArea {
     display: inline-flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
     justify-content: center;
     align-items: flex-end;
     flex-wrap: wrap;
@@ -19,5 +19,8 @@
     *:nth-child(n + 2) {
       margin-left: -3px;
     }
+  }
+  .reverse {
+    flex-direction: row-reverse;
   }
 }

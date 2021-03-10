@@ -173,8 +173,7 @@ export class QueueComponent {
 
     this.elements[this.elements.length - 1].destroy();
     this.elements = this.elements.slice(0, this.elements.length - 1);
-    this.addElement('prev');
-    this.addElement(value, true);
+    this.addElement(value, false);
     this.addElement('next', true);
     this.addArrow();
     this.addElement('tail', true);
@@ -259,39 +258,32 @@ export class QueueComponent {
       case 'singly-linked-list':
         {
           let isArrowRemoved = false;
-          let i;
-          for (i = this.elements.length - 1; i != 0; i--) {
-            const element = this.elements[i];
-            if (element.instance === instance) break;
-            element.instance.triggerExitAnimation();
+          let i = 0;
+          for (i = 0; i < this.elements.length; i++) {
+            const stackElement = this.elements[i];
+            if (stackElement.instance.value === 'next') break;
+            stackElement.instance.triggerExitAnimation();
             await new Promise<boolean>(resolve =>
               setTimeout(() => {
-                element.destroy();
+                stackElement.destroy();
                 resolve(true);
               }, 1500)
             );
-            this.elements = this.elements.slice(0, i);
             if (!isArrowRemoved) {
-              this.arrowElements[this.arrowElements.length - 1].destroy();
-              this.arrowElements = this.arrowElements.slice(0, this.arrowElements.length - 1);
+              this.arrowElements[0].destroy();
+              this.arrowElements = this.arrowElements.slice(1, this.arrowElements.length);
               isArrowRemoved = true;
             }
           }
-          this.elements[i].instance.triggerExitAnimation();
-          await new Promise<boolean>(resolve =>
-            setTimeout(() => {
-              this.elements[i].destroy();
-              resolve(true);
-            }, 1500)
-          );
-          this.elements = this.elements.slice(0, i);
-          instance = this.elements[i-1].instance;
-          instance.triggerEnterAnimation();
-          instance.value = 'tail';
-          this.setActiveElement(instance);
+          this.elements = this.elements.slice(i, this.elements.length);
+          const currentElement = this.elements[0].instance;
+          currentElement.triggerEnterAnimation();
+          currentElement.value = 'head';
+          this.setActiveElement(currentElement);
+          console.log(this.elements);
           if (this.elements.length == 2) {
             this.createQueue();
-          }
+          } 
           this.setArrowDirection();
           await new Promise<boolean>(resolve =>
             setTimeout(() => {
