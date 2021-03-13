@@ -29,8 +29,7 @@ export class StackComponent {
   public arrowElements: ComponentRef<ArrowComponent>[] = [];
   public usedImplementation?: string;
   public inProgress: boolean = false;
-  public headPosition: number = 0;
-  public tailPosition: number = 0;
+  public topPosition: number = 0;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -71,8 +70,7 @@ export class StackComponent {
       this.sizeInput.element.nativeElement.value !== ''
         ? this.sizeInput.element.nativeElement.value
         : (this.sizeInput.element.nativeElement.value = 5);
-    this.headPosition = 0;
-    this.tailPosition = 0;
+    this.topPosition = 0;
     for (let i = 0; i < size; i++) {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
         StackElementComponent
@@ -86,19 +84,14 @@ export class StackComponent {
       componentRef.instance.active = true;
       this.elements.push(componentRef);
     }
-    this.setHeadTail();
+    this.setTopPosition();
   }
 
-  setHeadTail(): void {
+  setTopPosition(): void {
     this.elements.forEach(element => {
       element.instance.texts = [];
     });
-    if (this.headPosition === this.tailPosition) {
-      this.elements[this.headPosition].instance.texts = ['head', 'tail'];
-      return;
-    }
-    this.elements[this.headPosition].instance.texts = ['head'];
-    this.elements[this.tailPosition].instance.texts = ['tail'];
+    this.elements[this.topPosition].instance.texts = ['top'];
   }
 
   setActiveElement(instance: StackElementComponent, keepCurrent: boolean = false): void {
@@ -182,8 +175,8 @@ export class StackComponent {
         instance.value = value;
         instance.triggerEnterAnimation();
         this.setActiveElement(instance);
-        this.tailPosition = this.elements[this.tailPosition + 1] ? this.tailPosition + 1 : 0;
-        this.setHeadTail();
+        this.topPosition = this.elements[this.topPosition + 1] ? this.topPosition + 1 : 0;
+        this.setTopPosition();
         return;
       }
     }
@@ -191,7 +184,8 @@ export class StackComponent {
   }
 
   firstElementStack(removeElement: boolean): void {
-    for (const stackElement of this.elements) {
+    const elementCopy = this.usedImplementation === 'simple-array' ? [...this.elements].reverse() : [...this.elements];
+    for (const stackElement of elementCopy) {
       const instance = stackElement.instance;
       if (
         instance.value !== NULL &&
@@ -217,8 +211,8 @@ export class StackComponent {
         {
           instance.value = NULL;
           this.setActiveElement(instance);
-          this.tailPosition = this.elements[this.tailPosition - 1] ? this.tailPosition - 1 : this.elements.length-1;
-          this.setHeadTail();
+          this.topPosition = this.elements[this.topPosition - 1] ? this.topPosition - 1 : this.elements.length-1;
+          this.setTopPosition();
           instance.triggerEnterAnimation();
         }
         break;
