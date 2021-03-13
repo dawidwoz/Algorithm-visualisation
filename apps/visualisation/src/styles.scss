@@ -10,3 +10,8 @@
     width: 2rem;
     text-align: center !important;
 }
+
+.element-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+}

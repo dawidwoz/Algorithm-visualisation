@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BinaryTreeElementComponent } from './binary-tree-element/binary-tree-element.component';
 import { BinaryTreeComponent } from './binary-tree/binary-tree.component';
+import { ElementWrapperComponent } from './element-wrapper/element-wrapper.component';
 
 const icons = {
   arrowRight,
@@ -17,7 +18,7 @@ const icons = {
     width: '2rem', 
     height: '2rem' 
   })],
-  declarations: [ArrowComponent, BinaryTreeElementComponent, BinaryTreeComponent],
-  exports: [ArrowComponent, BinaryTreeElementComponent, BinaryTreeComponent]
+  declarations: [ArrowComponent, BinaryTreeElementComponent, BinaryTreeComponent, ElementWrapperComponent],
+  exports: [ArrowComponent, BinaryTreeElementComponent, BinaryTreeComponent, ElementWrapperComponent]
 })
 export class LocalCommonModule {}
