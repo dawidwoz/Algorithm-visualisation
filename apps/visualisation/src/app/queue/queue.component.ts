@@ -6,7 +6,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { StackElementComponent } from '@major-project/stack';
-import { ArrowComponent } from '@major-project/common';
+import { ArrowComponent, ElementWrapperComponent } from '@major-project/common';
 
 const NULL = 'null';
 
@@ -160,6 +160,24 @@ export class QueueComponent {
     }
   }
 
+  addGroupElement(values: string[]): void {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      ElementWrapperComponent
+    );
+    const componentRef = this.animationArea.createComponent<ElementWrapperComponent>(
+      componentFactory
+    );
+    const addElements: ComponentRef<StackElementComponent>[] = [];
+    this.setActiveElement(undefined, false);
+    for (const value of values) {
+      componentRef.instance.addComponent<StackElementComponent>(StackElementComponent);
+      componentRef.instance.componentRef.instance.value = value;
+      componentRef.instance.componentRef.instance.active = true;
+      addElements.push(componentRef.instance.componentRef);
+    }
+    this.elements = this.elements.concat(addElements.reverse());
+  }
+
   pushListImplementation(value: string): void {
     for (const element of this.elements) {
       if (element.instance.value === 'NULL') {
@@ -173,8 +191,7 @@ export class QueueComponent {
 
     this.elements[this.elements.length - 1].destroy();
     this.elements = this.elements.slice(0, this.elements.length - 1);
-    this.addElement(value, false);
-    this.addElement('next', true);
+    this.addGroupElement(['next', value]);
     this.addArrow();
     this.addElement('tail', true);
   }
@@ -219,8 +236,7 @@ export class QueueComponent {
   }
   break;
   case 'singly-linked-list': {
-    const reverse = [...this.elements];
-    for (const element of reverse.reverse()) {
+    for (const element of this.elements) {
       const instance = element.instance;
       if (
         instance.value !== NULL &&
