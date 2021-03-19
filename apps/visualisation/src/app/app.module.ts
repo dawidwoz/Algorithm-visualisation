@@ -1,10 +1,25 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { NgxBootstrapIconsModule, list } from 'ngx-bootstrap-icons';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+
 import { AppComponent } from './app.component';
 import { StackComponent } from './stack/stack.component';
 import { QueueComponent } from './queue/queue.component';
 import { PriorityQueueComponent } from './priority-queue/priority-queue.component';
+import { HashFunctionComponent } from './hash-function/hash-function.component';
+import { AppRoutingModule } from './app-routing.module';
 import { StackModule } from '@major-project/stack';
 import { LocalCommonModule } from '@major-project/common';
 import { BinaryTreeModule } from '@major-project/binary-tree';
@@ -12,15 +27,6 @@ import { HashFunctionModule } from '@major-project/hash-function';
 import { MarkovModelModule } from '@major-project/markov-model';
 import { QueuePriorityModule } from '@major-project/queue-priority';
 import { QueueModule } from '@major-project/queue';
-import { NgxBootstrapIconsModule, list } from 'ngx-bootstrap-icons';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatSliderModule } from '@angular/material/slider';
-import { CommonModule } from '@angular/common';
-import { HashFunctionComponent } from './hash-function/hash-function.component';
-import { AppRoutingModule } from './app-routing.module';
 
 const icons = {
   list
@@ -50,7 +56,11 @@ const icons = {
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatToolbarModule,
+    MatSidenavModule,
     MatSliderModule,
+    MatListModule,
+    MatIconModule,
     NgxBootstrapIconsModule.forRoot(icons, {
       width: '6rem', 
       height: '6rem' 

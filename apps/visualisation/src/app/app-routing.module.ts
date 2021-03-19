@@ -8,16 +8,16 @@ import { StackComponent } from './stack/stack.component';
 export const RoutesName = {
   stack: 'stack',
   queue: 'queue',
-  priorityQueue: 'priority-queue',
-  hashFunction: 'hash-function',
+  'priority-queue': 'priority-queue',
+  'hash-function': 'hash-function',
   default: 'stack'
 };
 
 const routes: Routes = [
   { path: RoutesName.stack, component: StackComponent },
   { path: RoutesName.queue, component: QueueComponent },
-  { path: RoutesName.priorityQueue, component: PriorityQueueComponent },
-  { path: RoutesName.hashFunction, component: HashFunctionComponent},
+  { path: RoutesName['priority-queue'], component: PriorityQueueComponent },
+  { path: RoutesName['hash-function'], component: HashFunctionComponent},
   { path: '', redirectTo: '/' + RoutesName.default, pathMatch: 'full' },
   { path: '**', redirectTo: '/' + RoutesName.default, pathMatch: 'full' }
 ];
