@@ -2,12 +2,11 @@ import { APP_BASE_HREF } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppModule } from '../app.module';
+import { HiddenMarkovModelComponent } from './hidden-markov-model.component';
 
-import { StackComponent } from './stack.component';
-
-describe('StackComponent', () => {
-  let component: StackComponent;
-  let fixture: ComponentFixture<StackComponent>;
+describe('HiddenMarkovModelComponent', () => {
+  let component: HiddenMarkovModelComponent;
+  let fixture: ComponentFixture<HiddenMarkovModelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -19,7 +18,7 @@ describe('StackComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StackComponent);
+    fixture = TestBed.createComponent(HiddenMarkovModelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -6,7 +6,7 @@
         mat-list-item
         *ngFor="let route of routes"
         (click)="snav.close(); navigationClick(route.name)"
-        >{{ route.value.charAt(0).toUpperCase() + route.value.slice(1) }}</a
+        >{{ route.value.charAt(0).toUpperCase() + route.value.slice(1).replaceAll('-', ' ') }}</a
       >
     </mat-nav-list>
   </mat-sidenav>
