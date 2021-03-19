@@ -1,3 +1,4 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
@@ -7,6 +8,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppModule],
+      providers: [{provide: APP_BASE_HREF, useValue : '/' }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   });
