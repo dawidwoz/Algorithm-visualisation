@@ -1,0 +1,111 @@
+<div class="hidden-markov-model">
+  <div class="form-inline row mb-2">
+    <button
+      mat-raised-button
+      color="primary"
+      class="mr-1"
+      [disabled]="!implementation"
+      (click)="createHashFunction()"
+    >
+      CREATE FUNCTION
+    </button>
+    <div class="form-group">
+      <label class="mr-1" for="datastructure">using</label>
+      <select class="form-control mr-1" (change)="setImplementation($event.target.value)">
+        <option value="select" selected hidden>Select implementation</option>
+        <option value="separate-chaining">Separate chaining</option>
+        <option value="linear-probing">Linear Probing</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="mr-2" for="adt_size"> Hash table size:</label>
+      <mat-form-field class="size_input">
+        <input
+          matInput
+          class="form-control mr-1"
+          type="number"
+          [value]="randomNumber"
+          [min]="randomNumber"
+          max="20"
+          #size
+        />
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="hidden-markov-model __animationWrapper">
+    <div>
+      <h2>
+        <i>f(x)= x % {{ randomNumber }}</i>
+      </h2>
+      <div class="hidden-markov-model __animationArea">
+        <template #animationArea></template>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-inline row mt-2">
+    <button
+      mat-raised-button
+      color="primary"
+      class="mr-1"
+      [disabled]="elements.length == 0"
+      (click)="pushElement()"
+    >
+      INSERT
+    </button>
+    <input
+      class="form-control mr-1"
+      type="number"
+      name="add_value"
+      title="value to insert"
+      max="999"
+      #newElement
+      [disabled]="elements.length == 0"
+      placeholder="Numeric element value"
+    />
+    <button
+      mat-raised-button
+      color="primary"
+      class="mr-1"
+      [disabled]="elements.length == 0"
+      (click)="createHashFunction()"
+    >
+      CLEAR
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="mr-1"
+      [disabled]="elements.length == 0"
+      (click)="getElement(true)"
+    >
+      REMOVE ELEMENT
+    </button>
+    <input
+    [disabled]="elements.length == 0"
+    matInput
+    class="form-control mr-1"
+    type="number"
+    placeholder=" Number"
+    #remove
+  />
+    <button
+      mat-raised-button
+      color="primary"
+      class="mr-1"
+      [disabled]="elements.length == 0"
+      (click)="getElement(false)"
+    >
+      SEARCH
+    </button>
+    <input
+    matInput
+    [disabled]="elements.length == 0"
+    class="form-control mr-1"
+    type="number"
+    placeholder=" Number"
+    #search
+  />
+    <b #result></b>
+  </div>
+</div>

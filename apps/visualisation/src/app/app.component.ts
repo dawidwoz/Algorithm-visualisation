@@ -16,7 +16,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public title: string = '';
   public description: string = '';
 
-  protected constructor(
+  public constructor(
     protected readonly media: MediaMatcher,
     protected readonly changeDetectorRef: ChangeDetectorRef,
     protected readonly router: Router
@@ -75,6 +75,14 @@ export class AppComponent implements OnInit, OnDestroy {
         this.description =
           'Use animation below to see how the hash functions with collision handling work.\n' +
           'You can create a hash table of the size from 0 to 20.';
+        break;
+      case RoutesName['binary-search-tree']:
+        this.title = 'Binary search tree';
+        this.description = '';
+        break;
+      case RoutesName['hidden-markov-model']:
+        this.title = 'Hidden Markov Model';
+        this.description = '';
         break;
       default:
         this.title = 'Stack';

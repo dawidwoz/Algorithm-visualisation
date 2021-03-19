@@ -2,12 +2,11 @@ import { APP_BASE_HREF } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppModule } from '../app.module';
+import { BinarySearchTreeComponent } from './binary-search-tree.component';
 
-import { StackComponent } from './stack.component';
-
-describe('StackComponent', () => {
-  let component: StackComponent;
-  let fixture: ComponentFixture<StackComponent>;
+describe('BinarySearchTreeComponent', () => {
+  let component: BinarySearchTreeComponent;
+  let fixture: ComponentFixture<BinarySearchTreeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -19,7 +18,7 @@ describe('StackComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StackComponent);
+    fixture = TestBed.createComponent(BinarySearchTreeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

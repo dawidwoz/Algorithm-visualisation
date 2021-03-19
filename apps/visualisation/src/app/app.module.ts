@@ -19,7 +19,10 @@ import { StackComponent } from './stack/stack.component';
 import { QueueComponent } from './queue/queue.component';
 import { PriorityQueueComponent } from './priority-queue/priority-queue.component';
 import { HashFunctionComponent } from './hash-function/hash-function.component';
+import { BinarySearchTreeComponent } from './binary-search-tree/binary-search-tree.component';
+import { HiddenMarkovModelComponent } from './hidden-markov-model/hidden-markov-model.component';
 import { AppRoutingModule } from './app-routing.module';
+
 import { StackModule } from '@major-project/stack';
 import { LocalCommonModule } from '@major-project/common';
 import { BinaryTreeModule } from '@major-project/binary-tree';
@@ -35,6 +38,8 @@ const icons = {
 @NgModule({
   declarations: [
     AppComponent,
+    BinarySearchTreeComponent,
+    HiddenMarkovModelComponent,
     StackComponent,
     QueueComponent,
     PriorityQueueComponent,
