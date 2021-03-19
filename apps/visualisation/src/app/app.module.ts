@@ -20,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { CommonModule } from '@angular/common';
 import { HashFunctionComponent } from './hash-function/hash-function.component';
+import { AppRoutingModule } from './app-routing.module';
 
 const icons = {
   list
@@ -37,6 +38,7 @@ const icons = {
     CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
     StackModule,
     BinaryTreeModule,
     HashFunctionModule,
