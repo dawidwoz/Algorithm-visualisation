@@ -119,6 +119,7 @@ export class PriorityQueueComponent {
     this.addedValue++;
     value = parseInt(value);
     value = value > 999 ? 999 : value;
+    this.newElementInput.element.nativeElement.value = value;
     switch (this.usedImplementation) {
       case 'min-heap-array':
         this.pushArrayImplementation(value);
