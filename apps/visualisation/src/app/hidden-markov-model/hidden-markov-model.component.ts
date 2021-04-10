@@ -6,7 +6,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { StackElementComponent } from '@major-project/stack';
+import { ElementComponent } from '@major-project/common';
 
 const NULL = 'null';
 
@@ -26,7 +26,7 @@ export class HiddenMarkovModelComponent implements OnInit {
   newElementInput: ViewContainerRef;
 
   public implementation?: string;
-  public elements: ComponentRef<StackElementComponent>[] = [];
+  public elements: ComponentRef<ElementComponent>[] = [];
   public usedImplementation?: string;
   public randomNumber: number = 0;
 
@@ -62,9 +62,9 @@ export class HiddenMarkovModelComponent implements OnInit {
         : (this.sizeInput.element.nativeElement.value = 5);
     for (let i = 0; i < size; i++) {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-        StackElementComponent
+        ElementComponent
       );
-      const componentRef = this.animationArea.createComponent<StackElementComponent>(
+      const componentRef = this.animationArea.createComponent<ElementComponent>(
         componentFactory
       );
       componentRef.instance.number = i;
@@ -74,7 +74,7 @@ export class HiddenMarkovModelComponent implements OnInit {
     }
   }
 
-  setActiveElement(instance: StackElementComponent, keepCurrent: boolean = false): void {
+  setActiveElement(instance: ElementComponent, keepCurrent: boolean = false): void {
     for (const element of this.elements) {
       const currentInstance = element.instance;
       if (currentInstance === instance) {
@@ -87,9 +87,9 @@ export class HiddenMarkovModelComponent implements OnInit {
 
   addElement(value: string, keepCurrentActive: boolean = false): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      StackElementComponent
+      ElementComponent
     );
-    const componentRef = this.animationArea.createComponent<StackElementComponent>(
+    const componentRef = this.animationArea.createComponent<ElementComponent>(
       componentFactory
     );
     componentRef.instance.number = this.elements.length;

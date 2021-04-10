@@ -1,10 +1,10 @@
 import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
-import { Component, HostBinding, Input, OnInit} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'stack-element',
-  templateUrl: './stack-element.component.html',
-  styleUrls: ['./stack-element.component.scss'],
+  selector: 'major-project-element',
+  templateUrl: './element.component.html',
+  styleUrls: ['./element.component.scss'],
   animations: [
     trigger('onStart', [
       state('in', style({ opacity: 1 })),
@@ -63,7 +63,7 @@ import { Component, HostBinding, Input, OnInit} from '@angular/core';
     ])
   ]
 })
-export class StackElementComponent {
+export class ElementComponent {
   @Input() value: string;
   @Input() texts: string[] = [];
   @Input() number: number | undefined;

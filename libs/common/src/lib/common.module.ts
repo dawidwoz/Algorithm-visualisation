@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BinaryTreeElementComponent } from './binary-tree-element/binary-tree-element.component';
 import { BinaryTreeComponent } from './binary-tree/binary-tree.component';
 import { ElementWrapperComponent } from './element-wrapper/element-wrapper.component';
+import { ElementComponent } from './element/element.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 const icons = {
   arrowRight,
@@ -14,11 +16,11 @@ const icons = {
 };
 
 @NgModule({
-  imports: [CommonModule, BrowserModule, BrowserAnimationsModule, NgxBootstrapIconsModule.forRoot(icons, {
+  imports: [CommonModule, BrowserModule, BrowserAnimationsModule, MatChipsModule, NgxBootstrapIconsModule.forRoot(icons, {
     width: '2rem', 
     height: '2rem' 
   })],
-  declarations: [ArrowComponent, BinaryTreeElementComponent, BinaryTreeComponent, ElementWrapperComponent],
-  exports: [ArrowComponent, BinaryTreeElementComponent, BinaryTreeComponent, ElementWrapperComponent]
+  declarations: [ArrowComponent, BinaryTreeElementComponent, BinaryTreeComponent, ElementWrapperComponent, ElementComponent],
+  exports: [ArrowComponent, BinaryTreeElementComponent, BinaryTreeComponent, ElementWrapperComponent, ElementComponent]
 })
 export class LocalCommonModule {}

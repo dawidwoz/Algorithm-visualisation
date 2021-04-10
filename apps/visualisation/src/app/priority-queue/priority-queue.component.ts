@@ -5,8 +5,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { StackElementComponent } from '@major-project/stack';
-import { BinaryTreeComponent } from '@major-project/common';
+import { ElementComponent, BinaryTreeComponent } from '@major-project/common';
 
 const NULL = 'null';
 
@@ -28,7 +27,7 @@ export class PriorityQueueComponent {
   newElementInput: ViewContainerRef;
 
   public implementation?: string;
-  public elements: ComponentRef<StackElementComponent>[] = [];
+  public elements: ComponentRef<ElementComponent>[] = [];
   public binaryTree?: ComponentRef<BinaryTreeComponent>; 
   public values: string[] = [];
   public usedImplementation?: string;
@@ -75,9 +74,9 @@ export class PriorityQueueComponent {
         : (this.sizeInput.element.nativeElement.value = 5);
     for (let i = 0; i < size; i++) {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-        StackElementComponent
+        ElementComponent
       );
-      const componentRef = this.animationArea.createComponent<StackElementComponent>(
+      const componentRef = this.animationArea.createComponent<ElementComponent>(
         componentFactory
       );
       componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
@@ -88,7 +87,7 @@ export class PriorityQueueComponent {
     }
   }
 
-  setActiveElement(instance: StackElementComponent, keepCurrent: boolean = false): void {
+  setActiveElement(instance: ElementComponent, keepCurrent: boolean = false): void {
     for (const element of this.elements) {
       const currentInstance = element.instance;
       if (currentInstance === instance) {
@@ -101,9 +100,9 @@ export class PriorityQueueComponent {
 
   addStackElement(value: string, keepCurrentActive: boolean = false): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      StackElementComponent
+      ElementComponent
     );
-    const componentRef = this.animationArea.createComponent<StackElementComponent>(
+    const componentRef = this.animationArea.createComponent<ElementComponent>(
       componentFactory
     );
     componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
@@ -201,7 +200,7 @@ export class PriorityQueueComponent {
     this.result.element.nativeElement.value = 'Queue is empty!';
   }
 
-  async removeElement(instance: StackElementComponent): Promise<void> {
+  async removeElement(instance: ElementComponent): Promise<void> {
     switch (this.usedImplementation) {
       case 'min-heap-array':
         {

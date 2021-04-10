@@ -1,20 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { StackElementComponent } from './stack-element.component';
-import { StackModule } from '../stack.module';
+import { LocalCommonModule } from '../common.module';
 
-describe('StackElementComponent', () => {
-  let component: StackElementComponent;
-  let fixture: ComponentFixture<StackElementComponent>;
+import { ElementComponent } from './element.component';
+
+describe('ElementComponent', () => {
+  let component: ElementComponent;
+  let fixture: ComponentFixture<ElementComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ StackModule ]
+      imports: [ LocalCommonModule ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StackElementComponent);
+    fixture = TestBed.createComponent(ElementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

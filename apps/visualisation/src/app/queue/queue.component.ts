@@ -5,8 +5,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { StackElementComponent } from '@major-project/stack';
-import { ArrowComponent, ElementWrapperComponent } from '@major-project/common';
+import { ElementComponent, ArrowComponent, ElementWrapperComponent } from '@major-project/common';
 
 const NULL = 'null';
 
@@ -26,7 +25,7 @@ export class QueueComponent {
   newElementInput: ViewContainerRef;
 
   public implementation?: string;
-  public elements: ComponentRef<StackElementComponent>[] = [];
+  public elements: ComponentRef<ElementComponent>[] = [];
   public arrowElements: ComponentRef<ArrowComponent>[] = [];
   public usedImplementation?: string;
   public inProgress: boolean = false;
@@ -76,9 +75,9 @@ export class QueueComponent {
     this.tailPosition = 0;
     for (let i = 0; i < size; i++) {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-        StackElementComponent
+        ElementComponent
       );
-      const componentRef = this.animationArea.createComponent<StackElementComponent>(
+      const componentRef = this.animationArea.createComponent<ElementComponent>(
         componentFactory
       );
       componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
@@ -91,7 +90,7 @@ export class QueueComponent {
     this.setHeadTail();
   }
 
-  setActiveElement(instance: StackElementComponent, keepCurrent: boolean = false): void {
+  setActiveElement(instance: ElementComponent, keepCurrent: boolean = false): void {
     for (const element of this.elements) {
       const currentInstance = element.instance;
       if (currentInstance === instance) {
@@ -136,9 +135,9 @@ export class QueueComponent {
 
   addElement(value: string, keepCurrentActive: boolean = false): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      StackElementComponent
+      ElementComponent
     );
-    const componentRef = this.animationArea.createComponent<StackElementComponent>(
+    const componentRef = this.animationArea.createComponent<ElementComponent>(
       componentFactory
     );
     componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
@@ -170,10 +169,10 @@ export class QueueComponent {
     const componentRef = this.animationArea.createComponent<ElementWrapperComponent>(
       componentFactory
     );
-    const addElements: ComponentRef<StackElementComponent>[] = [];
+    const addElements: ComponentRef<ElementComponent>[] = [];
     this.setActiveElement(undefined, false);
     for (const value of values) {
-      componentRef.instance.addComponent<StackElementComponent>(StackElementComponent);
+      componentRef.instance.addComponent<ElementComponent>(ElementComponent);
       componentRef.instance.componentRef.instance.value = value;
       componentRef.instance.componentRef.instance.active = true;
       addElements.push(componentRef.instance.componentRef);
@@ -263,7 +262,7 @@ export class QueueComponent {
     this.result.element.nativeElement.value = 'Stack is empty!';
   }
 
-  async removeElement(instance: StackElementComponent): Promise<void> {
+  async removeElement(instance: ElementComponent): Promise<void> {
     switch (this.usedImplementation) {
       case 'simple-array':
         {
