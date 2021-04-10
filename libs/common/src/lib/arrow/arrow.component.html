@@ -1,2 +1,14 @@
-<i-bs *ngIf="direction === 'right'" name="arrow-right"></i-bs>
-<i-bs *ngIf="direction === 'left'" name="arrow-left"></i-bs>
+<div
+  [@onStart]="{ value: undefined, params: { time: time !== undefined ? time + 'ms' : '1500ms' } }"
+  [@onChange]="{
+    value: onChange ? true : false,
+    params: { time: time !== undefined ? time + 'ms' : '1500ms' }
+  }"
+  [@onExit]="{
+    value: onExit ? true : false,
+    params: { time: time !== undefined ? time + 'ms' : '1500ms' }
+  }"
+>
+  <i-bs *ngIf="direction === 'right'" name="arrow-right"></i-bs>
+  <i-bs *ngIf="direction === 'left'" name="arrow-left"></i-bs>
+</div>

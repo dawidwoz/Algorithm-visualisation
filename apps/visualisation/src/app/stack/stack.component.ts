@@ -115,8 +115,10 @@ export class StackComponent {
       const arrowInstance = arrowElement.instance;
       if (arrowInstance === this.arrowElements[arrowLength - 1].instance) {
         arrowInstance.direction = 'right';
-      } else {
+        arrowInstance.triggerEnterAnimation();
+      } else if (arrowInstance.direction === 'right') {
         arrowInstance.direction = 'left';
+        arrowInstance.triggerEnterAnimation();
       }
     }
   }
@@ -124,6 +126,8 @@ export class StackComponent {
   addArrow(): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ArrowComponent);
     const componentRef = this.animationArea.createComponent<ArrowComponent>(componentFactory);
+    componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
+    componentRef.instance.triggerEnterAnimation();
     this.arrowElements.push(componentRef);
     this.setArrowDirection();
   }
@@ -259,7 +263,13 @@ export class StackComponent {
               }, 1500)
             );
             if (!isArrowRemoved) {
-              this.arrowElements[this.arrowElements.length - 1].destroy();
+              this.arrowElements[this.arrowElements.length - 1].instance.triggerExitAnimation();
+              await new Promise<boolean>(resolve =>
+                setTimeout(() => {
+                  this.arrowElements[this.arrowElements.length - 1].destroy();
+                  resolve(true);
+                }, 1500)
+              );
               this.arrowElements = this.arrowElements.slice(0, this.arrowElements.length - 1);
               isArrowRemoved = true;
             }
