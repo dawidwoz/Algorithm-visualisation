@@ -148,8 +148,11 @@ export class QueueComponent {
   }
 
   pushStack(): void {
-    const value = this.newElementInput.element.nativeElement.value;
+    let value = this.newElementInput.element.nativeElement.value;
     if (value === '') return;
+    value = parseInt(value);
+    value = value > 999 ? 999 : value;
+    this.newElementInput.element.nativeElement.value = value;
     switch (this.usedImplementation) {
       case 'simple-array':
         this.pushArrayImplementation(value);

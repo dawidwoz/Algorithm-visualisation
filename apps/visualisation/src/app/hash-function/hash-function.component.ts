@@ -103,6 +103,7 @@ export class HashFunctionComponent implements OnInit {
     if (value === '') return;
     value = parseInt(value);
     value = value > 999 ? 999 : value;
+    this.newElementInput.element.nativeElement.value = value;
     switch (this.usedImplementation) {
       case 'separate-chaining':
         this.pushSeparateChaining(value);
