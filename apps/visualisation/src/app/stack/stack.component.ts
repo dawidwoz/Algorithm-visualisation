@@ -6,6 +6,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { ArrowComponent, ElementComponent, ElementWrapperComponent } from '@major-project/common';
+import { peekStepsArray, popStepsArray, pushStepsArray } from '@major-project/stack';
 
 const NULL = 'null';
 
@@ -23,6 +24,7 @@ export class StackComponent {
   @ViewChild('result', { static: true, read: ViewContainerRef }) result: ViewContainerRef;
   @ViewChild('newElement', { static: true, read: ViewContainerRef })
   newElementInput: ViewContainerRef;
+  public currentSteps: string[] | undefined;
 
   public implementation?: string;
   public elements: ComponentRef<ElementComponent>[] = [];
@@ -72,9 +74,7 @@ export class StackComponent {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
         ElementComponent
       );
-      const componentRef = this.animationArea.createComponent<ElementComponent>(
-        componentFactory
-      );
+      const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
       componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
       componentRef.instance.number = i;
       componentRef.instance.value = NULL;
@@ -136,9 +136,7 @@ export class StackComponent {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       ElementComponent
     );
-    const componentRef = this.animationArea.createComponent<ElementComponent>(
-      componentFactory
-    );
+    const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
     componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
     componentRef.instance.value = value;
     this.elements.splice(0, 0, componentRef);
@@ -171,6 +169,7 @@ export class StackComponent {
     this.newElementInput.element.nativeElement.value = value;
     switch (this.usedImplementation) {
       case 'simple-array':
+        this.currentSteps = pushStepsArray;
         this.pushArrayImplementation(value);
         break;
       case 'singly-linked-list':
@@ -211,6 +210,11 @@ export class StackComponent {
   }
 
   firstElementStack(removeElement: boolean): void {
+    if (removeElement) {
+      this.currentSteps = popStepsArray;
+    } else {
+      this.currentSteps = peekStepsArray;
+    }
     const elementCopy =
       this.usedImplementation === 'simple-array'
         ? [...this.elements].reverse()

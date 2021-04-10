@@ -34,8 +34,14 @@
     </div>
   </div>
   <div class="stack __animationWrapper">
-    <div class="stack __animationArea" [class.reverse]="usedImplementation === 'singly-linked-list'">
+    <div
+      class="stack __animationArea"
+      [class.reverse]="usedImplementation === 'singly-linked-list'"
+    >
       <template #animationArea></template>
+    </div>
+    <div class="stack __animationText" *ngIf="currentSteps">
+      <major-project-description [steps]="currentSteps"></major-project-description>
     </div>
   </div>
 
@@ -77,13 +83,7 @@
     >
       PEEK
     </button>
-    <input
-          matInput
-          class="form-control mr-1"
-          disabled
-          type="text"
-          #result
-        />
+    <input matInput class="form-control mr-1" disabled type="text" #result />
     <div class="form-group">
       <label for="anim_speed">Animation speed:&nbsp;</label>
       <mat-slider

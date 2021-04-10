@@ -1,4 +1,5 @@
 .stack {
+
   &.__animationWrapper {
     min-height: 80vh;
     width: 100%;
@@ -8,6 +9,7 @@
     justify-content: center;
     align-items: center;
   }
+
   &.__animationArea {
     display: inline-flex;
     flex-direction: row;
@@ -20,6 +22,17 @@
       margin-left: -3px;
     }
   }
+
+  &.__animationText {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    font-style: italic;
+    justify-content: center;
+    padding: 1rem;
+    border-left: 1px solid #c3c3c3;
+  }
+
   .reverse {
     flex-direction: row-reverse;
   }

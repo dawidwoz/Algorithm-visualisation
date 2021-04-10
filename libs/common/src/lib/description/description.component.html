@@ -1,0 +1,3 @@
+<div *ngIf="steps">
+  <p *ngFor="let step of steps; let i = index" [class.highlighted]="actualStep == i">{{ step }}</p>
+</div>
