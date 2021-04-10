@@ -85,10 +85,16 @@ export class StackComponent {
   }
 
   setTopPosition(): void {
+    let requestedPosition = this.topPosition;
     this.elements.forEach(element => {
       element.instance.texts = [];
+      element.instance.badgeExtraMargin = false;
     });
-    this.elements[this.topPosition].instance.texts = ['top'];
+    if (this.elements.length === requestedPosition) {
+      requestedPosition--;
+      this.elements[requestedPosition].instance.badgeExtraMargin = true;
+    }
+    this.elements[requestedPosition].instance.texts = ['top'];
   }
 
   setActiveElement(instance: ElementComponent, keepCurrent: boolean = false): void {
@@ -192,7 +198,7 @@ export class StackComponent {
         instance.value = value;
         instance.triggerEnterAnimation();
         this.setActiveElement(instance);
-        this.topPosition = this.elements[this.topPosition + 1] ? this.topPosition + 1 : 0;
+        this.topPosition = this.topPosition + 1;
         this.setTopPosition();
         return;
       }

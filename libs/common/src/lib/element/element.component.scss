@@ -25,6 +25,10 @@
             width: 4rem !important;
             justify-content: center;
         }
+
+        &.--with-extra-margin {
+            margin-left: 15rem;
+        }
     }
 
     &.__number {
