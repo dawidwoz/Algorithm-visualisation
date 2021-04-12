@@ -187,7 +187,7 @@ export class QueueComponent {
         this.elements = this.elements.filter(
           item => item.instance != element.instance
         );
-        this.arrowElements[this.arrowElements.length - 1].destroy();
+        this.arrowElements.pop().destroy();
       }
     }
 
@@ -288,8 +288,14 @@ export class QueueComponent {
               }, 1500)
             );
             if (!isArrowRemoved) {
-              this.arrowElements[0].destroy();
-              this.arrowElements = this.arrowElements.slice(1, this.arrowElements.length);
+              this.arrowElements[0].instance.triggerExitAnimation();
+              await new Promise<boolean>(resolve =>
+                setTimeout(() => {
+                  this.arrowElements[0].destroy();
+                  resolve(true);
+                }, 1500)
+              );
+              this.arrowElements.shift();
               isArrowRemoved = true;
             }
           }
@@ -298,7 +304,6 @@ export class QueueComponent {
           currentElement.triggerEnterAnimation();
           currentElement.value = 'head';
           this.setActiveElement(currentElement);
-          console.log(this.elements);
           if (this.elements.length == 2) {
             this.createQueue();
           } 
