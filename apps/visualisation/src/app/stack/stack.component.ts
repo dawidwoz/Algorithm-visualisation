@@ -6,7 +6,14 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { ArrowComponent, ElementComponent, ElementWrapperComponent } from '@major-project/common';
-import { peekStepsArray, popStepsArray, pushStepsArray } from '@major-project/stack';
+import {
+  peekStepsArray,
+  peekStepsList,
+  popStepsArray,
+  popStepsList,
+  pushStepsArray,
+  pushStepsList
+} from '@major-project/stack';
 
 const NULL = 'null';
 
@@ -46,6 +53,7 @@ export class StackComponent {
     this.usedImplementation = this.implementation;
     this.animationArea.clear();
     this.elements = [];
+    this.currentSteps = undefined;
     switch (this.usedImplementation) {
       case 'simple-array':
         this.arrayImplementation();
@@ -173,6 +181,7 @@ export class StackComponent {
         this.pushArrayImplementation(value);
         break;
       case 'singly-linked-list':
+        this.currentSteps = pushStepsList;
         this.pushListImplementation(value);
         break;
     }
@@ -210,15 +219,22 @@ export class StackComponent {
   }
 
   firstElementStack(removeElement: boolean): void {
-    if (removeElement) {
-      this.currentSteps = popStepsArray;
+    let elementCopy: ComponentRef<ElementComponent>[];
+    if (this.usedImplementation === 'simple-array') {
+      elementCopy = [...this.elements].reverse();
+      if (removeElement) {
+        this.currentSteps = popStepsArray;
+      } else {
+        this.currentSteps = peekStepsArray;
+      }
     } else {
-      this.currentSteps = peekStepsArray;
+      elementCopy = [...this.elements];
+      if (removeElement) {
+        this.currentSteps = popStepsList;
+      } else {
+        this.currentSteps = peekStepsList;
+      }
     }
-    const elementCopy =
-      this.usedImplementation === 'simple-array'
-        ? [...this.elements].reverse()
-        : [...this.elements];
     for (const stackElement of elementCopy) {
       const instance = stackElement.instance;
       if (

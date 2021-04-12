@@ -36,7 +36,6 @@ export class AppComponent implements OnInit, OnDestroy {
         });
       }
     }
-    console.log(this.routes);
     this.setTitleAndDescription();
   }
 
@@ -51,7 +50,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   protected setTitleAndDescription(): void {
-    console.log(this.activeRouter);
     switch (this.activeRouter) {
       case RoutesName.stack:
         this.title = 'Stack';
