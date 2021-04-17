@@ -5,9 +5,9 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { MatSlider } from '@angular/material/slider';
 import {
   ArrowComponent,
-  DescriptionComponent,
   ElementComponent,
   ElementWrapperComponent
 } from '@major-project/common';
@@ -34,8 +34,8 @@ export class StackComponent {
   @ViewChild('animationArea', { static: true, read: ViewContainerRef })
   animationArea: ViewContainerRef;
   @ViewChild('size', { static: true, read: ViewContainerRef }) sizeInput: ViewContainerRef;
-  @ViewChild('animationSpeed', { static: true, read: ViewContainerRef })
-  animationSpeedInput: ViewContainerRef;
+  @ViewChild('animationSpeed', { static: true, read: MatSlider })
+  animationSpeedInput: MatSlider;
   @ViewChild('result', { static: true, read: ViewContainerRef }) result: ViewContainerRef;
   @ViewChild('newElement', { static: true, read: ViewContainerRef })
   newElementInput: ViewContainerRef;
@@ -100,7 +100,7 @@ export class StackComponent {
         ElementComponent
       );
       const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
-      componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
+      componentRef.instance.time = this.animationSpeedInput.value;
       componentRef.instance.number = i;
       componentRef.instance.value = NULL;
       componentRef.instance.active = true;
@@ -152,7 +152,7 @@ export class StackComponent {
   addArrow(): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ArrowComponent);
     const componentRef = this.viewContainerRef.createComponent<ArrowComponent>(componentFactory);
-    componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
+    componentRef.instance.time = this.animationSpeedInput.value;
     componentRef.instance.triggerEnterAnimation();
     const triggerElement = componentRef.location.nativeElement;
     this.animationArea.element.nativeElement.parentNode.prepend(triggerElement);
@@ -165,7 +165,7 @@ export class StackComponent {
       ElementComponent
     );
     const componentRef = this.viewContainerRef.createComponent<ElementComponent>(componentFactory);
-    componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
+    componentRef.instance.time = this.animationSpeedInput.value;
     componentRef.instance.value = value;
     const triggerElement = componentRef.location.nativeElement;
     this.animationArea.element.nativeElement.parentNode.prepend(triggerElement);
@@ -185,6 +185,7 @@ export class StackComponent {
     for (const value of values) {
       componentRef.instance.addComponent<ElementComponent>(ElementComponent);
       componentRef.instance.componentRef.instance.value = value;
+      componentRef.instance.componentRef.instance.time = this.animationSpeedInput.value;
       componentRef.instance.componentRef.instance.active = true;
       const triggerElement = componentRef.location.nativeElement;
       this.animationArea.element.nativeElement.parentNode.prepend(triggerElement);
@@ -235,6 +236,7 @@ export class StackComponent {
       const instance = stackElement.instance;
       if (instance.value === NULL) {
         instance.value = value;
+        instance.time = this.animationSpeedInput.value;
         instance.triggerEnterAnimation();
         this.setActiveElement(instance);
         this.topPosition = this.topPosition + 1;
@@ -255,7 +257,7 @@ export class StackComponent {
       setTimeout(() => {
         this.elements[this.topPosition].instance.animation = false;
         resolve(true);
-      }, 4000)
+      }, this.animationSpeedInput.value)
     );
     this.inProgress = false;
   }
@@ -309,6 +311,7 @@ export class StackComponent {
         instance.value !== 'NULL'
       ) {
         this.result.element.nativeElement.value = instance.value;
+        instance.time = this.animationSpeedInput.value;
         this.actualStep = 3;
         if (removeElement) {
           this.inProgress = true;
@@ -340,20 +343,22 @@ export class StackComponent {
           for (i = 0; i < this.elements.length; i++) {
             const stackElement = this.elements[i];
             if (stackElement.instance.value === 'next') break;
+            stackElement.instance.time = this.animationSpeedInput.value;
             stackElement.instance.triggerExitAnimation();
             await new Promise<boolean>(resolve =>
               setTimeout(() => {
                 stackElement.destroy();
                 resolve(true);
-              }, 1500)
+              }, this.animationSpeedInput.value)
             );
             if (!isArrowRemoved) {
+              this.arrowElements[this.arrowElements.length - 1].instance.time = this.animationSpeedInput.value;
               this.arrowElements[this.arrowElements.length - 1].instance.triggerExitAnimation();
               await new Promise<boolean>(resolve =>
                 setTimeout(() => {
                   this.arrowElements[this.arrowElements.length - 1].destroy();
                   resolve(true);
-                }, 1500)
+                }, this.animationSpeedInput.value)
               );
               this.arrowElements = this.arrowElements.slice(0, this.arrowElements.length - 1);
               isArrowRemoved = true;
@@ -362,6 +367,7 @@ export class StackComponent {
           this.elements = this.elements.slice(i, this.elements.length);
           const currentElement = this.elements[0].instance;
           currentElement.triggerEnterAnimation();
+          currentElement.time = this.animationSpeedInput.value;
           currentElement.value = 'head';
           this.setActiveElement(currentElement);
           if (this.elements.length == 2) {

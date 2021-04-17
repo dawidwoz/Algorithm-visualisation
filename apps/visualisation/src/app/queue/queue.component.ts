@@ -5,6 +5,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { MatSlider } from '@angular/material/slider';
 import { ElementComponent, ArrowComponent, ElementWrapperComponent } from '@major-project/common';
 
 const NULL = 'null';
@@ -18,8 +19,8 @@ export class QueueComponent {
   @ViewChild('animationArea', { static: true, read: ViewContainerRef })
   animationArea: ViewContainerRef;
   @ViewChild('size', { static: true, read: ViewContainerRef }) sizeInput: ViewContainerRef;
-  @ViewChild('animationSpeed', { static: true, read: ViewContainerRef })
-  animationSpeedInput: ViewContainerRef;
+  @ViewChild('animationSpeed', { static: true, read: MatSlider })
+  animationSpeedInput: MatSlider;
   @ViewChild('result', { static: true, read: ViewContainerRef }) result: ViewContainerRef;
   @ViewChild('newElement', { static: true, read: ViewContainerRef })
   newElementInput: ViewContainerRef;
@@ -79,7 +80,7 @@ export class QueueComponent {
         ElementComponent
       );
       const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
-      componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
+      componentRef.instance.time = this.animationSpeedInput.value;
       componentRef.instance.number = i;
 
       componentRef.instance.value = NULL;
@@ -117,6 +118,7 @@ export class QueueComponent {
     if (1 > arrowLength) return;
     for (const arrowElement of this.arrowElements) {
       const arrowInstance = arrowElement.instance;
+      arrowInstance.time = this.animationSpeedInput.value;
       if (arrowInstance === this.arrowElements[arrowLength - 1].instance) {
         if (arrowInstance.direction === 'right') {
           arrowInstance.direction = 'left';
@@ -132,6 +134,7 @@ export class QueueComponent {
   addArrow(): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ArrowComponent);
     const componentRef = this.animationArea.createComponent<ArrowComponent>(componentFactory);
+    componentRef.instance.time = this.animationSpeedInput.value;
     this.arrowElements.push(componentRef);
     this.setArrowDirection();
   }
@@ -141,7 +144,7 @@ export class QueueComponent {
       ElementComponent
     );
     const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
-    componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
+    componentRef.instance.time = this.animationSpeedInput.value;
     componentRef.instance.value = value;
     this.elements.push(componentRef);
     this.setActiveElement(componentRef.instance, keepCurrentActive);
@@ -175,6 +178,7 @@ export class QueueComponent {
     for (const value of values) {
       componentRef.instance.addComponent<ElementComponent>(ElementComponent);
       componentRef.instance.componentRef.instance.value = value;
+      componentRef.instance.componentRef.instance.time = this.animationSpeedInput.value;
       componentRef.instance.componentRef.instance.active = true;
       addElements.push(componentRef.instance.componentRef);
     }
@@ -183,6 +187,7 @@ export class QueueComponent {
 
   pushListImplementation(value: string): void {
     for (const element of this.elements) {
+      element.instance.time = this.animationSpeedInput.value;
       if (element.instance.value === 'NULL') {
         element.destroy();
         this.elements = this.elements.filter(item => item.instance != element.instance);
@@ -205,6 +210,7 @@ export class QueueComponent {
       const instance = element.instance;
       if (instance.value === NULL) {
         instance.value = value;
+        instance.time = this.animationSpeedInput.value;
         instance.triggerEnterAnimation();
         this.tailPosition = this.elements[this.tailPosition + 1] ? this.tailPosition + 1 : 0;
         this.setActiveElement(instance);
@@ -224,6 +230,7 @@ export class QueueComponent {
             const instance = element.instance;
             if (instance.value !== NULL && instance === headInstance) {
               this.result.element.nativeElement.value = instance.value;
+              instance.time = this.animationSpeedInput.value;
               if (removeElement) {
                 this.inProgress = true;
                 this.removeElement(instance).then(() => (this.inProgress = false));
@@ -246,6 +253,7 @@ export class QueueComponent {
               instance.value !== 'prev'
             ) {
               this.result.element.nativeElement.value = instance.value;
+              instance.time = this.animationSpeedInput.value;
               if (removeElement) {
                 this.inProgress = true;
                 this.removeElement(instance).then(() => (this.inProgress = false));
@@ -264,6 +272,7 @@ export class QueueComponent {
       case 'simple-array':
         {
           instance.value = NULL;
+          instance.time = this.animationSpeedInput.value;
           this.headPosition = this.elements[this.headPosition + 1] ? this.headPosition + 1 : 0;
           this.setActiveElement(instance);
           this.setHeadTail();
@@ -277,20 +286,23 @@ export class QueueComponent {
           for (i = 0; i < this.elements.length; i++) {
             const stackElement = this.elements[i];
             if (stackElement.instance.value === 'next') break;
+            stackElement.instance.time = this.animationSpeedInput.value;
             stackElement.instance.triggerExitAnimation();
             await new Promise<boolean>(resolve =>
               setTimeout(() => {
                 stackElement.destroy();
                 resolve(true);
-              }, 1500)
+              }, this.animationSpeedInput.value)
             );
             if (!isArrowRemoved) {
+              this.arrowElements[0].instance.time = this.animationSpeedInput.value;
               this.arrowElements[0].instance.triggerExitAnimation();
+              
               await new Promise<boolean>(resolve =>
                 setTimeout(() => {
                   this.arrowElements[0].destroy();
                   resolve(true);
-                }, 1500)
+                }, this.animationSpeedInput.value)
               );
               this.arrowElements.shift();
               isArrowRemoved = true;
@@ -298,6 +310,7 @@ export class QueueComponent {
           }
           this.elements = this.elements.slice(i, this.elements.length);
           const currentElement = this.elements[0].instance;
+          currentElement.time = this.animationSpeedInput.value;
           currentElement.triggerEnterAnimation();
           currentElement.value = 'head';
           this.setActiveElement(currentElement);
