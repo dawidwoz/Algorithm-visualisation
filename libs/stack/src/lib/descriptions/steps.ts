@@ -30,3 +30,8 @@ export const popStepsList = [
   'Step 2: If it is a NULL, throw an error - Stack is empty!',
   'Step 3: If it is not a NULL, return and remove first element of the list'
 ];
+
+
+export const pushStepTitle = 'Push';
+export const popStepTitle = 'Pop';
+export const peekStepTitle = 'Peek';

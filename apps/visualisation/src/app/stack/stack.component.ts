@@ -9,10 +9,13 @@ import { ArrowComponent, ElementComponent, ElementWrapperComponent } from '@majo
 import {
   peekStepsArray,
   peekStepsList,
+  peekStepTitle,
   popStepsArray,
   popStepsList,
+  popStepTitle,
   pushStepsArray,
-  pushStepsList
+  pushStepsList,
+  pushStepTitle
 } from '@major-project/stack';
 
 const NULL = 'null';
@@ -31,6 +34,7 @@ export class StackComponent {
   @ViewChild('result', { static: true, read: ViewContainerRef }) result: ViewContainerRef;
   @ViewChild('newElement', { static: true, read: ViewContainerRef })
   newElementInput: ViewContainerRef;
+  public currentTitle: string;
   public currentSteps: string[] | undefined;
 
   public implementation?: string;
@@ -56,6 +60,7 @@ export class StackComponent {
     this.elements = [];
     this.arrowElements = [];
     this.currentSteps = undefined;
+    this.currentTitle = undefined;
     switch (this.usedImplementation) {
       case 'simple-array':
         this.arrayImplementation();
@@ -186,6 +191,7 @@ export class StackComponent {
     value = parseInt(value);
     value = value > 999 ? 999 : value;
     this.newElementInput.element.nativeElement.value = value;
+    this.currentTitle = pushStepTitle;
     switch (this.usedImplementation) {
       case 'simple-array':
         this.currentSteps = pushStepsArray;
@@ -234,15 +240,19 @@ export class StackComponent {
     if (this.usedImplementation === 'simple-array') {
       elementCopy = [...this.elements].reverse();
       if (removeElement) {
+        this.currentTitle = popStepTitle;
         this.currentSteps = popStepsArray;
       } else {
+        this.currentTitle = peekStepTitle;
         this.currentSteps = peekStepsArray;
       }
     } else {
       elementCopy = [...this.elements];
       if (removeElement) {
+        this.currentTitle = popStepTitle;
         this.currentSteps = popStepsList;
       } else {
+        this.currentTitle = peekStepTitle;
         this.currentSteps = peekStepsList;
       }
     }

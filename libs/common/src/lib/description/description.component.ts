@@ -6,6 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./description.component.scss']
 })
 export class DescriptionComponent {
-  @Input() steps: string[] | undefined;
+  @Input() steps?: string[];
+  @Input() title?: string;
   @Input() actualStep: number = -1;
 }
