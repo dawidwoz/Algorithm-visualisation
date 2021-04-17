@@ -37,6 +37,13 @@
     <div class="queue __animationArea">
       <template #animationArea></template>
     </div>
+    <div class="queue __animationText" *ngIf="currentSteps">
+      <major-project-description
+        [title]="currentTitle"
+        [steps]="currentSteps"
+        [actualStep]="actualStep"
+      ></major-project-description>
+    </div>
   </div>
 
   <div class="form-inline row mt-2">
@@ -45,7 +52,7 @@
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0 || inProgress"
-      (click)="pushStack()"
+      (click)="enqueueQueue()"
     >
       ENQUEUE
     </button>
@@ -63,7 +70,7 @@
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0 || inProgress"
-      (click)="lastElement(true)"
+      (click)="dequeue()"
     >
       DEQUEUE
     </button>
@@ -72,7 +79,7 @@
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0 || inProgress"
-      (click)="lastElement(false)"
+      (click)="peek()"
     >
       PEEK
     </button>

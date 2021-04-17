@@ -25,8 +25,14 @@ export const peekStepsList = [
   'Step 3: If it is not a NULL, return first element of the list'
 ];
 
-export const popStepsList = [
+export const dequeueStepsList = [
   'Step 1: Check the first element of the list',
   'Step 2: If it is a NULL, throw an error - Stack is empty!',
   'Step 3: If it is not a NULL, return and remove first element of the list'
 ];
+
+export const peekTitle = 'Peek';
+
+export const enqueueTitle = 'Enqueue';
+
+export const dequeueTitle = 'Dequeue';

@@ -7,6 +7,17 @@ import {
 } from '@angular/core';
 import { MatSlider } from '@angular/material/slider';
 import { ElementComponent, ArrowComponent, ElementWrapperComponent } from '@major-project/common';
+import {
+  dequeueStepsArray,
+  dequeueStepsList,
+  dequeueTitle,
+  enqueueStepsArray,
+  enqueueStepsList,
+  enqueueTitle,
+  peekStepsArray,
+  peekStepsList,
+  peekTitle
+} from '@major-project/queue';
 
 const NULL = 'null';
 
@@ -25,6 +36,10 @@ export class QueueComponent {
   @ViewChild('newElement', { static: true, read: ViewContainerRef })
   newElementInput: ViewContainerRef;
 
+  public currentTitle: string;
+  public currentSteps: string[] | undefined;
+  public actualStep: number = 0;
+
   public implementation?: string;
   public elements: ComponentRef<ElementComponent>[] = [];
   public arrowElements: ComponentRef<ArrowComponent>[] = [];
@@ -34,7 +49,7 @@ export class QueueComponent {
   public tailPosition: number = 0;
 
   constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
+    protected readonly componentFactoryResolver: ComponentFactoryResolver,
     protected readonly target: ViewContainerRef
   ) {}
 
@@ -48,6 +63,8 @@ export class QueueComponent {
   createQueue(): void {
     this.usedImplementation = this.implementation;
     this.animationArea.clear();
+    this.currentSteps = undefined;
+    this.currentTitle = undefined;
     this.elements = [];
     this.arrowElements = [];
     switch (this.usedImplementation) {
@@ -150,17 +167,21 @@ export class QueueComponent {
     this.setActiveElement(componentRef.instance, keepCurrentActive);
   }
 
-  pushStack(): void {
+  enqueueQueue(): void {
     let value = this.newElementInput.element.nativeElement.value;
     if (value === '') return;
     value = parseInt(value);
     value = value > 999 ? 999 : value;
     this.newElementInput.element.nativeElement.value = value;
+    this.currentTitle = enqueueTitle;
+    this.actualStep = 1;
     switch (this.usedImplementation) {
       case 'simple-array':
+        this.currentSteps = enqueueStepsArray;
         this.pushArrayImplementation(value);
         break;
       case 'singly-linked-list':
+        this.currentSteps = enqueueStepsList;
         this.pushListImplementation(value);
         break;
     }
@@ -215,13 +236,43 @@ export class QueueComponent {
         this.tailPosition = this.elements[this.tailPosition + 1] ? this.tailPosition + 1 : 0;
         this.setActiveElement(instance);
         this.setHeadTail();
+        this.actualStep = 2;
         return;
       }
     }
-    this.result.element.nativeElement.value = 'Stack is full!';
+    this.result.element.nativeElement.value = 'Queue is full!';
+    this.actualStep = 3;
   }
 
-  lastElement(removeElement: boolean): void {
+  async peek(): Promise<void> {
+    this.currentTitle = peekTitle;
+    this.actualStep = 1;
+    switch (this.usedImplementation) {
+      case 'simple-array':
+        this.currentSteps = peekStepsArray;
+        break;
+      case 'singly-linked-list':
+        this.currentSteps = peekStepsList;
+        break;
+    }
+    await this.lastElement(false);
+  }
+
+  async dequeue(): Promise<void> {
+    this.currentTitle = dequeueTitle;
+    this.actualStep = 1;
+    switch (this.usedImplementation) {
+      case 'simple-array':
+        this.currentSteps = dequeueStepsArray;
+        break;
+      case 'singly-linked-list':
+        this.currentSteps = dequeueStepsList;
+        break;
+    }
+    await this.lastElement(true);
+  }
+
+  async lastElement(removeElement: boolean): Promise<void> {
     switch (this.usedImplementation) {
       case 'simple-array':
         {
@@ -231,9 +282,11 @@ export class QueueComponent {
             if (instance.value !== NULL && instance === headInstance) {
               this.result.element.nativeElement.value = instance.value;
               instance.time = this.animationSpeedInput.value;
+              this.actualStep = 3;
               if (removeElement) {
                 this.inProgress = true;
-                this.removeElement(instance).then(() => (this.inProgress = false));
+                await this.removeElement(instance).then(() => (this.inProgress = false));
+                this.actualStep = 4;
               }
               return;
             }
@@ -254,9 +307,10 @@ export class QueueComponent {
             ) {
               this.result.element.nativeElement.value = instance.value;
               instance.time = this.animationSpeedInput.value;
+              this.actualStep = 3;
               if (removeElement) {
                 this.inProgress = true;
-                this.removeElement(instance).then(() => (this.inProgress = false));
+                await this.removeElement(instance).then(() => (this.inProgress = false));
               }
               return;
             }
@@ -264,7 +318,8 @@ export class QueueComponent {
         }
         break;
     }
-    this.result.element.nativeElement.value = 'Stack is empty!';
+    this.result.element.nativeElement.value = 'Queue is empty!';
+    this.actualStep = 2;
   }
 
   async removeElement(instance: ElementComponent): Promise<void> {
@@ -297,7 +352,7 @@ export class QueueComponent {
             if (!isArrowRemoved) {
               this.arrowElements[0].instance.time = this.animationSpeedInput.value;
               this.arrowElements[0].instance.triggerExitAnimation();
-              
+
               await new Promise<boolean>(resolve =>
                 setTimeout(() => {
                   this.arrowElements[0].destroy();
