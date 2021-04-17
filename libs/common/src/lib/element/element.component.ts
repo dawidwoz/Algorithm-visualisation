@@ -67,6 +67,7 @@ export class ElementComponent {
   @Input() value: string;
   @Input() texts: string[] = [];
   @Input() badgeExtraMargin: boolean = false;
+  @Input() animation: boolean = false;
   @Input() number: number | undefined;
   @Input() time: number | undefined;
   @Input() active: boolean = false;

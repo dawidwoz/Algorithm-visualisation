@@ -1,7 +1,9 @@
 <div class="element __wrapper">
     <mat-chip-list class="element __badges mat-chip-list-stacked">
       <ng-tempalte *ngFor="let text of texts">
-        <mat-chip class="element __badges --text" [class.--with-extra-margin]="badgeExtraMargin">
+        <mat-chip class="element __badges --text" 
+        [class.--with-extra-margin]="badgeExtraMargin"
+        [class.--with-animation]="animation">
           {{ text.trim() }}
         </mat-chip>
       </ng-tempalte>

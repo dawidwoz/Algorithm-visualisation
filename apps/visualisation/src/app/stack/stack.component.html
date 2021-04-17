@@ -38,7 +38,11 @@
       <template #animationArea></template>
     </div>
     <div class="stack __animationText" *ngIf="currentSteps">
-      <major-project-description [title]="currentTitle" [steps]="currentSteps"></major-project-description>
+      <major-project-description
+        [title]="currentTitle"
+        [steps]="currentSteps"
+        [actualStep]="actualStep"
+      ></major-project-description>
     </div>
   </div>
 
@@ -67,7 +71,7 @@
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0 || inProgress"
-      (click)="firstElementStack(true)"
+      (click)="pop()"
     >
       POP
     </button>
@@ -76,7 +80,7 @@
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0 || inProgress"
-      (click)="firstElementStack(false)"
+      (click)="peek()"
     >
       PEEK
     </button>

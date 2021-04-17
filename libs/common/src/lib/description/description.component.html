@@ -1,4 +1,11 @@
 <div class="description __wrapper" *ngIf="steps">
   <h3 class="description __title" *ngIf="title">{{ title }}</h3>
-  <p *ngFor="let step of steps; let i = index" [class.highlighted]="actualStep == i">{{ step }}</p>
+  <p
+    class="description __step"
+    *ngFor="let step of steps; let i = index"
+    (click)="emitClick(i + 1)"
+    [class.highlighted]="actualStep-1 == i"
+  >
+    {{ step }}
+  </p>
 </div>

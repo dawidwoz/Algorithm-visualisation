@@ -5,7 +5,12 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ArrowComponent, ElementComponent, ElementWrapperComponent } from '@major-project/common';
+import {
+  ArrowComponent,
+  DescriptionComponent,
+  ElementComponent,
+  ElementWrapperComponent
+} from '@major-project/common';
 import {
   peekStepsArray,
   peekStepsList,
@@ -34,8 +39,10 @@ export class StackComponent {
   @ViewChild('result', { static: true, read: ViewContainerRef }) result: ViewContainerRef;
   @ViewChild('newElement', { static: true, read: ViewContainerRef })
   newElementInput: ViewContainerRef;
+
   public currentTitle: string;
   public currentSteps: string[] | undefined;
+  public actualStep: number = 0;
 
   public implementation?: string;
   public elements: ComponentRef<ElementComponent>[] = [];
@@ -44,7 +51,10 @@ export class StackComponent {
   public inProgress: boolean = false;
   public topPosition: number = 0;
 
-  constructor(private readonly componentFactoryResolver: ComponentFactoryResolver, private readonly viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private readonly componentFactoryResolver: ComponentFactoryResolver,
+    private readonly viewContainerRef: ViewContainerRef
+  ) {}
 
   setImplementation(implementation: string): void {
     this.implementation = implementation;
@@ -100,16 +110,15 @@ export class StackComponent {
   }
 
   setTopPosition(): void {
-    let requestedPosition = this.topPosition;
     this.elements.forEach(element => {
       element.instance.texts = [];
       element.instance.badgeExtraMargin = false;
     });
-    if (this.elements.length === requestedPosition) {
-      requestedPosition--;
-      this.elements[requestedPosition].instance.badgeExtraMargin = true;
+    if (this.elements.length === this.topPosition) {
+      this.topPosition--;
+      this.elements[this.topPosition].instance.badgeExtraMargin = true;
     }
-    this.elements[requestedPosition].instance.texts = ['top'];
+    this.elements[this.topPosition].instance.texts = ['top'];
   }
 
   setActiveElement(instance: ElementComponent, keepCurrent: boolean = false): void {
@@ -130,11 +139,10 @@ export class StackComponent {
       const arrowInstance = arrowElement.instance;
       if (arrowInstance === this.arrowElements[0].instance) {
         if (arrowInstance.direction === 'right') {
-        arrowInstance.direction = 'left';
-        arrowInstance.triggerEnterAnimation();
+          arrowInstance.direction = 'left';
+          arrowInstance.triggerEnterAnimation();
         }
-      } 
-      else if (arrowInstance.direction === 'left') {
+      } else if (arrowInstance.direction === 'left') {
         arrowInstance.direction = 'right';
         arrowInstance.triggerEnterAnimation();
       }
@@ -179,13 +187,13 @@ export class StackComponent {
       componentRef.instance.componentRef.instance.value = value;
       componentRef.instance.componentRef.instance.active = true;
       const triggerElement = componentRef.location.nativeElement;
-      this.animationArea.element.nativeElement.parentNode.prepend(triggerElement);  
+      this.animationArea.element.nativeElement.parentNode.prepend(triggerElement);
       addElements.push(componentRef.instance.componentRef);
     }
     this.elements = addElements.reverse().concat(this.elements);
   }
 
-  pushStack(): void {
+  async pushStack(): Promise<void> {
     let value = this.newElementInput.element.nativeElement.value;
     if (value === '') return;
     value = parseInt(value);
@@ -195,22 +203,23 @@ export class StackComponent {
     switch (this.usedImplementation) {
       case 'simple-array':
         this.currentSteps = pushStepsArray;
-        this.pushArrayImplementation(value);
+        await this.pushArrayImplementation(value);
         break;
       case 'singly-linked-list':
         this.currentSteps = pushStepsList;
+        this.actualStep = 1;
         this.pushListImplementation(value);
         break;
     }
   }
 
   pushListImplementation(value: string): void {
-     for (const stackElement of this.elements) {
-       if (stackElement.instance.value === 'NULL') {
-         stackElement.destroy();
-         this.elements = this.elements.filter(item => item.instance != stackElement.instance);
-         this.arrowElements.pop().destroy();
-       }
+    for (const stackElement of this.elements) {
+      if (stackElement.instance.value === 'NULL') {
+        stackElement.destroy();
+        this.elements = this.elements.filter(item => item.instance != stackElement.instance);
+        this.arrowElements.pop().destroy();
+      }
     }
 
     this.elements[0].destroy();
@@ -220,7 +229,8 @@ export class StackComponent {
     this.addElement('head', true);
   }
 
-  pushArrayImplementation(value: string): void {
+  async pushArrayImplementation(value: string): Promise<void> {
+    await this.animateTopFirstStep();
     for (const stackElement of this.elements) {
       const instance = stackElement.instance;
       if (instance.value === NULL) {
@@ -229,33 +239,66 @@ export class StackComponent {
         this.setActiveElement(instance);
         this.topPosition = this.topPosition + 1;
         this.setTopPosition();
+        this.actualStep = 2;
         return;
       }
     }
+    this.actualStep = 3;
     this.result.element.nativeElement.value = 'Stack is full!';
   }
 
-  firstElementStack(removeElement: boolean): void {
+  async animateTopFirstStep(): Promise<void> {
+    this.inProgress = true;
+    this.elements[this.topPosition].instance.animation = true;
+    this.actualStep = 1;
+    await new Promise<boolean>(resolve =>
+      setTimeout(() => {
+        this.elements[this.topPosition].instance.animation = false;
+        resolve(true);
+      }, 4000)
+    );
+    this.inProgress = false;
+  }
+
+  async pop(): Promise<void> {
     let elementCopy: ComponentRef<ElementComponent>[];
     if (this.usedImplementation === 'simple-array') {
       elementCopy = [...this.elements].reverse();
-      if (removeElement) {
-        this.currentTitle = popStepTitle;
-        this.currentSteps = popStepsArray;
-      } else {
-        this.currentTitle = peekStepTitle;
-        this.currentSteps = peekStepsArray;
-      }
+      this.currentTitle = popStepTitle;
+      this.currentSteps = popStepsArray;
+      await this.animateTopFirstStep();
     } else {
       elementCopy = [...this.elements];
-      if (removeElement) {
-        this.currentTitle = popStepTitle;
-        this.currentSteps = popStepsList;
-      } else {
-        this.currentTitle = peekStepTitle;
-        this.currentSteps = peekStepsList;
-      }
+      this.currentTitle = popStepTitle;
+      this.currentSteps = popStepsList;
+      this.actualStep = 1;
     }
+    await this.firstElementStack(true, elementCopy);
+    if (this.actualStep === 3 && this.usedImplementation === 'simple-array') {
+      this.actualStep = 4;
+    }
+  }
+
+  async peek(): Promise<void> {
+    let elementCopy: ComponentRef<ElementComponent>[];
+    if (this.usedImplementation === 'simple-array') {
+      elementCopy = [...this.elements].reverse();
+      this.currentTitle = peekStepTitle;
+      this.currentSteps = peekStepsArray;
+      await this.animateTopFirstStep();
+    } else {
+      elementCopy = [...this.elements];
+      this.currentTitle = peekStepTitle;
+      this.currentSteps = peekStepsList;
+      this.actualStep = 1;
+    }
+    await this.firstElementStack(false, elementCopy);
+  }
+
+  async firstElementStack(
+    removeElement: boolean,
+    elementCopy: ComponentRef<ElementComponent>[]
+  ): Promise<void> {
     for (const stackElement of elementCopy) {
       const instance = stackElement.instance;
       if (
@@ -266,14 +309,16 @@ export class StackComponent {
         instance.value !== 'NULL'
       ) {
         this.result.element.nativeElement.value = instance.value;
+        this.actualStep = 3;
         if (removeElement) {
           this.inProgress = true;
-          this.removeElement(instance).then(() => (this.inProgress = false));
+          await this.removeElement(instance).then(() => (this.inProgress = false));
         }
         return;
       }
     }
     this.result.element.nativeElement.value = 'Stack is empty!';
+    this.actualStep = 2;
   }
 
   async removeElement(instance: ElementComponent): Promise<void> {
@@ -282,15 +327,14 @@ export class StackComponent {
         {
           instance.value = NULL;
           this.setActiveElement(instance);
-          this.topPosition = this.elements[this.topPosition - 1]
-            ? this.topPosition - 1
-            : this.elements.length - 1;
+          this.topPosition = this.elements[this.topPosition - 1] ? this.topPosition - 1 : 0;
           this.setTopPosition();
           instance.triggerEnterAnimation();
         }
         break;
       case 'singly-linked-list':
         {
+          this.actualStep = 3;
           let isArrowRemoved = false;
           let i = 0;
           for (i = 0; i < this.elements.length; i++) {
