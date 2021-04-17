@@ -48,6 +48,7 @@ export class QueueComponent {
     this.usedImplementation = this.implementation;
     this.animationArea.clear();
     this.elements = [];
+    this.arrowElements = [];
     switch (this.usedImplementation) {
       case 'simple-array':
         this.arrayImplementation();
@@ -77,9 +78,7 @@ export class QueueComponent {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
         ElementComponent
       );
-      const componentRef = this.animationArea.createComponent<ElementComponent>(
-        componentFactory
-      );
+      const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
       componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
       componentRef.instance.number = i;
 
@@ -118,10 +117,14 @@ export class QueueComponent {
     if (1 > arrowLength) return;
     for (const arrowElement of this.arrowElements) {
       const arrowInstance = arrowElement.instance;
-      if(arrowInstance === this.arrowElements[arrowLength-1].instance) {
-        arrowInstance.direction = 'left';
-      } else {
+      if (arrowInstance === this.arrowElements[arrowLength - 1].instance) {
+        if (arrowInstance.direction === 'right') {
+          arrowInstance.direction = 'left';
+          arrowInstance.triggerEnterAnimation();
+        }
+      } else if (arrowInstance.direction === 'left') {
         arrowInstance.direction = 'right';
+        arrowInstance.triggerEnterAnimation();
       }
     }
   }
@@ -137,9 +140,7 @@ export class QueueComponent {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       ElementComponent
     );
-    const componentRef = this.animationArea.createComponent<ElementComponent>(
-      componentFactory
-    );
+    const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
     componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
     componentRef.instance.value = value;
     this.elements.push(componentRef);
@@ -184,9 +185,7 @@ export class QueueComponent {
     for (const element of this.elements) {
       if (element.instance.value === 'NULL') {
         element.destroy();
-        this.elements = this.elements.filter(
-          item => item.instance != element.instance
-        );
+        this.elements = this.elements.filter(item => item.instance != element.instance);
         this.arrowElements.pop().destroy();
       }
     }
@@ -200,8 +199,8 @@ export class QueueComponent {
 
   pushArrayImplementation(value: string): void {
     const headArray = this.elements
-    .slice(this.headPosition, this.elements.length)
-    .concat(this.elements.slice(0, this.headPosition));
+      .slice(this.headPosition, this.elements.length)
+      .concat(this.elements.slice(0, this.headPosition));
     for (const element of headArray) {
       const instance = element.instance;
       if (instance.value === NULL) {
@@ -220,45 +219,43 @@ export class QueueComponent {
     switch (this.usedImplementation) {
       case 'simple-array':
         {
-    const headInstance = this.elements[this.headPosition].instance;
-    for (const element of this.elements) {
-      const instance = element.instance;
-      if (
-        instance.value !== NULL &&
-        instance === headInstance
-      ) {
-        this.result.element.nativeElement.value = instance.value;
-        if (removeElement) {
-          this.inProgress = true;
-          this.removeElement(instance).then(() => (this.inProgress = false));
+          const headInstance = this.elements[this.headPosition].instance;
+          for (const element of this.elements) {
+            const instance = element.instance;
+            if (instance.value !== NULL && instance === headInstance) {
+              this.result.element.nativeElement.value = instance.value;
+              if (removeElement) {
+                this.inProgress = true;
+                this.removeElement(instance).then(() => (this.inProgress = false));
+              }
+              return;
+            }
+          }
         }
-        return;
-      }
-    }
-  }
-  break;
-  case 'singly-linked-list': {
-    for (const element of this.elements) {
-      const instance = element.instance;
-      if (
-        instance.value !== NULL &&
-        instance.value !== 'tail' &&
-        instance.value !== 'next' &&
-        instance.value !== 'head' &&
-        instance.value !== 'NULL' &&
-        instance.value !== 'prev'
-      ) {
-        this.result.element.nativeElement.value = instance.value;
-        if (removeElement) {
-          this.inProgress = true;
-          this.removeElement(instance).then(() => (this.inProgress = false));
+        break;
+      case 'singly-linked-list':
+        {
+          for (const element of this.elements) {
+            const instance = element.instance;
+            if (
+              instance.value !== NULL &&
+              instance.value !== 'tail' &&
+              instance.value !== 'next' &&
+              instance.value !== 'head' &&
+              instance.value !== 'NULL' &&
+              instance.value !== 'prev'
+            ) {
+              this.result.element.nativeElement.value = instance.value;
+              if (removeElement) {
+                this.inProgress = true;
+                this.removeElement(instance).then(() => (this.inProgress = false));
+              }
+              return;
+            }
+          }
         }
-        return;
-      }
+        break;
     }
-  }
-  break;
-}
     this.result.element.nativeElement.value = 'Stack is empty!';
   }
 
@@ -306,7 +303,7 @@ export class QueueComponent {
           this.setActiveElement(currentElement);
           if (this.elements.length == 2) {
             this.createQueue();
-          } 
+          }
           this.setArrowDirection();
           await new Promise<boolean>(resolve =>
             setTimeout(() => {

@@ -40,7 +40,7 @@ export class StackComponent {
   public inProgress: boolean = false;
   public topPosition: number = 0;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
+  constructor(private readonly componentFactoryResolver: ComponentFactoryResolver, private readonly viewContainerRef: ViewContainerRef) {}
 
   setImplementation(implementation: string): void {
     this.implementation = implementation;
@@ -52,7 +52,9 @@ export class StackComponent {
   createStack(): void {
     this.usedImplementation = this.implementation;
     this.animationArea.clear();
+    this.viewContainerRef.clear();
     this.elements = [];
+    this.arrowElements = [];
     this.currentSteps = undefined;
     switch (this.usedImplementation) {
       case 'simple-array':
@@ -121,11 +123,14 @@ export class StackComponent {
     if (1 > arrowLength) return;
     for (const arrowElement of this.arrowElements) {
       const arrowInstance = arrowElement.instance;
-      if (arrowInstance === this.arrowElements[arrowLength - 1].instance) {
-        arrowInstance.direction = 'right';
-        arrowInstance.triggerEnterAnimation();
-      } else if (arrowInstance.direction === 'right') {
+      if (arrowInstance === this.arrowElements[0].instance) {
+        if (arrowInstance.direction === 'right') {
         arrowInstance.direction = 'left';
+        arrowInstance.triggerEnterAnimation();
+        }
+      } 
+      else if (arrowInstance.direction === 'left') {
+        arrowInstance.direction = 'right';
         arrowInstance.triggerEnterAnimation();
       }
     }
@@ -133,9 +138,11 @@ export class StackComponent {
 
   addArrow(): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ArrowComponent);
-    const componentRef = this.animationArea.createComponent<ArrowComponent>(componentFactory);
+    const componentRef = this.viewContainerRef.createComponent<ArrowComponent>(componentFactory);
     componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
     componentRef.instance.triggerEnterAnimation();
+    const triggerElement = componentRef.location.nativeElement;
+    this.animationArea.element.nativeElement.parentNode.prepend(triggerElement);
     this.arrowElements.push(componentRef);
     this.setArrowDirection();
   }
@@ -144,9 +151,11 @@ export class StackComponent {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       ElementComponent
     );
-    const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
+    const componentRef = this.viewContainerRef.createComponent<ElementComponent>(componentFactory);
     componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
     componentRef.instance.value = value;
+    const triggerElement = componentRef.location.nativeElement;
+    this.animationArea.element.nativeElement.parentNode.prepend(triggerElement);
     this.elements.splice(0, 0, componentRef);
     this.setActiveElement(componentRef.instance, keepCurrentActive);
   }
@@ -155,7 +164,7 @@ export class StackComponent {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       ElementWrapperComponent
     );
-    const componentRef = this.animationArea.createComponent<ElementWrapperComponent>(
+    const componentRef = this.viewContainerRef.createComponent<ElementWrapperComponent>(
       componentFactory
     );
     const addElements: ComponentRef<ElementComponent>[] = [];
@@ -164,6 +173,8 @@ export class StackComponent {
       componentRef.instance.addComponent<ElementComponent>(ElementComponent);
       componentRef.instance.componentRef.instance.value = value;
       componentRef.instance.componentRef.instance.active = true;
+      const triggerElement = componentRef.location.nativeElement;
+      this.animationArea.element.nativeElement.parentNode.prepend(triggerElement);  
       addElements.push(componentRef.instance.componentRef);
     }
     this.elements = addElements.reverse().concat(this.elements);
@@ -188,12 +199,12 @@ export class StackComponent {
   }
 
   pushListImplementation(value: string): void {
-    for (const stackElement of this.elements) {
-      if (stackElement.instance.value === 'NULL') {
-        stackElement.destroy();
-        this.elements = this.elements.filter(item => item.instance != stackElement.instance);
-        this.arrowElements[this.arrowElements.length - 1].destroy();
-      }
+     for (const stackElement of this.elements) {
+       if (stackElement.instance.value === 'NULL') {
+         stackElement.destroy();
+         this.elements = this.elements.filter(item => item.instance != stackElement.instance);
+         this.arrowElements.pop().destroy();
+       }
     }
 
     this.elements[0].destroy();
