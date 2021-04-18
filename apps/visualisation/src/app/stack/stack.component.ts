@@ -6,11 +6,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { MatSlider } from '@angular/material/slider';
-import {
-  ArrowComponent,
-  ElementComponent,
-  ElementWrapperComponent
-} from '@major-project/common';
+import { ArrowComponent, ElementComponent, ElementWrapperComponent } from '@major-project/common';
 import {
   peekStepsArray,
   peekStepsList,
@@ -199,6 +195,7 @@ export class StackComponent {
     if (value === '') return;
     value = parseInt(value);
     value = value > 999 ? 999 : value;
+    value = 1 > value ? 1 : value;
     this.newElementInput.element.nativeElement.value = value;
     this.currentTitle = pushStepTitle;
     switch (this.usedImplementation) {
@@ -352,7 +349,9 @@ export class StackComponent {
               }, this.animationSpeedInput.value)
             );
             if (!isArrowRemoved) {
-              this.arrowElements[this.arrowElements.length - 1].instance.time = this.animationSpeedInput.value;
+              this.arrowElements[
+                this.arrowElements.length - 1
+              ].instance.time = this.animationSpeedInput.value;
               this.arrowElements[this.arrowElements.length - 1].instance.triggerExitAnimation();
               await new Promise<boolean>(resolve =>
                 setTimeout(() => {

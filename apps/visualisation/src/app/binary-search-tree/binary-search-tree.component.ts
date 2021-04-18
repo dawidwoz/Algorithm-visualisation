@@ -64,9 +64,7 @@ export class BinarySearchTreeComponent implements OnInit {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
         ElementComponent
       );
-      const componentRef = this.animationArea.createComponent<ElementComponent>(
-        componentFactory
-      );
+      const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
       componentRef.instance.number = i;
       componentRef.instance.value = NULL;
       componentRef.instance.active = true;
@@ -89,9 +87,7 @@ export class BinarySearchTreeComponent implements OnInit {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       ElementComponent
     );
-    const componentRef = this.animationArea.createComponent<ElementComponent>(
-      componentFactory
-    );
+    const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
     componentRef.instance.number = this.elements.length;
     componentRef.instance.value = value;
     this.elements.push(componentRef);
@@ -103,6 +99,7 @@ export class BinarySearchTreeComponent implements OnInit {
     if (value === '') return;
     value = parseInt(value);
     value = value > 999 ? 999 : value;
+    value = 1 > value ? 1 : value;
     switch (this.usedImplementation) {
       case 'separate-chaining':
         this.pushSeparateChaining(value);
@@ -170,7 +167,7 @@ export class BinarySearchTreeComponent implements OnInit {
           ? this.searchInput.element.nativeElement.value
           : null;
     }
-    if(!element) return;
+    if (!element) return;
     let place = element % this.randomNumber;
     switch (this.usedImplementation) {
       case 'separate-chaining':

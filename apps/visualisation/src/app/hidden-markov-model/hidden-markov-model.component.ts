@@ -103,6 +103,7 @@ export class HiddenMarkovModelComponent implements OnInit {
     if (value === '') return;
     value = parseInt(value);
     value = value > 999 ? 999 : value;
+    value = 1 > value ? 1 : value;
     switch (this.usedImplementation) {
       case 'separate-chaining':
         this.pushSeparateChaining(value);

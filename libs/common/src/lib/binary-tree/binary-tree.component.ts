@@ -1,13 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Inject,
-  Input,
-  OnDestroy,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, Inject, Input, OnDestroy } from '@angular/core';
 import 'leader-line';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let LeaderLine: any;
@@ -18,9 +10,6 @@ declare let LeaderLine: any;
   styleUrls: ['./binary-tree.component.scss']
 })
 export class BinaryTreeComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('one', { read: ElementRef }) startingElement: ElementRef;
-  @ViewChild('two', { read: ElementRef }) endingElement: ElementRef;
-
   @Input() values: string[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public lines: any[] = [];

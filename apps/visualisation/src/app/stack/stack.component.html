@@ -57,10 +57,11 @@
       PUSH
     </button>
     <input
-      class="form-control mr-1"
+      class="form-control stack __addInput mr-1"
       type="number"
       name="add_value"
       title="value to insert"
+      min="1"
       max="999"
       #newElement
       [disabled]="elements.length == 0 || inProgress"

@@ -5,6 +5,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { MatSlider } from '@angular/material/slider';
 import { ElementComponent, BinaryTreeComponent } from '@major-project/common';
 
 const NULL = 'null';
@@ -20,15 +21,19 @@ export class PriorityQueueComponent {
   @ViewChild('treeArea', { static: true, read: ViewContainerRef })
   treeArea: ViewContainerRef;
   @ViewChild('size', { static: true, read: ViewContainerRef }) sizeInput: ViewContainerRef;
-  @ViewChild('animationSpeed', { static: true, read: ViewContainerRef })
-  animationSpeedInput: ViewContainerRef;
+  @ViewChild('animationSpeed', { static: true, read: MatSlider })
+  animationSpeedInput: MatSlider;
   @ViewChild('result', { static: true, read: ViewContainerRef }) result: ViewContainerRef;
   @ViewChild('newElement', { static: true, read: ViewContainerRef })
   newElementInput: ViewContainerRef;
 
+  public currentTitle: string;
+  public currentSteps: string[] | undefined;
+  public actualStep: number = 0;
+
   public implementation?: string;
   public elements: ComponentRef<ElementComponent>[] = [];
-  public binaryTree?: ComponentRef<BinaryTreeComponent>; 
+  public binaryTree?: ComponentRef<BinaryTreeComponent>;
   public values: string[] = [];
   public usedImplementation?: string;
   public addedValue: number = 0;
@@ -60,9 +65,7 @@ export class PriorityQueueComponent {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       BinaryTreeComponent
     );
-    this.binaryTree = this.treeArea.createComponent<BinaryTreeComponent>(
-      componentFactory
-    );
+    this.binaryTree = this.treeArea.createComponent<BinaryTreeComponent>(componentFactory);
     this.values = this.elements.map(element => element.instance.value);
     this.binaryTree.instance.values = this.values;
   }
@@ -76,10 +79,8 @@ export class PriorityQueueComponent {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
         ElementComponent
       );
-      const componentRef = this.animationArea.createComponent<ElementComponent>(
-        componentFactory
-      );
-      componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
+      const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
+      componentRef.instance.time = this.animationSpeedInput.value;
       componentRef.instance.value = NULL;
       componentRef.instance.active = true;
       this.elements.push(componentRef);
@@ -102,22 +103,21 @@ export class PriorityQueueComponent {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       ElementComponent
     );
-    const componentRef = this.animationArea.createComponent<ElementComponent>(
-      componentFactory
-    );
-    componentRef.instance.time = this.animationSpeedInput.element.nativeElement.value;
+    const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
+    componentRef.instance.time = this.animationSpeedInput.value;
     componentRef.instance.value = value;
     this.elements.push(componentRef);
     this.setActiveElement(componentRef.instance, keepCurrentActive);
     this.heapify();
   }
 
-  pushElement(): void {
+  insertElement(): void {
     let value = this.newElementInput.element.nativeElement.value;
     if (value === '') return;
     this.addedValue++;
     value = parseInt(value);
     value = value > 999 ? 999 : value;
+    value = 1 > value ? 1 : value;
     this.newElementInput.element.nativeElement.value = value;
     switch (this.usedImplementation) {
       case 'min-heap-array':
@@ -131,7 +131,9 @@ export class PriorityQueueComponent {
     for (const element of this.elements) {
       const instance = element.instance;
       if (instance.value === NULL) {
+        instance.time = this.animationSpeedInput.value;
         instance.value = value;
+        instance.triggerEnterAnimation();
         this.setActiveElement(instance, false);
         this.heapify();
         return;
@@ -151,7 +153,7 @@ export class PriorityQueueComponent {
         this.elements[2 * i + 2] && this.elements[2 * i + 2].instance.value !== NULL
           ? this.elements[2 * i + 2].instance.value
           : null;
-      
+
       if (leftChild && parseInt(currentElement) > parseInt(leftChild)) {
         this.elements[i].instance.value = leftChild;
         this.setActiveElement(this.elements[i].instance, true);
@@ -175,6 +177,7 @@ export class PriorityQueueComponent {
   getMinimum(removeElement: boolean): void {
     for (const element of this.elements) {
       const instance = element.instance;
+      instance.time = this.animationSpeedInput.value;
       if (
         instance.value !== NULL &&
         instance.value !== 'tail' &&
@@ -188,9 +191,9 @@ export class PriorityQueueComponent {
             this.createPriorityQueue();
             return;
           }
-          this.elements[0].instance.value = this.elements[this.addedValue-1].instance.value;
-          this.elements[this.addedValue-1].destroy();
-          this.elements = this.elements.slice(0, this.addedValue-1);
+          this.elements[0].instance.value = this.elements[this.addedValue - 1].instance.value;
+          this.elements[this.addedValue - 1].destroy();
+          this.elements = this.elements.slice(0, this.addedValue - 1);
           this.addedValue--;
           this.heapify();
         }

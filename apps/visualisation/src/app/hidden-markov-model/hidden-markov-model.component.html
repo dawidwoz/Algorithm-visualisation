@@ -54,11 +54,12 @@
       INSERT
     </button>
     <input
-      class="form-control mr-1"
+      class="form-control hidden-markov-model __addInput mr-1"
       type="number"
       name="add_value"
       title="value to insert"
-      max="999"
+      min="1"
+max="999"
       #newElement
       [disabled]="elements.length == 0"
       placeholder="Numeric element value"

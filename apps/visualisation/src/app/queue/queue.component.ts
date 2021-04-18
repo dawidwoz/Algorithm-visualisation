@@ -8,15 +8,15 @@ import {
 import { MatSlider } from '@angular/material/slider';
 import { ElementComponent, ArrowComponent, ElementWrapperComponent } from '@major-project/common';
 import {
-  dequeueStepsArray,
-  dequeueStepsList,
-  dequeueTitle,
-  enqueueStepsArray,
-  enqueueStepsList,
-  enqueueTitle,
-  peekStepsArray,
-  peekStepsList,
-  peekTitle
+  dequeueStepsQueueArray,
+  dequeueStepsQueueList,
+  dequeueQueueTitle,
+  enqueueStepsQueueArray,
+  enqueueStepsQueueList,
+  enqueueQueueTitle,
+  peekStepsQueueArray,
+  peekStepsQueueList,
+  peekQueueTitle
 } from '@major-project/queue';
 
 const NULL = 'null';
@@ -172,16 +172,17 @@ export class QueueComponent {
     if (value === '') return;
     value = parseInt(value);
     value = value > 999 ? 999 : value;
+    value = 1 > value ? 1 : value;
     this.newElementInput.element.nativeElement.value = value;
-    this.currentTitle = enqueueTitle;
+    this.currentTitle = enqueueQueueTitle;
     this.actualStep = 1;
     switch (this.usedImplementation) {
       case 'simple-array':
-        this.currentSteps = enqueueStepsArray;
+        this.currentSteps = enqueueStepsQueueArray;
         this.pushArrayImplementation(value);
         break;
       case 'singly-linked-list':
-        this.currentSteps = enqueueStepsList;
+        this.currentSteps = enqueueStepsQueueList;
         this.pushListImplementation(value);
         break;
     }
@@ -245,28 +246,28 @@ export class QueueComponent {
   }
 
   async peek(): Promise<void> {
-    this.currentTitle = peekTitle;
+    this.currentTitle = peekQueueTitle;
     this.actualStep = 1;
     switch (this.usedImplementation) {
       case 'simple-array':
-        this.currentSteps = peekStepsArray;
+        this.currentSteps = peekStepsQueueArray;
         break;
       case 'singly-linked-list':
-        this.currentSteps = peekStepsList;
+        this.currentSteps = peekStepsQueueList;
         break;
     }
     await this.lastElement(false);
   }
 
   async dequeue(): Promise<void> {
-    this.currentTitle = dequeueTitle;
+    this.currentTitle = dequeueQueueTitle;
     this.actualStep = 1;
     switch (this.usedImplementation) {
       case 'simple-array':
-        this.currentSteps = dequeueStepsArray;
+        this.currentSteps = dequeueStepsQueueArray;
         break;
       case 'singly-linked-list':
-        this.currentSteps = dequeueStepsList;
+        this.currentSteps = dequeueStepsQueueList;
         break;
     }
     await this.lastElement(true);

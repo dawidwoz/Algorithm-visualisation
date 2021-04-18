@@ -33,11 +33,20 @@
     </div>
   </div>
   <div class="priority-queue __animationWrapper">
-    <div class="priority-queue __animationArea">
-      <template #animationArea></template>
+    <div>
+      <div class="priority-queue __animationArea">
+        <template #animationArea></template>
+      </div>
+      <div class="priority-queue __animationArea">
+        <template #treeArea></template>
+      </div>
     </div>
-    <div class="priority-queue __animationArea">
-      <template #treeArea></template>
+    <div class="priority-queue __animationText" *ngIf="currentSteps">
+      <major-project-description
+        [title]="currentTitle"
+        [steps]="currentSteps"
+        [actualStep]="actualStep"
+      ></major-project-description>
     </div>
   </div>
 
@@ -47,15 +56,16 @@
       color="primary"
       class="mr-1"
       [disabled]="!implementation"
-      (click)="pushElement()"
+      (click)="insertElement()"
     >
       INSERT
     </button>
     <input
-      class="form-control mr-1"
+      class="form-control priority-queue __addInput mr-1"
       type="number"
       name="add_value"
       title="value to insert"
+      min="1"
       max="999"
       #newElement
       [disabled]="!implementation"

@@ -3,7 +3,6 @@
   <p
     class="description __step"
     *ngFor="let step of steps; let i = index"
-    (click)="emitClick(i + 1)"
     [class.highlighted]="actualStep-1 == i"
   >
     {{ step }}
