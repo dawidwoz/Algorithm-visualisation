@@ -6,7 +6,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { MatSlider } from '@angular/material/slider';
-import { ElementComponent, ArrowComponent, ElementWrapperComponent } from '@major-project/common';
+import { ElementComponent, ArrowComponent, ElementWrapperComponent, NULL } from '@major-project/common';
 import {
   dequeueStepsQueueArray,
   dequeueStepsQueueList,
@@ -18,8 +18,6 @@ import {
   peekStepsQueueList,
   peekQueueTitle
 } from '@major-project/queue';
-
-const NULL = 'null';
 
 @Component({
   selector: 'major-project-queue',

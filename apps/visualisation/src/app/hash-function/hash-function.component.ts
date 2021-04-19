@@ -2,20 +2,17 @@ import {
   Component,
   ComponentFactoryResolver,
   ComponentRef,
-  OnInit,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ElementComponent } from '@major-project/common';
-
-const NULL = 'null';
+import { ElementComponent, EmptySign, NULL } from '@major-project/common';
 
 @Component({
   selector: 'major-project-hash-function',
   templateUrl: './hash-function.component.html',
   styleUrls: ['./hash-function.component.scss']
 })
-export class HashFunctionComponent implements OnInit {
+export class HashFunctionComponent {
   @ViewChild('animationArea', { static: true, read: ViewContainerRef })
   animationArea: ViewContainerRef;
   @ViewChild('size', { static: true, read: ViewContainerRef }) sizeInput: ViewContainerRef;
@@ -31,13 +28,9 @@ export class HashFunctionComponent implements OnInit {
   public randomNumber: number = 0;
 
   constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
+    protected readonly componentFactoryResolver: ComponentFactoryResolver,
     protected readonly target: ViewContainerRef
   ) {}
-
-  ngOnInit(): void {
-    this.randomNumber = Math.floor(3 + Math.random() * 7);
-  }
 
   setImplementation(implementation: string): void {
     this.implementation = implementation;
@@ -60,6 +53,7 @@ export class HashFunctionComponent implements OnInit {
       this.sizeInput.element.nativeElement.value !== ''
         ? this.sizeInput.element.nativeElement.value
         : (this.sizeInput.element.nativeElement.value = 5);
+    this.randomNumber = size;
     for (let i = 0; i < size; i++) {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
         ElementComponent
@@ -193,7 +187,7 @@ export class HashFunctionComponent implements OnInit {
           const elementInstance = this.elements[i].instance;
           if (elementInstance.value === element.toString()) {
             if (removeElement) {
-              elementInstance.value = 'null';
+              elementInstance.value = EmptySign;
             }
             this.setActiveElement(elementInstance);
             return;

@@ -6,10 +6,13 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { MatSlider } from '@angular/material/slider';
-import { ElementComponent, BinaryTreeComponent } from '@major-project/common';
-import { getMinPriorityQueue, getMinPriorityQueueSteps, insertPriorityQueue, insertPriorityQueueSteps } from '@major-project/queue-priority';
-
-const NULL = 'null';
+import { ElementComponent, BinaryTreeComponent, NULL } from '@major-project/common';
+import {
+  getMinPriorityQueue,
+  getMinPriorityQueueSteps,
+  insertPriorityQueue,
+  insertPriorityQueueSteps
+} from '@major-project/queue-priority';
 
 @Component({
   selector: 'major-project-priority-queue',
@@ -69,7 +72,7 @@ export class PriorityQueueComponent {
     );
     this.binaryTree = this.treeArea.createComponent<BinaryTreeComponent>(componentFactory);
     this.values = this.elements.map(element => element.instance.value);
-    this.values.length > 15 ? this.values = this.values.slice(0,15) : this.values;
+    this.values.length > 15 ? (this.values = this.values.slice(0, 15)) : this.values;
     this.binaryTree.instance.values = this.values;
     this.binaryTree.instance.time = this.animationSpeedInput.value;
     const booleanElements = [];
@@ -154,7 +157,7 @@ export class PriorityQueueComponent {
       }
     }
     this.addStackElement(value, false);
-    for (let i = 0; i < this.initialSizeArray-1; i++) {
+    for (let i = 0; i < this.initialSizeArray - 1; i++) {
       this.addStackElement(NULL, true);
     }
   }

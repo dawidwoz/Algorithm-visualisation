@@ -24,7 +24,7 @@
           matInput
           class="form-control mr-1"
           type="number"
-          [value]="randomNumber"
+          value="7"
           [min]="randomNumber"
           max="20"
           #size
@@ -34,7 +34,7 @@
   </div>
   <div class="hash-function __animationWrapper">
     <div>
-      <h2>
+      <h2 *ngIf="randomNumber">
         <i>f(x)= x % {{ randomNumber }}</i>
       </h2>
       <div class="hash-function __animationArea">

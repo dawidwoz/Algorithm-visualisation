@@ -6,7 +6,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { MatSlider } from '@angular/material/slider';
-import { ArrowComponent, ElementComponent, ElementWrapperComponent } from '@major-project/common';
+import { ArrowComponent, ElementComponent, ElementWrapperComponent, NULL } from '@major-project/common';
 import {
   peekStepsArray,
   peekStepsList,
@@ -18,8 +18,6 @@ import {
   pushStepsList,
   pushStepTitle
 } from '@major-project/stack';
-
-const NULL = 'null';
 
 @Component({
   selector: 'major-project-stack',

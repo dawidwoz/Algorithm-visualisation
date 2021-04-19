@@ -6,9 +6,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ElementComponent } from '@major-project/common';
-
-const NULL = 'null';
+import { ElementComponent, NULL } from '@major-project/common';
 
 @Component({
   selector: 'major-project-binary-search-tree',
