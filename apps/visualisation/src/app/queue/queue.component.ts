@@ -6,7 +6,13 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { MatSlider } from '@angular/material/slider';
-import { ElementComponent, ArrowComponent, ElementWrapperComponent, NULL } from '@major-project/common';
+import {
+  ElementComponent,
+  ArrowComponent,
+  ElementWrapperComponent,
+  NULL,
+  setActiveElement
+} from '@major-project/common';
 import {
   dequeueStepsQueueArray,
   dequeueStepsQueueList,
@@ -105,17 +111,6 @@ export class QueueComponent {
     this.setHeadTail();
   }
 
-  setActiveElement(instance: ElementComponent, keepCurrent: boolean = false): void {
-    for (const element of this.elements) {
-      const currentInstance = element.instance;
-      if (currentInstance === instance) {
-        currentInstance.active = true;
-      } else if (!keepCurrent) {
-        currentInstance.active = false;
-      }
-    }
-  }
-
   setHeadTail(): void {
     this.elements.forEach(element => {
       element.instance.texts = [];
@@ -162,7 +157,7 @@ export class QueueComponent {
     componentRef.instance.time = this.animationSpeedInput.value;
     componentRef.instance.value = value;
     this.elements.push(componentRef);
-    this.setActiveElement(componentRef.instance, keepCurrentActive);
+    setActiveElement(this.elements, componentRef.instance, keepCurrentActive);
   }
 
   enqueueQueue(): void {
@@ -194,7 +189,7 @@ export class QueueComponent {
       componentFactory
     );
     const addElements: ComponentRef<ElementComponent>[] = [];
-    this.setActiveElement(undefined, false);
+    setActiveElement(this.elements, undefined, false);
     for (const value of values) {
       componentRef.instance.addComponent<ElementComponent>(ElementComponent);
       componentRef.instance.componentRef.instance.value = value;
@@ -233,7 +228,7 @@ export class QueueComponent {
         instance.time = this.animationSpeedInput.value;
         instance.triggerEnterAnimation();
         this.tailPosition = this.elements[this.tailPosition + 1] ? this.tailPosition + 1 : 0;
-        this.setActiveElement(instance);
+        setActiveElement(this.elements, instance);
         this.setHeadTail();
         this.actualStep = 2;
         return;
@@ -328,7 +323,7 @@ export class QueueComponent {
           instance.value = NULL;
           instance.time = this.animationSpeedInput.value;
           this.headPosition = this.elements[this.headPosition + 1] ? this.headPosition + 1 : 0;
-          this.setActiveElement(instance);
+          setActiveElement(this.elements, instance);
           this.setHeadTail();
           instance.triggerEnterAnimation();
         }
@@ -367,7 +362,7 @@ export class QueueComponent {
           currentElement.time = this.animationSpeedInput.value;
           currentElement.triggerEnterAnimation();
           currentElement.value = 'head';
-          this.setActiveElement(currentElement);
+          setActiveElement(this.elements, currentElement);
           if (this.elements.length == 2) {
             this.createQueue();
           }

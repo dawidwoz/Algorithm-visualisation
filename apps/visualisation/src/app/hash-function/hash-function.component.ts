@@ -5,7 +5,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ElementComponent, EmptySign, NULL } from '@major-project/common';
+import { ElementComponent, EmptySign, NULL, setActiveElement } from '@major-project/common';
 
 @Component({
   selector: 'major-project-hash-function',
@@ -85,7 +85,7 @@ export class HashFunctionComponent {
     componentRef.instance.number = this.elements.length;
     componentRef.instance.value = value;
     this.elements.push(componentRef);
-    this.setActiveElement(componentRef.instance, keepCurrentActive);
+    setActiveElement(this.elements, componentRef.instance, keepCurrentActive);
   }
 
   pushElement(): void {
@@ -95,6 +95,7 @@ export class HashFunctionComponent {
     value = value > 999 ? 999 : value;
     value = 1 > value ? 1 : value;
     this.newElementInput.element.nativeElement.value = value;
+    this.resultInput.element.nativeElement.innerHTML = '';
     switch (this.usedImplementation) {
       case 'separate-chaining':
         this.pushSeparateChaining(value);
@@ -111,7 +112,11 @@ export class HashFunctionComponent {
       const element = this.elements[i].instance;
       if (element.value === NULL) {
         element.value = value.toString();
-        this.setActiveElement(element);
+        setActiveElement(this.elements, element);
+        return;
+      }
+      if (element.value === value.toString()) {
+        this.resultInput.element.nativeElement.innerHTML = 'Element already in the array!';
         return;
       }
     }
@@ -119,7 +124,11 @@ export class HashFunctionComponent {
       const element = this.elements[j].instance;
       if (element.value === NULL) {
         element.value = value.toString();
-        this.setActiveElement(element);
+        setActiveElement(this.elements, element);
+        return;
+      }
+      if (element.value === value.toString()) {
+        this.resultInput.element.nativeElement.innerHTML = 'Element already in the array!';
         return;
       }
     }
@@ -144,7 +153,7 @@ export class HashFunctionComponent {
     const element = this.elements[place].instance;
     if (element.value === NULL) {
       element.value = value.toString();
-      this.setActiveElement(element);
+      setActiveElement(this.elements, element);
     }
   }
 
@@ -172,7 +181,7 @@ export class HashFunctionComponent {
             break;
           }
           if (this.elements[place].instance.value === element.toString()) {
-            this.setActiveElement(this.elements[place].instance);
+            setActiveElement(this.elements, this.elements[place].instance);
             if (removeElement) {
               this.elements[place].instance.value = 'null';
             }
@@ -189,7 +198,7 @@ export class HashFunctionComponent {
             if (removeElement) {
               elementInstance.value = EmptySign;
             }
-            this.setActiveElement(elementInstance);
+            setActiveElement(this.elements, elementInstance);
             return;
           }
         }
@@ -199,7 +208,7 @@ export class HashFunctionComponent {
             if (removeElement) {
               elementInstance.value = 'null';
             }
-            this.setActiveElement(elementInstance);
+            setActiveElement(this.elements, elementInstance);
             return;
           }
         }

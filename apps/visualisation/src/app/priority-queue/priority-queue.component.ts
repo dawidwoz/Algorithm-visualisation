@@ -6,7 +6,12 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { MatSlider } from '@angular/material/slider';
-import { ElementComponent, BinaryTreeComponent, NULL } from '@major-project/common';
+import {
+  ElementComponent,
+  BinaryTreeComponent,
+  NULL,
+  setActiveElement
+} from '@major-project/common';
 import {
   getMinPriorityQueue,
   getMinPriorityQueueSteps,
@@ -101,17 +106,6 @@ export class PriorityQueueComponent {
     }
   }
 
-  setActiveElement(instance: ElementComponent, keepCurrent: boolean = false): void {
-    for (const element of this.elements) {
-      const currentInstance = element.instance;
-      if (currentInstance === instance) {
-        currentInstance.active = true;
-      } else if (!keepCurrent) {
-        currentInstance.active = false;
-      }
-    }
-  }
-
   addStackElement(value: string, keepCurrentActive: boolean = false): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       ElementComponent
@@ -120,7 +114,7 @@ export class PriorityQueueComponent {
     componentRef.instance.time = this.animationSpeedInput.value;
     componentRef.instance.value = value;
     this.elements.push(componentRef);
-    this.setActiveElement(componentRef.instance, keepCurrentActive);
+    setActiveElement(this.elements, componentRef.instance, keepCurrentActive);
     this.heapify();
   }
 
@@ -150,7 +144,7 @@ export class PriorityQueueComponent {
         instance.time = this.animationSpeedInput.value;
         instance.value = value;
         instance.triggerEnterAnimation();
-        this.setActiveElement(instance, false);
+        setActiveElement(this.elements, instance, false);
         this.actualStep = 2;
         this.heapify();
         return;
@@ -176,17 +170,17 @@ export class PriorityQueueComponent {
 
       if (leftChild && parseInt(currentElement) > parseInt(leftChild)) {
         this.elements[i].instance.value = leftChild;
-        this.setActiveElement(this.elements[i].instance, true);
+        setActiveElement(this.elements, this.elements[i].instance, true);
         this.elements[2 * i + 1].instance.value = currentElement;
-        this.setActiveElement(this.elements[2 * i + 1].instance, true);
+        setActiveElement(this.elements, this.elements[2 * i + 1].instance, true);
         this.heapify();
         break;
       }
       if (rightChild && parseInt(currentElement) > parseInt(rightChild)) {
         this.elements[i].instance.value = rightChild;
-        this.setActiveElement(this.elements[i].instance, true);
+        setActiveElement(this.elements, this.elements[i].instance, true);
         this.elements[2 * i + 2].instance.value = currentElement;
-        this.setActiveElement(this.elements[2 * i + 2].instance, true);
+        setActiveElement(this.elements, this.elements[2 * i + 2].instance, true);
         this.heapify();
         break;
       }
@@ -221,7 +215,7 @@ export class PriorityQueueComponent {
           this.elements[this.addedValue - 1].instance.value = NULL;
           this.elements[this.addedValue - 1].instance.time = this.animationSpeedInput.value;
           this.elements[this.addedValue - 1].instance.triggerEnterAnimation();
-          this.setActiveElement(this.elements[this.addedValue - 1].instance, false);
+          setActiveElement(this.elements, this.elements[this.addedValue - 1].instance, false);
           this.addedValue--;
           this.heapify();
         }

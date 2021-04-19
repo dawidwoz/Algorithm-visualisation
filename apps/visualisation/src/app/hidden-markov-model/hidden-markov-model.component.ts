@@ -6,7 +6,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ElementComponent, NULL } from '@major-project/common';
+import { ElementComponent, NULL, setActiveElement } from '@major-project/common';
 
 @Component({
   selector: 'major-project-hidden-markov-model',
@@ -72,17 +72,6 @@ export class HiddenMarkovModelComponent implements OnInit {
     }
   }
 
-  setActiveElement(instance: ElementComponent, keepCurrent: boolean = false): void {
-    for (const element of this.elements) {
-      const currentInstance = element.instance;
-      if (currentInstance === instance) {
-        currentInstance.active = true;
-      } else if (!keepCurrent) {
-        currentInstance.active = false;
-      }
-    }
-  }
-
   addElement(value: string, keepCurrentActive: boolean = false): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       ElementComponent
@@ -93,7 +82,7 @@ export class HiddenMarkovModelComponent implements OnInit {
     componentRef.instance.number = this.elements.length;
     componentRef.instance.value = value;
     this.elements.push(componentRef);
-    this.setActiveElement(componentRef.instance, keepCurrentActive);
+    setActiveElement(this.elements, componentRef.instance, keepCurrentActive);
   }
 
   pushElement(): void {
@@ -118,7 +107,7 @@ export class HiddenMarkovModelComponent implements OnInit {
       const element = this.elements[i].instance;
       if (element.value === NULL) {
         element.value = value.toString();
-        this.setActiveElement(element);
+        setActiveElement(this.elements, element);
         return;
       }
     }
@@ -126,7 +115,7 @@ export class HiddenMarkovModelComponent implements OnInit {
       const element = this.elements[j].instance;
       if (element.value === NULL) {
         element.value = value.toString();
-        this.setActiveElement(element);
+        setActiveElement(this.elements, element);
         return;
       }
     }
@@ -151,7 +140,7 @@ export class HiddenMarkovModelComponent implements OnInit {
     const element = this.elements[place].instance;
     if (element.value === NULL) {
       element.value = value.toString();
-      this.setActiveElement(element);
+      setActiveElement(this.elements, element);
     }
   }
 
@@ -179,7 +168,7 @@ export class HiddenMarkovModelComponent implements OnInit {
             break;
           }
           if (this.elements[place].instance.value === element.toString()) {
-            this.setActiveElement(this.elements[place].instance);
+            setActiveElement(this.elements, this.elements[place].instance);
             if (removeElement) {
               this.elements[place].instance.value = 'null';
             }
@@ -196,7 +185,7 @@ export class HiddenMarkovModelComponent implements OnInit {
             if (removeElement) {
               elementInstance.value = 'null';
             }
-            this.setActiveElement(elementInstance);
+            setActiveElement(this.elements, elementInstance);
             return;
           }
         }
@@ -206,7 +195,7 @@ export class HiddenMarkovModelComponent implements OnInit {
             if (removeElement) {
               elementInstance.value = 'null';
             }
-            this.setActiveElement(elementInstance);
+            setActiveElement(this.elements, elementInstance);
             return;
           }
         }

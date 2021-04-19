@@ -6,7 +6,13 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { MatSlider } from '@angular/material/slider';
-import { ArrowComponent, ElementComponent, ElementWrapperComponent, NULL } from '@major-project/common';
+import {
+  ArrowComponent,
+  ElementComponent,
+  ElementWrapperComponent,
+  NULL,
+  setActiveElement
+} from '@major-project/common';
 import {
   peekStepsArray,
   peekStepsList,
@@ -115,17 +121,6 @@ export class StackComponent {
     this.elements[this.topPosition].instance.texts = ['top'];
   }
 
-  setActiveElement(instance: ElementComponent, keepCurrent: boolean = false): void {
-    for (const stackElement of this.elements) {
-      const currentInstance = stackElement.instance;
-      if (currentInstance === instance) {
-        currentInstance.active = true;
-      } else if (!keepCurrent) {
-        currentInstance.active = false;
-      }
-    }
-  }
-
   setArrowDirection(): void {
     const arrowLength = this.arrowElements.length;
     if (1 > arrowLength) return;
@@ -164,7 +159,7 @@ export class StackComponent {
     const triggerElement = componentRef.location.nativeElement;
     this.animationArea.element.nativeElement.parentNode.prepend(triggerElement);
     this.elements.splice(0, 0, componentRef);
-    this.setActiveElement(componentRef.instance, keepCurrentActive);
+    setActiveElement(this.elements, componentRef.instance, keepCurrentActive);
   }
 
   addGroupElement(values: string[]): void {
@@ -175,7 +170,7 @@ export class StackComponent {
       componentFactory
     );
     const addElements: ComponentRef<ElementComponent>[] = [];
-    this.setActiveElement(undefined, false);
+    setActiveElement(this.elements, undefined, false);
     for (const value of values) {
       componentRef.instance.addComponent<ElementComponent>(ElementComponent);
       componentRef.instance.componentRef.instance.value = value;
@@ -233,7 +228,7 @@ export class StackComponent {
         instance.value = value;
         instance.time = this.animationSpeedInput.value;
         instance.triggerEnterAnimation();
-        this.setActiveElement(instance);
+        setActiveElement(this.elements, instance);
         this.topPosition = this.topPosition + 1;
         this.setTopPosition();
         this.actualStep = 2;
@@ -324,7 +319,7 @@ export class StackComponent {
       case 'simple-array':
         {
           instance.value = NULL;
-          this.setActiveElement(instance);
+          setActiveElement(this.elements, instance);
           this.topPosition = this.elements[this.topPosition - 1] ? this.topPosition - 1 : 0;
           this.setTopPosition();
           instance.triggerEnterAnimation();
@@ -366,7 +361,7 @@ export class StackComponent {
           currentElement.triggerEnterAnimation();
           currentElement.time = this.animationSpeedInput.value;
           currentElement.value = 'head';
-          this.setActiveElement(currentElement);
+          setActiveElement(this.elements, currentElement);
           if (this.elements.length == 2) {
             this.createStack();
           }
