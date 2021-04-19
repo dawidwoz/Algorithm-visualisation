@@ -41,6 +41,13 @@
         <template #animationArea></template>
       </div>
     </div>
+    <div class="hash-function __animationText" *ngIf="currentSteps">
+      <major-project-description
+        [title]="currentTitle"
+        [steps]="currentSteps"
+        [actualStep]="actualStep"
+      ></major-project-description>
+    </div>
   </div>
 
   <div class="form-inline row mt-2">
@@ -78,7 +85,7 @@
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0"
-      (click)="getElement(true)"
+      (click)="performRemove()"
     >
       REMOVE ELEMENT
     </button>
@@ -95,7 +102,7 @@
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0"
-      (click)="getElement(false)"
+      (click)="performSearch()"
     >
       SEARCH
     </button>

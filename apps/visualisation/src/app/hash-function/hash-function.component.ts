@@ -6,6 +6,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { ElementComponent, EmptySign, NULL, setActiveElement } from '@major-project/common';
+import { insertHashFunction, insertHashFunctionLinearProbingSteps, removeHashFunction, removeHashFunctionLinearProbingSteps, searchHashFunction, searchHashFunctionLinearProbingSteps } from '@major-project/hash-function';
 
 @Component({
   selector: 'major-project-hash-function',
@@ -21,6 +22,10 @@ export class HashFunctionComponent {
   @ViewChild('search', { static: true, read: ViewContainerRef }) searchInput: ViewContainerRef;
   @ViewChild('newElement', { static: true, read: ViewContainerRef })
   newElementInput: ViewContainerRef;
+
+  public currentTitle: string;
+  public currentSteps: string[] | undefined;
+  public actualStep: number = 0;
 
   public implementation?: string;
   public elements: ComponentRef<ElementComponent>[] = [];
@@ -40,6 +45,7 @@ export class HashFunctionComponent {
     this.usedImplementation = this.implementation;
     this.animationArea.clear();
     this.elements = [];
+    this.currentSteps = undefined;
     switch (this.usedImplementation) {
       case 'separate-chaining':
       case 'linear-probing':
@@ -96,11 +102,14 @@ export class HashFunctionComponent {
     value = 1 > value ? 1 : value;
     this.newElementInput.element.nativeElement.value = value;
     this.resultInput.element.nativeElement.innerHTML = '';
+    this.actualStep = 1;
+    this.currentTitle = insertHashFunction;
     switch (this.usedImplementation) {
       case 'separate-chaining':
         this.pushSeparateChaining(value);
         break;
       case 'linear-probing':
+        this.currentSteps = insertHashFunctionLinearProbingSteps;
         this.pushLinearProbing(value);
         break;
     }
@@ -113,9 +122,11 @@ export class HashFunctionComponent {
       if (element.value === NULL) {
         element.value = value.toString();
         setActiveElement(this.elements, element);
+        this.actualStep = 2;
         return;
       }
       if (element.value === value.toString()) {
+        this.actualStep = 3;
         this.resultInput.element.nativeElement.innerHTML = 'Element already in the array!';
         return;
       }
@@ -125,14 +136,17 @@ export class HashFunctionComponent {
       if (element.value === NULL) {
         element.value = value.toString();
         setActiveElement(this.elements, element);
+        this.actualStep = 2;
         return;
       }
       if (element.value === value.toString()) {
+        this.actualStep = 3;
         this.resultInput.element.nativeElement.innerHTML = 'Element already in the array!';
         return;
       }
     }
     this.resultInput.element.nativeElement.innerHTML = 'Array is full!';
+    this.actualStep = 4;
   }
 
   pushSeparateChaining(value: number): void {
@@ -155,6 +169,20 @@ export class HashFunctionComponent {
       element.value = value.toString();
       setActiveElement(this.elements, element);
     }
+  }
+
+  performSearch(): void {
+    this.actualStep = 1;
+    this.currentTitle = searchHashFunction;
+    this.currentSteps = searchHashFunctionLinearProbingSteps;
+    this.getElement(false);
+  }
+
+  performRemove(): void {
+    this.actualStep = 1;
+    this.currentTitle = removeHashFunction;
+    this.currentSteps = removeHashFunctionLinearProbingSteps;
+    this.getElement(true);
   }
 
   getElement(removeElement: boolean): void {
@@ -198,6 +226,7 @@ export class HashFunctionComponent {
             if (removeElement) {
               elementInstance.value = EmptySign;
             }
+            this.actualStep = 3;
             setActiveElement(this.elements, elementInstance);
             return;
           }
@@ -206,13 +235,15 @@ export class HashFunctionComponent {
           const elementInstance = this.elements[j].instance;
           if (elementInstance.value === element.toString()) {
             if (removeElement) {
-              elementInstance.value = 'null';
+              elementInstance.value = EmptySign;
             }
+            this.actualStep = 3;
             setActiveElement(this.elements, elementInstance);
             return;
           }
         }
         this.resultInput.element.nativeElement.innerHTML = 'Not found in the array!';
+        this.actualStep = 5;
         break;
     }
   }

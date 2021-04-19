@@ -33,5 +33,7 @@ export const popStepsList = [
 
 
 export const pushStepTitle = 'Push';
+
 export const popStepTitle = 'Pop';
+
 export const peekStepTitle = 'Peek';

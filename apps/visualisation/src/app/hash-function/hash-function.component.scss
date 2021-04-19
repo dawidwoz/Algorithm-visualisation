@@ -21,6 +21,16 @@
         margin-left: -3px;
       }
     }
+    &.__animationText {
+      display: flex;
+      flex-direction: column;
+      font-style: italic;
+      justify-content: center;
+      padding: 1rem;
+      text-align: center;
+      width: 100%;
+      border-top: 1px solid #c3c3c3;
+    }
     &.__addInput {
       width: 15%;
     }
