@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { MatSlider } from '@angular/material/slider';
 import { ElementComponent, BinaryTreeComponent } from '@major-project/common';
+import { getMinPriorityQueue, getMinPriorityQueueSteps, insertPriorityQueue, insertPriorityQueueSteps } from '@major-project/queue-priority';
 
 const NULL = 'null';
 
@@ -37,9 +38,10 @@ export class PriorityQueueComponent {
   public values: string[] = [];
   public usedImplementation?: string;
   public addedValue: number = 0;
+  public initialSizeArray: number = 0;
 
   constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
+    protected readonly componentFactoryResolver: ComponentFactoryResolver,
     protected readonly target: ViewContainerRef
   ) {}
 
@@ -67,7 +69,14 @@ export class PriorityQueueComponent {
     );
     this.binaryTree = this.treeArea.createComponent<BinaryTreeComponent>(componentFactory);
     this.values = this.elements.map(element => element.instance.value);
+    this.values.length > 15 ? this.values = this.values.slice(0,15) : this.values;
     this.binaryTree.instance.values = this.values;
+    this.binaryTree.instance.time = this.animationSpeedInput.value;
+    const booleanElements = [];
+    for (const element of this.elements) {
+      booleanElements.push(element.instance.active);
+    }
+    this.binaryTree.instance.activeValues = booleanElements;
   }
 
   arrayImplementation(): void {
@@ -75,6 +84,7 @@ export class PriorityQueueComponent {
       this.sizeInput.element.nativeElement.value !== ''
         ? this.sizeInput.element.nativeElement.value
         : (this.sizeInput.element.nativeElement.value = 5);
+    this.initialSizeArray = size;
     for (let i = 0; i < size; i++) {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
         ElementComponent
@@ -121,6 +131,9 @@ export class PriorityQueueComponent {
     this.newElementInput.element.nativeElement.value = value;
     switch (this.usedImplementation) {
       case 'min-heap-array':
+        this.currentTitle = insertPriorityQueue;
+        this.currentSteps = insertPriorityQueueSteps;
+        this.actualStep = 1;
         this.pushArrayImplementation(value);
         break;
     }
@@ -135,11 +148,15 @@ export class PriorityQueueComponent {
         instance.value = value;
         instance.triggerEnterAnimation();
         this.setActiveElement(instance, false);
+        this.actualStep = 2;
         this.heapify();
         return;
       }
     }
     this.addStackElement(value, false);
+    for (let i = 0; i < this.initialSizeArray-1; i++) {
+      this.addStackElement(NULL, true);
+    }
   }
 
   heapify(): void {
@@ -174,17 +191,22 @@ export class PriorityQueueComponent {
     this.updateBinaryTree();
   }
 
-  getMinimum(removeElement: boolean): void {
+  getMinimum(): void {
+    this.currentTitle = getMinPriorityQueue;
+    this.currentSteps = getMinPriorityQueueSteps;
+    this.actualStep = 1;
+    this.getLastElement(false);
+  }
+
+  removeMinimum(): void {
+    this.getLastElement(true);
+  }
+
+  getLastElement(removeElement: boolean): void {
     for (const element of this.elements) {
       const instance = element.instance;
       instance.time = this.animationSpeedInput.value;
-      if (
-        instance.value !== NULL &&
-        instance.value !== 'tail' &&
-        instance.value !== 'next' &&
-        instance.value !== 'head' &&
-        instance.value !== 'NULL'
-      ) {
+      if (instance.value !== NULL) {
         this.result.element.nativeElement.value = instance.value;
         if (removeElement) {
           if (this.addedValue === 1) {
@@ -192,27 +214,19 @@ export class PriorityQueueComponent {
             return;
           }
           this.elements[0].instance.value = this.elements[this.addedValue - 1].instance.value;
-          this.elements[this.addedValue - 1].destroy();
-          this.elements = this.elements.slice(0, this.addedValue - 1);
+          this.elements[0].instance.time = this.animationSpeedInput.value;
+          this.elements[this.addedValue - 1].instance.value = NULL;
+          this.elements[this.addedValue - 1].instance.time = this.animationSpeedInput.value;
+          this.elements[this.addedValue - 1].instance.triggerEnterAnimation();
+          this.setActiveElement(this.elements[this.addedValue - 1].instance, false);
           this.addedValue--;
           this.heapify();
         }
+        this.actualStep = 2;
         return;
       }
     }
-    this.result.element.nativeElement.value = 'Queue is empty!';
-  }
-
-  async removeElement(instance: ElementComponent): Promise<void> {
-    switch (this.usedImplementation) {
-      case 'min-heap-array':
-        {
-          instance.value = NULL;
-          this.setActiveElement(instance);
-          this.elements = this.elements.slice(1, this.elements.length);
-          instance.triggerEnterAnimation();
-        }
-        break;
-    }
+    this.result.element.nativeElement.value = 'Priority queue is empty!';
+    this.actualStep = 3;
   }
 }

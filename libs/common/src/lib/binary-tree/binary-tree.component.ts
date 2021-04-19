@@ -10,10 +10,12 @@ declare let LeaderLine: any;
   styleUrls: ['./binary-tree.component.scss']
 })
 export class BinaryTreeComponent implements AfterViewInit, OnDestroy {
-  @Input() values: string[];
+  @Input() values: string[] = [];
+  @Input() activeValues: boolean[] = [];
+  @Input() time?: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public lines: any[] = [];
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(@Inject(DOCUMENT) private readonly document: Document) {}
 
   ngOnDestroy(): void {
     for (let i = 0; i < this.lines.length; i++) {

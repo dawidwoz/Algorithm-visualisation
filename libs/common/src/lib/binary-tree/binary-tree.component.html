@@ -3,7 +3,10 @@
     <div class="row" *ngIf="powerOfTwo(row + 1)">
       <div *ngFor="let number of [].constructor(row + 1); index as element">
         <major-project-binary-tree-element
-          [value]="values[row + element]" [id]="row + element + '__element'"
+          [value]="values[row + element]"
+          [time]="time"
+          [active]="activeValues[row + element]"
+          [id]="row + element + '__element'"
         ></major-project-binary-tree-element>
       </div>
     </div>

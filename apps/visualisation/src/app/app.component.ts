@@ -66,7 +66,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.title = 'Priority Queue';
         this.description =
           'Use animation below to see how the priority queue works. \n' +
-          'You can create a heap array version of the size from 5 to 20.';
+          'You can create a heap array version of the size from 5 to 20. \n' +
+          '* The binary tree can be displayed up to 15 elements. ';
         break;
       case RoutesName['hash-function']:
         this.title = 'Hash functions with collision handling';
