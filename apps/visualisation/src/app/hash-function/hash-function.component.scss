@@ -16,6 +16,10 @@
       align-items: center;
       flex-wrap: wrap;
       width: 100%;
+
+      &.--chaining {
+        flex-direction: column;
+      }
   
       *:nth-child(n + 2) {
         margin-left: -3px;

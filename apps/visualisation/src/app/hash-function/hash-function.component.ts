@@ -6,7 +6,14 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { ElementComponent, EmptySign, NULL, setActiveElement } from '@major-project/common';
-import { insertHashFunction, insertHashFunctionLinearProbingSteps, removeHashFunction, removeHashFunctionLinearProbingSteps, searchHashFunction, searchHashFunctionLinearProbingSteps } from '@major-project/hash-function';
+import {
+  insertHashFunction,
+  insertHashFunctionLinearProbingSteps,
+  removeHashFunction,
+  removeHashFunctionLinearProbingSteps,
+  searchHashFunction,
+  searchHashFunctionLinearProbingSteps
+} from '@major-project/hash-function';
 
 @Component({
   selector: 'major-project-hash-function',
@@ -48,11 +55,15 @@ export class HashFunctionComponent {
     this.currentSteps = undefined;
     switch (this.usedImplementation) {
       case 'separate-chaining':
+        this.createSeparateChaining();
+        break;
       case 'linear-probing':
         this.createArrayImplementation();
         break;
     }
   }
+
+  createSeparateChaining(): void {}
 
   createArrayImplementation(): void {
     const size =

@@ -37,7 +37,7 @@
       <h2 *ngIf="randomNumber">
         <i>f(x)= x % {{ randomNumber }}</i>
       </h2>
-      <div class="hash-function __animationArea">
+      <div class="hash-function __animationArea" [class.--chaining]="usedImplementation === 'separate-chaining'">
         <template #animationArea></template>
       </div>
     </div>

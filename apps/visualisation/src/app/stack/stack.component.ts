@@ -114,11 +114,14 @@ export class StackComponent {
       element.instance.texts = [];
       element.instance.badgeExtraMargin = false;
     });
+    let currentPosition = this.topPosition;
+    console.log(this.elements.length);
     if (this.elements.length === this.topPosition) {
-      this.topPosition--;
-      this.elements[this.topPosition].instance.badgeExtraMargin = true;
+      currentPosition = this.topPosition - 1;
+      this.elements[currentPosition].instance.badgeExtraMargin = true;
     }
-    this.elements[this.topPosition].instance.texts = ['top'];
+    console.log(currentPosition);
+    this.elements[currentPosition].instance.texts = ['top'];
   }
 
   setArrowDirection(): void {
@@ -240,12 +243,13 @@ export class StackComponent {
   }
 
   async animateTopFirstStep(): Promise<void> {
+    const currentPosition = this.topPosition === this.elements.length ? this.topPosition - 1 : this.topPosition;
     this.inProgress = true;
-    this.elements[this.topPosition].instance.animation = true;
+    this.elements[currentPosition].instance.animation = true;
     this.actualStep = 1;
     await new Promise<boolean>(resolve =>
       setTimeout(() => {
-        this.elements[this.topPosition].instance.animation = false;
+        this.elements[currentPosition].instance.animation = false;
         resolve(true);
       }, this.animationSpeedInput.value)
     );
