@@ -6,6 +6,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import {
+  ArrowComponent,
   ElementComponent,
   ElementWrapperComponent,
   EmptySign,
@@ -85,13 +86,9 @@ export class HashFunctionComponent {
         componentFactory
       );
       componentRefWrapper.instance.noReverse = true;
-      const componentRefElement = componentRefWrapper.instance.addComponent(ElementComponent, true);
-      componentRefElement.instance.number = i;
-      componentRefElement.instance.value = NULL;
+      const componentRefElement = componentRefWrapper.instance.addComponent(ElementComponent);
+      componentRefElement.instance.value = i.toString();
       componentRefElement.instance.active = true;
-      const componentRefElement2 = componentRefWrapper.instance.addComponent(ElementComponent, true);
-      componentRefElement2.instance.value = NULL;
-      componentRefElement2.instance.active = true;
       
       this.elementsSeparateChaining.push(componentRefWrapper);
     }
@@ -189,25 +186,10 @@ export class HashFunctionComponent {
   }
 
   pushSeparateChaining(value: number): void {
-    let place = value % this.randomNumber;
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-      if (this.elementsLinear[place] === undefined) {
-        break;
-      }
-      if (this.elementsLinear[place].instance.value === NULL) {
-        break;
-      }
-      place = place + this.randomNumber;
-    }
-    for (let i = this.elementsLinear.length; i < place + 1; i++) {
-      this.addElement('null', false);
-    }
-    const element = this.elementsLinear[place].instance;
-    if (element.value === NULL) {
-      element.value = value.toString();
-      setActiveElement(this.elementsLinear, element);
-    }
+    const place = value % this.randomNumber;
+    this.elementsSeparateChaining[place].instance.addComponent(ArrowComponent);
+    const componentRef = this.elementsSeparateChaining[place].instance.addComponent(ElementComponent, true);
+    componentRef.instance.value = value.toString();
   }
 
   performSearch(): void {

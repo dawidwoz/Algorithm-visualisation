@@ -32,12 +32,15 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="hash-function __animationWrapper">
+  <div class="hash-function __animationWrapper" [class.--to-left]="usedImplementation === 'separate-chaining'">
     <div>
       <h2 *ngIf="randomNumber">
         <i>f(x)= x % {{ randomNumber }}</i>
       </h2>
-      <div class="hash-function __animationArea" [class.--chaining]="usedImplementation === 'separate-chaining'">
+      <div
+        class="hash-function __animationArea"
+        [class.--chaining]="usedImplementation === 'separate-chaining'"
+      >
         <template #animationArea></template>
       </div>
     </div>
@@ -55,7 +58,7 @@
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elementsLinear.length == 0"
+      [disabled]="elementsLinear.length == 0 && elementsSeparateChaining.length == 0"
       (click)="pushElement()"
     >
       INSERT
@@ -68,14 +71,14 @@
       min="1"
       max="999"
       #newElement
-      [disabled]="elementsLinear.length == 0"
+      [disabled]="elementsLinear.length == 0 && elementsSeparateChaining.length == 0"
       placeholder="Numeric element value"
     />
     <button
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elementsLinear.length == 0"
+      [disabled]="elementsLinear.length == 0 && elementsSeparateChaining.length == 0"
       (click)="createHashFunction()"
     >
       CLEAR
@@ -84,36 +87,36 @@
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elementsLinear.length == 0"
+      [disabled]="elementsLinear.length == 0 && elementsSeparateChaining.length == 0"
       (click)="performRemove()"
     >
       REMOVE ELEMENT
     </button>
     <input
-    [disabled]="elementsLinear.length == 0"
-    matInput
-    class="form-control mr-1"
-    type="number"
-    placeholder=" Number"
-    #remove
-  />
+      [disabled]="elementsLinear.length == 0 && elementsSeparateChaining.length == 0"
+      matInput
+      class="form-control mr-1"
+      type="number"
+      placeholder=" Number"
+      #remove
+    />
     <button
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elementsLinear.length == 0"
+      [disabled]="elementsLinear.length == 0 && elementsSeparateChaining.length == 0"
       (click)="performSearch()"
     >
       SEARCH
     </button>
     <input
-    matInput
-    [disabled]="elementsLinear.length == 0"
-    class="form-control mr-1"
-    type="number"
-    placeholder=" Number"
-    #search
-  />
+      matInput
+      [disabled]="elementsLinear.length == 0 && elementsSeparateChaining.length == 0"
+      class="form-control mr-1"
+      type="number"
+      placeholder=" Number"
+      #search
+    />
     <b #result></b>
   </div>
 </div>

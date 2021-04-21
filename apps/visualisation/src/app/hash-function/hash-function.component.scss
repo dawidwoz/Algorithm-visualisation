@@ -8,6 +8,11 @@
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
+
+      &.--to-left {
+        justify-content: flex-start;
+        overflow: hidden;
+      }
     }
     &.__animationArea {
       display: flex;
@@ -19,6 +24,8 @@
 
       &.--chaining {
         flex-direction: column;
+        margin-left: 0.5rem;
+        align-items: flex-start;
       }
   
       *:nth-child(n + 2) {
