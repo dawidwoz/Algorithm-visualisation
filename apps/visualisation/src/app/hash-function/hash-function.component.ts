@@ -5,7 +5,13 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ElementComponent, EmptySign, NULL, setActiveElement } from '@major-project/common';
+import {
+  ElementComponent,
+  ElementWrapperComponent,
+  EmptySign,
+  NULL,
+  setActiveElement
+} from '@major-project/common';
 import {
   insertHashFunction,
   insertHashFunctionLinearProbingSteps,
@@ -35,7 +41,8 @@ export class HashFunctionComponent {
   public actualStep: number = 0;
 
   public implementation?: string;
-  public elements: ComponentRef<ElementComponent>[] = [];
+  public elementsLinear: ComponentRef<ElementComponent>[] = [];
+  public elementsSeparateChaining: ComponentRef<ElementWrapperComponent>[] = [];
   public usedImplementation?: string;
   public randomNumber: number = 0;
 
@@ -51,8 +58,14 @@ export class HashFunctionComponent {
   createHashFunction(): void {
     this.usedImplementation = this.implementation;
     this.animationArea.clear();
-    this.elements = [];
+    this.elementsLinear = [];
+    this.elementsSeparateChaining = [];
     this.currentSteps = undefined;
+    const size =
+      this.sizeInput.element.nativeElement.value !== ''
+        ? this.sizeInput.element.nativeElement.value
+        : (this.sizeInput.element.nativeElement.value = 5);
+    this.randomNumber = size;
     switch (this.usedImplementation) {
       case 'separate-chaining':
         this.createSeparateChaining();
@@ -63,15 +76,30 @@ export class HashFunctionComponent {
     }
   }
 
-  createSeparateChaining(): void {}
+  createSeparateChaining(): void {
+    for (let i = 0; i < this.randomNumber; i++) {
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+        ElementWrapperComponent
+      );
+      const componentRefWrapper = this.animationArea.createComponent<ElementWrapperComponent>(
+        componentFactory
+      );
+      componentRefWrapper.instance.noReverse = true;
+      const componentRefElement = componentRefWrapper.instance.addComponent(ElementComponent, true);
+      componentRefElement.instance.number = i;
+      componentRefElement.instance.value = NULL;
+      componentRefElement.instance.active = true;
+      const componentRefElement2 = componentRefWrapper.instance.addComponent(ElementComponent, true);
+      componentRefElement2.instance.value = NULL;
+      componentRefElement2.instance.active = true;
+      
+      this.elementsSeparateChaining.push(componentRefWrapper);
+    }
+    console.log(this.elementsSeparateChaining);
+  }
 
   createArrayImplementation(): void {
-    const size =
-      this.sizeInput.element.nativeElement.value !== ''
-        ? this.sizeInput.element.nativeElement.value
-        : (this.sizeInput.element.nativeElement.value = 5);
-    this.randomNumber = size;
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < this.randomNumber; i++) {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
         ElementComponent
       );
@@ -79,12 +107,12 @@ export class HashFunctionComponent {
       componentRef.instance.number = i;
       componentRef.instance.value = NULL;
       componentRef.instance.active = true;
-      this.elements.push(componentRef);
+      this.elementsLinear.push(componentRef);
     }
   }
 
   setActiveElement(instance: ElementComponent, keepCurrent: boolean = false): void {
-    for (const element of this.elements) {
+    for (const element of this.elementsLinear) {
       const currentInstance = element.instance;
       if (currentInstance === instance) {
         currentInstance.active = true;
@@ -99,10 +127,10 @@ export class HashFunctionComponent {
       ElementComponent
     );
     const componentRef = this.animationArea.createComponent<ElementComponent>(componentFactory);
-    componentRef.instance.number = this.elements.length;
+    componentRef.instance.number = this.elementsLinear.length;
     componentRef.instance.value = value;
-    this.elements.push(componentRef);
-    setActiveElement(this.elements, componentRef.instance, keepCurrentActive);
+    this.elementsLinear.push(componentRef);
+    setActiveElement(this.elementsLinear, componentRef.instance, keepCurrentActive);
   }
 
   pushElement(): void {
@@ -128,11 +156,11 @@ export class HashFunctionComponent {
 
   pushLinearProbing(value: number): void {
     const place = value % this.randomNumber;
-    for (let i = place; i < this.elements.length; i++) {
-      const element = this.elements[i].instance;
+    for (let i = place; i < this.elementsLinear.length; i++) {
+      const element = this.elementsLinear[i].instance;
       if (element.value === NULL) {
         element.value = value.toString();
-        setActiveElement(this.elements, element);
+        setActiveElement(this.elementsLinear, element);
         this.actualStep = 2;
         return;
       }
@@ -143,10 +171,10 @@ export class HashFunctionComponent {
       }
     }
     for (let j = 0; j < place; j++) {
-      const element = this.elements[j].instance;
+      const element = this.elementsLinear[j].instance;
       if (element.value === NULL) {
         element.value = value.toString();
-        setActiveElement(this.elements, element);
+        setActiveElement(this.elementsLinear, element);
         this.actualStep = 2;
         return;
       }
@@ -164,21 +192,21 @@ export class HashFunctionComponent {
     let place = value % this.randomNumber;
     // eslint-disable-next-line no-constant-condition
     while (true) {
-      if (this.elements[place] === undefined) {
+      if (this.elementsLinear[place] === undefined) {
         break;
       }
-      if (this.elements[place].instance.value === NULL) {
+      if (this.elementsLinear[place].instance.value === NULL) {
         break;
       }
       place = place + this.randomNumber;
     }
-    for (let i = this.elements.length; i < place + 1; i++) {
+    for (let i = this.elementsLinear.length; i < place + 1; i++) {
       this.addElement('null', false);
     }
-    const element = this.elements[place].instance;
+    const element = this.elementsLinear[place].instance;
     if (element.value === NULL) {
       element.value = value.toString();
-      setActiveElement(this.elements, element);
+      setActiveElement(this.elementsLinear, element);
     }
   }
 
@@ -216,13 +244,13 @@ export class HashFunctionComponent {
       case 'separate-chaining':
         // eslint-disable-next-line no-constant-condition
         while (true) {
-          if (this.elements[place] === undefined) {
+          if (this.elementsLinear[place] === undefined) {
             break;
           }
-          if (this.elements[place].instance.value === element.toString()) {
-            setActiveElement(this.elements, this.elements[place].instance);
+          if (this.elementsLinear[place].instance.value === element.toString()) {
+            setActiveElement(this.elementsLinear, this.elementsLinear[place].instance);
             if (removeElement) {
-              this.elements[place].instance.value = 'null';
+              this.elementsLinear[place].instance.value = 'null';
             }
             return;
           }
@@ -231,25 +259,25 @@ export class HashFunctionComponent {
         this.resultInput.element.nativeElement.innerHTML = 'Not found in the array!';
         break;
       case 'linear-probing':
-        for (let i = place; i < this.elements.length; i++) {
-          const elementInstance = this.elements[i].instance;
+        for (let i = place; i < this.elementsLinear.length; i++) {
+          const elementInstance = this.elementsLinear[i].instance;
           if (elementInstance.value === element.toString()) {
             if (removeElement) {
               elementInstance.value = EmptySign;
             }
             this.actualStep = 3;
-            setActiveElement(this.elements, elementInstance);
+            setActiveElement(this.elementsLinear, elementInstance);
             return;
           }
         }
         for (let j = 0; j < place; j++) {
-          const elementInstance = this.elements[j].instance;
+          const elementInstance = this.elementsLinear[j].instance;
           if (elementInstance.value === element.toString()) {
             if (removeElement) {
               elementInstance.value = EmptySign;
             }
             this.actualStep = 3;
-            setActiveElement(this.elements, elementInstance);
+            setActiveElement(this.elementsLinear, elementInstance);
             return;
           }
         }

@@ -191,11 +191,11 @@ export class QueueComponent {
     const addElements: ComponentRef<ElementComponent>[] = [];
     setActiveElement(this.elements, undefined, false);
     for (const value of values) {
-      componentRef.instance.addComponent<ElementComponent>(ElementComponent);
-      componentRef.instance.componentRef.instance.value = value;
-      componentRef.instance.componentRef.instance.time = this.animationSpeedInput.value;
-      componentRef.instance.componentRef.instance.active = true;
-      addElements.push(componentRef.instance.componentRef);
+      const localComponentRef = componentRef.instance.addComponent<ElementComponent>(ElementComponent);
+      localComponentRef.instance.value = value;
+      localComponentRef.instance.time = this.animationSpeedInput.value;
+      localComponentRef.instance.active = true;
+      addElements.push(localComponentRef);
     }
     this.elements = this.elements.concat(addElements.reverse());
   }

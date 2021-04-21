@@ -175,13 +175,13 @@ export class StackComponent {
     const addElements: ComponentRef<ElementComponent>[] = [];
     setActiveElement(this.elements, undefined, false);
     for (const value of values) {
-      componentRef.instance.addComponent<ElementComponent>(ElementComponent);
-      componentRef.instance.componentRef.instance.value = value;
-      componentRef.instance.componentRef.instance.time = this.animationSpeedInput.value;
-      componentRef.instance.componentRef.instance.active = true;
+      const localComponentRef = componentRef.instance.addComponent<ElementComponent>(ElementComponent);
+      localComponentRef.instance.value = value;
+      localComponentRef.instance.time = this.animationSpeedInput.value;
+      localComponentRef.instance.active = true;
       const triggerElement = componentRef.location.nativeElement;
       this.animationArea.element.nativeElement.parentNode.prepend(triggerElement);
-      addElements.push(componentRef.instance.componentRef);
+      addElements.push(localComponentRef);
     }
     this.elements = addElements.reverse().concat(this.elements);
   }

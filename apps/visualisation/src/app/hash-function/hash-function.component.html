@@ -55,7 +55,7 @@
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elements.length == 0"
+      [disabled]="elementsLinear.length == 0"
       (click)="pushElement()"
     >
       INSERT
@@ -68,14 +68,14 @@
       min="1"
       max="999"
       #newElement
-      [disabled]="elements.length == 0"
+      [disabled]="elementsLinear.length == 0"
       placeholder="Numeric element value"
     />
     <button
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elements.length == 0"
+      [disabled]="elementsLinear.length == 0"
       (click)="createHashFunction()"
     >
       CLEAR
@@ -84,13 +84,13 @@
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elements.length == 0"
+      [disabled]="elementsLinear.length == 0"
       (click)="performRemove()"
     >
       REMOVE ELEMENT
     </button>
     <input
-    [disabled]="elements.length == 0"
+    [disabled]="elementsLinear.length == 0"
     matInput
     class="form-control mr-1"
     type="number"
@@ -101,14 +101,14 @@
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elements.length == 0"
+      [disabled]="elementsLinear.length == 0"
       (click)="performSearch()"
     >
       SEARCH
     </button>
     <input
     matInput
-    [disabled]="elements.length == 0"
+    [disabled]="elementsLinear.length == 0"
     class="form-control mr-1"
     type="number"
     placeholder=" Number"
