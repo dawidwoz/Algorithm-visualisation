@@ -31,6 +31,20 @@
         />
       </mat-form-field>
     </div>
+    <div class="form-group ml-5">
+      <label for="anim_speed">Animation speed:&nbsp;</label>
+      <mat-slider
+        class="input-control"
+        thumbLabel
+        color="primary"
+        invert
+        tickInterval="1000"
+        value="1500"
+        min="10"
+        max="5000"
+        #animationSpeed
+      ></mat-slider>
+    </div>
   </div>
   <div class="hash-function __animationWrapper" [class.--to-left]="usedImplementation === 'separate-chaining'">
     <div>

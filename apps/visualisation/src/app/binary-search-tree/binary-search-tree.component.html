@@ -1,45 +1,26 @@
 <div class="binary-search-tree">
   <div class="form-inline row mb-2">
-    <button
-      mat-raised-button
-      color="primary"
-      class="mr-1"
-      [disabled]="!implementation"
-      (click)="createHashFunction()"
-    >
-      CREATE FUNCTION
+    <button mat-raised-button color="primary" class="mr-1" (click)="createBinaryTree()">
+      CREATE BINARY SEARCH TREE
     </button>
-    <div class="form-group">
-      <label class="mr-1" for="datastructure">using</label>
-      <select class="form-control mr-1" (change)="setImplementation($event.target.value)">
-        <option value="select" selected hidden>Select implementation</option>
-        <option value="separate-chaining">Separate chaining</option>
-        <option value="linear-probing">Linear Probing</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="mr-2" for="adt_size"> Hash table size:</label>
-      <mat-form-field class="size_input">
-        <input
-          matInput
-          class="form-control mr-1"
-          type="number"
-          [value]="randomNumber"
-          [min]="randomNumber"
-          max="20"
-          #size
-        />
-      </mat-form-field>
+    <div class="form-group ml-2">
+      <label for="anim_speed">Animation speed:&nbsp;</label>
+      <mat-slider
+        class="input-control"
+        thumbLabel
+        color="primary"
+        invert
+        tickInterval="1000"
+        value="1500"
+        min="10"
+        max="5000"
+        #animationSpeed
+      ></mat-slider>
     </div>
   </div>
   <div class="binary-search-tree __animationWrapper">
-    <div>
-      <h2>
-        <i>f(x)= x % {{ randomNumber }}</i>
-      </h2>
-      <div class="binary-search-tree __animationArea">
-        <template #animationArea></template>
-      </div>
+    <div class="binary-search-tree __animationArea">
+      <template #animationArea></template>
     </div>
   </div>
 
@@ -69,7 +50,7 @@
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0"
-      (click)="createHashFunction()"
+      (click)="createBinaryTree()"
     >
       CLEAR
     </button>
@@ -78,35 +59,35 @@
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0"
-      (click)="getElement(true)"
+      (click)="getElement()"
     >
       REMOVE ELEMENT
     </button>
     <input
-    [disabled]="elements.length == 0"
-    matInput
-    class="form-control mr-1"
-    type="number"
-    placeholder=" Number"
-    #remove
-  />
+      [disabled]="elements.length == 0"
+      matInput
+      class="form-control mr-1"
+      type="number"
+      placeholder=" Number"
+      #remove
+    />
     <button
       mat-raised-button
       color="primary"
       class="mr-1"
       [disabled]="elements.length == 0"
-      (click)="getElement(false)"
+      (click)="getElement()"
     >
       SEARCH
     </button>
     <input
-    matInput
-    [disabled]="elements.length == 0"
-    class="form-control mr-1"
-    type="number"
-    placeholder=" Number"
-    #search
-  />
+      matInput
+      [disabled]="elements.length == 0"
+      class="form-control mr-1"
+      type="number"
+      placeholder=" Number"
+      #search
+    />
     <b #result></b>
   </div>
 </div>
