@@ -88,11 +88,10 @@ export class HashFunctionComponent {
       componentRefWrapper.instance.noReverse = true;
       const componentRefElement = componentRefWrapper.instance.addComponent(ElementComponent);
       componentRefElement.instance.value = i.toString();
-      componentRefElement.instance.active = true;
-      
+      componentRefElement.instance.active = false;
+
       this.elementsSeparateChaining.push(componentRefWrapper);
     }
-    console.log(this.elementsSeparateChaining);
   }
 
   createArrayImplementation(): void {
@@ -187,22 +186,52 @@ export class HashFunctionComponent {
 
   pushSeparateChaining(value: number): void {
     const place = value % this.randomNumber;
-    this.elementsSeparateChaining[place].instance.addComponent(ArrowComponent);
-    const componentRef = this.elementsSeparateChaining[place].instance.addComponent(ElementComponent, true);
-    componentRef.instance.value = value.toString();
+    let isInArray = false;
+    const element = this.elementsSeparateChaining[place].instance;
+    element.elements.forEach(elem => {
+      elem.instance.active = false;
+      if (elem.instance.value == value) {
+        isInArray = true;
+        elem.instance.active = true;
+        return;
+      }
+    });
+    if (!isInArray) {
+      element.addComponent(ArrowComponent, true);
+      const componentRef = this.elementsSeparateChaining[place].instance.addComponent(
+        ElementComponent,
+        true
+      );
+      componentRef.instance.value = value.toString();
+      componentRef.instance.active = true;
+    } else {
+      this.resultInput.element.nativeElement.innerHTML = 'Element already in the array!';
+    }
   }
 
   performSearch(): void {
     this.actualStep = 1;
     this.currentTitle = searchHashFunction;
-    this.currentSteps = searchHashFunctionLinearProbingSteps;
+    switch (this.usedImplementation) {
+      case 'separate-chaining':
+        break;
+      case 'linear-probing':
+        this.currentSteps = searchHashFunctionLinearProbingSteps;
+        break;
+    }
     this.getElement(false);
   }
 
   performRemove(): void {
     this.actualStep = 1;
     this.currentTitle = removeHashFunction;
-    this.currentSteps = removeHashFunctionLinearProbingSteps;
+    switch (this.usedImplementation) {
+      case 'separate-chaining':
+        break;
+      case 'linear-probing':
+        this.currentSteps = removeHashFunctionLinearProbingSteps;
+        break;
+    }
     this.getElement(true);
   }
 
@@ -221,24 +250,28 @@ export class HashFunctionComponent {
           : null;
     }
     if (!element) return;
-    let place = element % this.randomNumber;
+    const place = element % this.randomNumber;
+    let found = false;
     switch (this.usedImplementation) {
       case 'separate-chaining':
-        // eslint-disable-next-line no-constant-condition
-        while (true) {
-          if (this.elementsLinear[place] === undefined) {
-            break;
-          }
-          if (this.elementsLinear[place].instance.value === element.toString()) {
-            setActiveElement(this.elementsLinear, this.elementsLinear[place].instance);
-            if (removeElement) {
-              this.elementsLinear[place].instance.value = 'null';
+        for (let i = 0; i < this.elementsSeparateChaining.length; i++) {
+          const elemWrapper = this.elementsSeparateChaining[i].instance;
+          console.log(elemWrapper.elements);
+          for (let j = 0; j < elemWrapper.elements.length; j++) {
+            const instance = elemWrapper.elements[j].instance;
+            instance.active = false;
+            if (i == place && instance.value === element) {
+              instance.active = true;
+              found = true;
+              if (removeElement) {
+                elemWrapper.elements[j - 1].destroy();
+                elemWrapper.elements[j].destroy();
+                elemWrapper.elements.splice(j - 1, 2);
+              }
             }
-            return;
           }
-          place = place + this.randomNumber;
         }
-        this.resultInput.element.nativeElement.innerHTML = 'Not found in the array!';
+        if (!found) this.resultInput.element.nativeElement.innerHTML = 'Not found in the array!';
         break;
       case 'linear-probing':
         for (let i = place; i < this.elementsLinear.length; i++) {
