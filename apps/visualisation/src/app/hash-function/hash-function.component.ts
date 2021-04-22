@@ -16,10 +16,13 @@ import {
 import {
   insertHashFunction,
   insertHashFunctionLinearProbingSteps,
+  insertHashFunctionSeparateChainingSteps,
   removeHashFunction,
   removeHashFunctionLinearProbingSteps,
+  removeHashFunctionSeparateChainingSteps,
   searchHashFunction,
-  searchHashFunctionLinearProbingSteps
+  searchHashFunctionLinearProbingSteps,
+  searchHashFunctionSeparateChainingSteps
 } from '@major-project/hash-function';
 
 @Component({
@@ -141,6 +144,7 @@ export class HashFunctionComponent {
     this.currentTitle = insertHashFunction;
     switch (this.usedImplementation) {
       case 'separate-chaining':
+        this.currentSteps = insertHashFunctionSeparateChainingSteps;
         this.pushSeparateChaining(value);
         break;
       case 'linear-probing':
@@ -188,6 +192,7 @@ export class HashFunctionComponent {
     const place = value % this.randomNumber;
     let isInArray = false;
     const element = this.elementsSeparateChaining[place].instance;
+    this.actualStep = 2;
     element.elements.forEach(elem => {
       elem.instance.active = false;
       if (elem.instance.value == value) {
@@ -204,7 +209,9 @@ export class HashFunctionComponent {
       );
       componentRef.instance.value = value.toString();
       componentRef.instance.active = true;
+      this.actualStep = 4;
     } else {
+      this.actualStep = 3;
       this.resultInput.element.nativeElement.innerHTML = 'Element already in the array!';
     }
   }
@@ -214,6 +221,7 @@ export class HashFunctionComponent {
     this.currentTitle = searchHashFunction;
     switch (this.usedImplementation) {
       case 'separate-chaining':
+        this.currentSteps = searchHashFunctionSeparateChainingSteps;
         break;
       case 'linear-probing':
         this.currentSteps = searchHashFunctionLinearProbingSteps;
@@ -227,6 +235,7 @@ export class HashFunctionComponent {
     this.currentTitle = removeHashFunction;
     switch (this.usedImplementation) {
       case 'separate-chaining':
+        this.currentSteps = removeHashFunctionSeparateChainingSteps;
         break;
       case 'linear-probing':
         this.currentSteps = removeHashFunctionLinearProbingSteps;
@@ -254,15 +263,17 @@ export class HashFunctionComponent {
     let found = false;
     switch (this.usedImplementation) {
       case 'separate-chaining':
+        this.actualStep = 2;
         for (let i = 0; i < this.elementsSeparateChaining.length; i++) {
           const elemWrapper = this.elementsSeparateChaining[i].instance;
-          console.log(elemWrapper.elements);
           for (let j = 0; j < elemWrapper.elements.length; j++) {
             const instance = elemWrapper.elements[j].instance;
             instance.active = false;
+            this.actualStep = 4;
             if (i == place && instance.value === element) {
               instance.active = true;
               found = true;
+              this.actualStep = 3;
               if (removeElement) {
                 elemWrapper.elements[j - 1].destroy();
                 elemWrapper.elements[j].destroy();
@@ -271,7 +282,10 @@ export class HashFunctionComponent {
             }
           }
         }
-        if (!found) this.resultInput.element.nativeElement.innerHTML = 'Not found in the array!';
+        if (!found) {
+          this.actualStep = 5; 
+          this.resultInput.element.nativeElement.innerHTML = 'Not found in the array!';
+        }
         break;
       case 'linear-probing':
         for (let i = place; i < this.elementsLinear.length; i++) {
