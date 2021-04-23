@@ -29,7 +29,7 @@
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elements.length == 0"
+      [disabled]="values.length == 0"
       (click)="pushElement()"
     >
       INSERT
@@ -42,14 +42,14 @@
       min="1"
       max="999"
       #newElement
-      [disabled]="elements.length == 0"
+      [disabled]="values.length == 0"
       placeholder="Numeric element value"
     />
     <button
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elements.length == 0"
+      [disabled]="values.length == 0"
       (click)="createBinaryTree()"
     >
       CLEAR
@@ -58,13 +58,13 @@
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elements.length == 0"
-      (click)="getElement()"
+      [disabled]="values.length == 0"
+      (click)="getElement(true)"
     >
       REMOVE ELEMENT
     </button>
     <input
-      [disabled]="elements.length == 0"
+      [disabled]="values.length == 0"
       matInput
       class="form-control mr-1"
       type="number"
@@ -75,14 +75,14 @@
       mat-raised-button
       color="primary"
       class="mr-1"
-      [disabled]="elements.length == 0"
-      (click)="getElement()"
+      [disabled]="values.length == 0"
+      (click)="getElement(false)"
     >
       SEARCH
     </button>
     <input
       matInput
-      [disabled]="elements.length == 0"
+      [disabled]="values.length == 0"
       class="form-control mr-1"
       type="number"
       placeholder=" Number"
