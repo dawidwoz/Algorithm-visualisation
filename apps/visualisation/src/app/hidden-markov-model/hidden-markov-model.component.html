@@ -1,5 +1,5 @@
 <div class="hidden-markov-model">
-  <div class="form-inline row mb-2">
+  <div class="form-inline row p-4 mb-2">
     <button
       mat-raised-button
       color="primary"
@@ -9,7 +9,7 @@
     >
       CREATE FUNCTION
     </button>
-    <div class="form-group">
+    <div class="form-group d-inline-flex mt-2">
       <label class="mr-1" for="datastructure">using</label>
       <select class="form-control mr-1" (change)="setImplementation($event.target.value)">
         <option value="select" selected hidden>Select implementation</option>
@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <div class="form-inline row mt-2">
+  <div class="form-inline row mt-2 p-1">
     <button
       mat-raised-button
       color="primary"

@@ -41,9 +41,8 @@
         <div class="app-content __visualisation __info">
           <h1>{{ title }}</h1>
           <div class="app-content __visualisation __info --description">
-            <pre>
-                    {{ description }}
-            </pre>
+            <p [innerHTML]="description">
+            </p>
           </div>
         </div>
         <router-outlet></router-outlet>

@@ -8,6 +8,9 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+    }
   }
   &.__animationArea {
     display: inline-flex;
@@ -30,8 +33,24 @@
     padding: 1rem;
     text-align: center;
     border: 1px solid #c3c3c3;
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
   }
+
   &.__addInput {
     width: 15%;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+  }
+
+  &.__result {
+    width: 25%;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
   }
 }

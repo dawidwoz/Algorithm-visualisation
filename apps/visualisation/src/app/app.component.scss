@@ -17,6 +17,10 @@ mat-nav-list {
         flex-direction: row;
         justify-content: flex-start;
 
+        @media screen and (max-width: 768px) {
+            display: block;
+        }
+
         div {
             padding: 2rem;
         }
@@ -24,19 +28,37 @@ mat-nav-list {
         img {
             min-width: 75%;
             max-width: 75%;
+
+            @media screen and (max-width: 768px) {
+                display: none;
+            }
         }
     }
 
     &.__title {
         h1 {
             font-size: 3rem;
+
+            @media screen and (max-width: 768px) {
+                font-size: 2rem;
+            }
         }
     }
 
     &.__language {
         mat-form-field {
             width: 6rem;
+
+            @media screen and (max-width: 768px) {
+                width: 100%;
+            }
         }
+    }
+
+    &.__logo {
+            @media screen and (max-width: 768px) {
+                display: none;
+            }
     }
 }
 
@@ -64,6 +86,10 @@ hr {
             margin-bottom: 2rem;
             justify-content: flex-end;
 
+            @media screen and (max-width: 768px) {
+                display: block;
+            }
+
             h1 {
                 width: 70%;
             }
@@ -72,10 +98,11 @@ hr {
                 margin-bottom: 0;
                 align-self: flex-end;
 
-                pre {
+                p {
                     width: 100%;
                     font-size: 100%;
-                    text-align: right;
+                    text-align: justify;
+                    font-style: italic;
                     color: black;
                 }
             }
@@ -92,7 +119,7 @@ hr {
         flex-direction: row;
 
         p {
-            margin-right: 5rem;
+            margin-right: 1rem;
         }
 
         a, a:hover {

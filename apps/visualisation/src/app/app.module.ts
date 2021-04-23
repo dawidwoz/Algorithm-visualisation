@@ -67,8 +67,8 @@ const icons = {
     MatListModule,
     MatIconModule,
     NgxBootstrapIconsModule.forRoot(icons, {
-      width: '6rem', 
-      height: '6rem' 
+      width: '6vw', 
+      height: '6vw' 
     })
   ],
   providers: [],

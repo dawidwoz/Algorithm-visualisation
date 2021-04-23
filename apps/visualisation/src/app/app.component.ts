@@ -54,7 +54,8 @@ export class AppComponent implements OnInit, OnDestroy {
       case RoutesName.stack:
         this.title = 'Stack';
         this.description =
-          'Use animation below to see how the stack works. \n You can create an array and linked-list version of the size from 5 to 20.';
+          `Use animation below to see how the stack works. 
+          <p>You can create an array and linked-list version of the size from 5 to 20.</.p>`;
         break;
       case RoutesName.queue:
         this.title = 'Queue';

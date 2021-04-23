@@ -1,7 +1,7 @@
-<div class="element __break" *ngIf="break"></div>
-<div class="element __wrapper" [class.--right]="right" [class.--left]="left">
+<div class="elementTree __break" *ngIf="break"></div>
+<div class="elementTree __wrapper" [class.--right]="right" [class.--left]="left">
   <span
-    class="element __value"
+    class="elementTree __value"
     [class.--active]="active"
     [class.--hidden]="value === undefined"
     [@onStart]="{ value: undefined, params: { time: time !== undefined ? time + 'ms' : '1500ms' } }"
