@@ -44,9 +44,13 @@ export class BinarySearchTreeComponent {
   }
 
   pushElement(): void {
-    const value: string = this.newElementInput.element.nativeElement.value;
+    let value = this.newElementInput.element.nativeElement.value;
     if (value === '') return;
-    if (this.values[0] === NULL) {
+    value = parseInt(value);
+    value = value > 999 ? 999 : value;
+    value = 1 > value ? 1 : value;
+    this.newElementInput.element.nativeElement.value = value;
+    if (this.values[0] === NULL || !this.values[0]) {
       this.values[0] = value;
       return;
     }
@@ -78,7 +82,6 @@ export class BinarySearchTreeComponent {
       }
     }
     this.setActiveElement(valueNumber);
-    console.log(this.booleanElements);
     this.updateBinaryTree();
   }
 
@@ -117,7 +120,11 @@ export class BinarySearchTreeComponent {
       if (currentNumber == valueNumber) {
         this.booleanElements[i] = true;
         this.resultInput.element.nativeElement.innerHTML = valueNumber;
-        if (removeElement) this.removeElement(i);
+        if (removeElement) {
+          this.removeElement(i);
+          this.setActiveElement(parseInt(this.values[i]));
+          this.updateBinaryTree();
+        }
         break;
       }
       if (currentNumber > valueNumber) {
@@ -144,18 +151,69 @@ export class BinarySearchTreeComponent {
 
   removeElement(indexToRemove: number): void {
     let indexToReplace = indexToRemove;
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-      if (this.values[2 * indexToReplace + 2] !== undefined) {
-        indexToReplace = 2 * indexToReplace + 2;
-      } else {
-        break;
+    if (this.values[2 * indexToRemove + 1] && !this.values[2 * indexToRemove + 2]) {
+      indexToReplace = 2 * indexToRemove + 1;
+      this.values[indexToRemove] = this.values[indexToReplace];
+      this.values[indexToReplace] = undefined;
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        if (this.values[2 * indexToReplace + 1]) {
+          this.values[indexToReplace] = this.values[2 * indexToReplace + 1];
+          indexToReplace = 2 * indexToReplace + 1;
+        } else {
+          this.values[indexToReplace] = undefined;
+          break;
+        }
       }
+      return;
     }
-    this.values[indexToRemove] = this.values[indexToReplace];
-    this.values[indexToReplace] = undefined;
-    this.setActiveElement(parseInt(this.values[indexToRemove]));
-    this.updateBinaryTree();
+    if (!this.values[2 * indexToRemove + 1] && this.values[2 * indexToRemove + 2]) {
+      indexToReplace = 2 * indexToRemove + 2;
+      this.values[indexToRemove] = this.values[indexToReplace];
+      this.values[indexToReplace] = undefined;
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        if (this.values[2 * indexToReplace + 2]) {
+          this.values[indexToReplace] = this.values[2 * indexToReplace + 2];
+          indexToReplace = 2 * indexToReplace + 2;
+        } else {
+          this.values[indexToReplace] = undefined;
+          break;
+        }
+      }
+      return;
+    }
+    if (this.values[2 * indexToRemove + 1] && this.values[2 * indexToRemove + 2]) {
+      indexToReplace = 2 * indexToRemove + 1;
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        if (this.values[2 * indexToReplace + 2]) {
+          indexToReplace = 2 * indexToReplace + 2;
+        } else {
+          break;
+        }
+      }
+      this.values[indexToRemove] = this.values[indexToReplace];
+      this.values[indexToReplace] = undefined;
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        if (this.values[2 * indexToReplace + 1]) {
+          this.values[indexToReplace] = this.values[2 * indexToReplace + 1];
+          indexToReplace = 2 * indexToReplace + 1;
+        } else {
+          this.values[indexToReplace] = undefined;
+          break;
+        }
+      }
+      return;
+    }
+    if (!this.values[2 * indexToRemove + 1] && !this.values[2 * indexToRemove + 2]) {
+      this.values[indexToRemove] = undefined;
+      if (indexToRemove == 0) {
+        this.createBinaryTree();
+      }
+      return;
+    }
   }
 
   updateBinaryTree(): void {
