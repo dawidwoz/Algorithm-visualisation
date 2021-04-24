@@ -9,6 +9,11 @@
     params: { time: time !== undefined ? time + 'ms' : '1500ms' }
   }"
 >
+  <!--
+  TODO:
+  Potentially, we can use a logic here to move the right arrow 180 degree to make it left but
+  it will bring problems with start and change aniamtion, therfore two arrows are used.
+  -->
   <i-bs *ngIf="direction === 'right'" name="arrow-right"></i-bs>
   <i-bs *ngIf="direction === 'left'" name="arrow-left"></i-bs>
 </div>
