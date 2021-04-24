@@ -85,8 +85,11 @@ export class AppComponent implements OnInit, OnDestroy {
         this.description = '';
         break;
       default:
-        this.title = '';
-        this.description = '';
+        this.title = 'Stack';
+        this.description =
+          `Use animation below to see how the stack works. 
+          <p>You can create an array and linked-list version of the size from 5 to 20.</.p>`;
+        
     }
   }
 }

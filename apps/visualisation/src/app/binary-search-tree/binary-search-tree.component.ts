@@ -6,6 +6,14 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { MatSlider } from '@angular/material/slider';
+import {
+  insertBinaryTreeSearch,
+  insertStepsBinaryTreeSearch,
+  removeBinaryTreeSearch,
+  removeStepsBinaryTreeSearch,
+  searchBinaryTreeSearch,
+  searchStepsBinaryTreeSearch
+} from '@major-project/binary-tree';
 import { BinaryTreeComponent, NULL } from '@major-project/common';
 
 @Component({
@@ -25,6 +33,10 @@ export class BinarySearchTreeComponent {
   @ViewChild('newElement', { static: true, read: ViewContainerRef })
   newElementInput: ViewContainerRef;
 
+  public currentTitle: string;
+  public currentSteps: string[] | undefined;
+  public actualStep: number = 0;
+
   public binaryTree?: ComponentRef<BinaryTreeComponent>;
   public values: string[] = [];
   public booleanElements: boolean[] = [];
@@ -33,6 +45,11 @@ export class BinarySearchTreeComponent {
     protected readonly componentFactoryResolver: ComponentFactoryResolver,
     protected readonly target: ViewContainerRef
   ) {}
+
+  clearBinaryTree(): void {
+    this.currentSteps = undefined;
+    this.createBinaryTree();
+  }
 
   createBinaryTree(): void {
     this.animationArea.clear();
@@ -44,14 +61,18 @@ export class BinarySearchTreeComponent {
   }
 
   pushElement(): void {
+    this.currentSteps = insertStepsBinaryTreeSearch;
+    this.currentTitle = insertBinaryTreeSearch;
+    this.actualStep = 1;
     let value = this.newElementInput.element.nativeElement.value;
     if (value === '') return;
     value = parseInt(value);
     value = value > 999 ? 999 : value;
     value = 1 > value ? 1 : value;
     this.newElementInput.element.nativeElement.value = value;
-    if (this.values[0] === NULL || !this.values[0]) {
+    if (this.values[0] === NULL) {
       this.values[0] = value;
+      this.actualStep = 4;
       return;
     }
     let i = 0;
@@ -64,9 +85,11 @@ export class BinarySearchTreeComponent {
         if (!this.values[2 * i + 1]) {
           this.values[2 * i + 1] = valueNumber.toString();
           this.booleanElements[2 * i + 1] = true;
+          this.actualStep = 4;
           break;
         } else {
           i = 2 * i + 1;
+          this.actualStep = 3;
           continue;
         }
       }
@@ -74,9 +97,11 @@ export class BinarySearchTreeComponent {
         if (!this.values[2 * i + 2]) {
           this.values[2 * i + 2] = valueNumber.toString();
           this.booleanElements[2 * i + 2] = true;
+          this.actualStep = 4;
           break;
         } else {
           i = 2 * i + 2;
+          this.actualStep = 2;
           continue;
         }
       }
@@ -92,6 +117,26 @@ export class BinarySearchTreeComponent {
       if (this.values[i] === active.toString()) {
         this.booleanElements[i] = true;
       }
+    }
+  }
+
+  performSearch(): void {
+    this.currentTitle = searchBinaryTreeSearch;
+    this.currentSteps = searchStepsBinaryTreeSearch;
+    this.actualStep = 4;
+    if (this.values[0] !== NULL) {
+      this.actualStep = 1;
+      this.getElement(false);
+    }
+  }
+
+  performRemove(): void {
+    this.currentTitle = removeBinaryTreeSearch;
+    this.currentSteps = removeStepsBinaryTreeSearch;
+    this.actualStep = 4;
+    if (this.values[0] !== NULL) {
+      this.actualStep = 1;
+      this.getElement(true);
     }
   }
 
@@ -118,6 +163,7 @@ export class BinarySearchTreeComponent {
     while (true) {
       const currentNumber = parseInt(this.values[i]);
       if (currentNumber == valueNumber) {
+        this.actualStep = 5;
         this.booleanElements[i] = true;
         this.resultInput.element.nativeElement.innerHTML = valueNumber;
         if (removeElement) {
@@ -129,19 +175,23 @@ export class BinarySearchTreeComponent {
       }
       if (currentNumber > valueNumber) {
         if (!this.values[2 * i + 1]) {
+          this.actualStep = 4;
           this.resultInput.element.nativeElement.innerHTML = 'Not found!';
           break;
         } else {
           i = 2 * i + 1;
+          this.actualStep = 3;
           continue;
         }
       }
       if (currentNumber <= valueNumber) {
         if (!this.values[2 * i + 2]) {
+          this.actualStep = 4;
           this.resultInput.element.nativeElement.innerHTML = 'Not found!';
           break;
         } else {
           i = 2 * i + 2;
+          this.actualStep = 2;
           continue;
         }
       }
@@ -155,12 +205,14 @@ export class BinarySearchTreeComponent {
       indexToReplace = 2 * indexToRemove + 1;
       this.values[indexToRemove] = this.values[indexToReplace];
       this.values[indexToReplace] = undefined;
+      this.actualStep = 7;
       // eslint-disable-next-line no-constant-condition
       while (true) {
         if (this.values[2 * indexToReplace + 1]) {
           this.values[indexToReplace] = this.values[2 * indexToReplace + 1];
           indexToReplace = 2 * indexToReplace + 1;
         } else {
+          this.actualStep = 6;
           this.values[indexToReplace] = undefined;
           break;
         }
@@ -171,12 +223,14 @@ export class BinarySearchTreeComponent {
       indexToReplace = 2 * indexToRemove + 2;
       this.values[indexToRemove] = this.values[indexToReplace];
       this.values[indexToReplace] = undefined;
+      this.actualStep = 7;
       // eslint-disable-next-line no-constant-condition
       while (true) {
         if (this.values[2 * indexToReplace + 2]) {
           this.values[indexToReplace] = this.values[2 * indexToReplace + 2];
           indexToReplace = 2 * indexToReplace + 2;
         } else {
+          this.actualStep = 6;
           this.values[indexToReplace] = undefined;
           break;
         }
@@ -185,21 +239,25 @@ export class BinarySearchTreeComponent {
     }
     if (this.values[2 * indexToRemove + 1] && this.values[2 * indexToRemove + 2]) {
       indexToReplace = 2 * indexToRemove + 1;
+      this.actualStep = 7;
       // eslint-disable-next-line no-constant-condition
       while (true) {
         if (this.values[2 * indexToReplace + 2]) {
           indexToReplace = 2 * indexToReplace + 2;
+          this.actualStep = 6;
         } else {
           break;
         }
       }
       this.values[indexToRemove] = this.values[indexToReplace];
       this.values[indexToReplace] = undefined;
+      this.actualStep = 7;
       // eslint-disable-next-line no-constant-condition
       while (true) {
         if (this.values[2 * indexToReplace + 1]) {
           this.values[indexToReplace] = this.values[2 * indexToReplace + 1];
           indexToReplace = 2 * indexToReplace + 1;
+          this.actualStep = 6;
         } else {
           this.values[indexToReplace] = undefined;
           break;
@@ -209,6 +267,7 @@ export class BinarySearchTreeComponent {
     }
     if (!this.values[2 * indexToRemove + 1] && !this.values[2 * indexToRemove + 2]) {
       this.values[indexToRemove] = undefined;
+      this.actualStep = 6;
       if (indexToRemove == 0) {
         this.createBinaryTree();
       }

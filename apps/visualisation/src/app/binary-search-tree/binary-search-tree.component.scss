@@ -1,39 +1,49 @@
 .binary-search-tree {
-    &.__animationWrapper {
-      min-height: 80vh;
-      width: 100%;
-      border: 1px solid #c3c3c3;
-      display: inline-flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-    }
-    &.__animationArea {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      width: 100%;
-  
-      *:nth-child(n + 2) {
-        margin-left: -3px;
-      }
-    }
-    &.__addInput {
-      width: 15%;
+  &.__animationWrapper {
+    min-height: 80vh;
+    width: 100%;
+    border: 1px solid #c3c3c3;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  &.__animationArea {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
 
-      @media screen and (max-width: 768px) {
-        width: 100%;
-      }
-    }
-    button {
-      input {
-        text-align: left;
-        color: black;
-        background-color: white;
-      }
+    *:nth-child(n + 2) {
+      margin-left: -3px;
     }
   }
-  
+  .__animationText {
+    display: flex;
+    flex-direction: column;
+    font-style: italic;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    width: 100%;
+    min-height: 28rem;
+    border-top: 1px solid #c3c3c3;
+  }
+  &.__addInput {
+    width: 15%;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+  }
+  button {
+    input {
+      text-align: left;
+      color: black;
+      background-color: white;
+    }
+  }
+}
