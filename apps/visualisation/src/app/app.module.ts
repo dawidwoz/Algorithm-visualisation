@@ -13,6 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { AppComponent } from './app.component';
 import { StackComponent } from './stack/stack.component';
@@ -66,6 +67,7 @@ const icons = {
     MatSliderModule,
     MatListModule,
     MatIconModule,
+    MatChipsModule,
     NgxBootstrapIconsModule.forRoot(icons, {
       width: '6vw', 
       height: '6vw' 

@@ -16,6 +16,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public title: string = '';
   public description: string = '';
 
+  public RoutesName = RoutesName;
+
   public constructor(
     protected readonly media: MediaMatcher,
     protected readonly changeDetectorRef: ChangeDetectorRef,

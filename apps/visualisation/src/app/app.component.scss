@@ -12,6 +12,10 @@ mat-nav-list {
         cursor: pointer;
     }
 
+    &.--beta {
+        color: #E0E0E0;
+    }
+
     &.__wrapper {
         display: flex;
         flex-direction: row;

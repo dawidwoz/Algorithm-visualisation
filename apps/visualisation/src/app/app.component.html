@@ -5,6 +5,8 @@
       <a
         mat-list-item
         *ngFor="let route of routes"
+        class="app-top-bar __navigation"
+        [class.--beta]="route.name === RoutesName['hidden-markov-model']"
         (click)="snav.close(); navigationClick(route.name)"
         >{{ route.value.charAt(0).toUpperCase() + route.value.slice(1).replaceAll('-', ' ') }}</a
       >

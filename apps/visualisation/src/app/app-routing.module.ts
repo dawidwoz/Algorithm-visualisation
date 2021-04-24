@@ -13,6 +13,7 @@ export const RoutesName = {
   'priority-queue': 'priority-queue',
   'hash-function': 'hash-function',
   'binary-search-tree': 'binary-search-tree',
+  'hidden-markov-model': 'hidden-markov-model',
   default: 'stack'
 };
 
