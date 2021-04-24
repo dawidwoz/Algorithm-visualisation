@@ -60,34 +60,33 @@ export class AppComponent implements OnInit, OnDestroy {
       case RoutesName.queue:
         this.title = 'Queue';
         this.description =
-          'Use animation below to see how the queue works. \n' +
-          'You can create a circular array and doubly linked-list version of the size from 5 to 20.';
+          'Use animation below to see how the queue works.' +
+          '<p>You can create a circular array and doubly linked-list version of the size from 5 to 20.</p>';
         break;
       case RoutesName['priority-queue']:
         this.title = 'Priority Queue';
         this.description =
-          'Use animation below to see how the priority queue works. \n' +
-          'You can create a heap array version of the size from 5 to 20. \n' +
-          'The binary tree can be displayed up to 15 elements. ';
+          'Use animation below to see how the priority queue works.' +
+          '<p>You can create a heap array version of the size from 5 to 20.</p>' +
+          '<p>The binary tree can be displayed up to 15 elements.</p>';
         break;
       case RoutesName['hash-function']:
         this.title = 'Hash functions with collision handling';
         this.description =
-          'Use animation below to see how the hash functions with collision handling work.\n' +
-          'You can create a hash table of the size from 7 to 20.';
+          'Use animation below to see how the hash functions with collision handling work.' +
+          '<p>You can create a hash table of the size from 7 to 20.</p>';
         break;
       case RoutesName['binary-search-tree']:
         this.title = 'Binary search tree';
-        this.description = 'The binary tree can be displayed up to 15 elements.';
+        this.description = 'The binary tree can be displayed up to 15 elements (4 layers).';
         break;
       case RoutesName['hidden-markov-model']:
         this.title = 'Hidden Markov Model';
         this.description = '';
         break;
       default:
-        this.title = 'Stack';
-        this.description =
-          'Use animation below to see how the stack works. \n You can create an array and linked-list version of the size from 5 to 20.';
+        this.title = '';
+        this.description = '';
     }
   }
 }
