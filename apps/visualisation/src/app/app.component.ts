@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { RoutesName } from './app-routing.module';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'major-project-root',
@@ -26,6 +26,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    router.events.subscribe((val: NavigationEnd) => {
+      val && val.url ? this.activeRouter = val.url.slice(1) : null;
+      this.setTitleAndDescription(); 
+  });
   }
 
   public ngOnInit(): void {
@@ -91,7 +95,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.description =
           `Use animation below to see how the stack works. 
           <p>You can create an array and linked-list version of the size from 5 to 20.</.p>`;
-        
     }
   }
 }
