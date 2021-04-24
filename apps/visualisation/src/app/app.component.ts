@@ -74,7 +74,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.title = 'Hash functions with collision handling';
         this.description =
           'Use animation below to see how the hash functions with collision handling work.' +
-          '<p>You can create a hash table of the size from 7 to 20.</p>';
+          '<p>You can create a hash table of the size from 3 to 20.</p>';
         break;
       case RoutesName['binary-search-tree']:
         this.title = 'Binary search tree';
