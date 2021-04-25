@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AppModule } from '../app.module';
+import { StackModule } from '../stack.module';
 
 import { StackComponent } from './stack.component';
 
@@ -11,7 +11,7 @@ describe('StackComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppModule],
+      imports: [StackModule],
       providers: [{provide: APP_BASE_HREF, useValue : '/' }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

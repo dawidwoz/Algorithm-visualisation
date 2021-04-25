@@ -17,7 +17,7 @@ import {
   getMinPriorityQueueSteps,
   insertPriorityQueue,
   insertPriorityQueueSteps
-} from '@major-project/queue-priority';
+} from '../descriptions/steps';
 
 @Component({
   selector: 'major-project-priority-queue',

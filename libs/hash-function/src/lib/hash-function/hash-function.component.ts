@@ -24,7 +24,7 @@ import {
   searchHashFunction,
   searchHashFunctionLinearProbingSteps,
   searchHashFunctionSeparateChainingSteps
-} from '@major-project/hash-function';
+} from '../descriptions/steps';
 
 @Component({
   selector: 'major-project-hash-function',

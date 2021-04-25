@@ -13,7 +13,7 @@ import {
   removeStepsBinaryTreeSearch,
   searchBinaryTreeSearch,
   searchStepsBinaryTreeSearch
-} from '@major-project/binary-tree';
+} from '../descriptions/steps';
 import { BinaryTreeComponent, NULL } from '@major-project/common';
 
 @Component({

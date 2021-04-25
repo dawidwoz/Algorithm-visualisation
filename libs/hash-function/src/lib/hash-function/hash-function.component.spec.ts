@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AppModule } from '../app.module';
+import { HashFunctionModule } from '../hash-function.module';
 import { HashFunctionComponent } from './hash-function.component';
 
 describe('PriorityQueueComponent', () => {
@@ -10,7 +10,7 @@ describe('PriorityQueueComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppModule],
+      imports: [HashFunctionModule],
       providers: [{provide: APP_BASE_HREF, useValue : '/' }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

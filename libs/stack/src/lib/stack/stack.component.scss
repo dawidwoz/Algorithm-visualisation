@@ -1,4 +1,8 @@
-.queue {
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import url("https://fonts.googleapis.com/css?family=Roboto%20Mono");
+
+
+.stack {
   &.__animationWrapper {
     min-height: 80vh;
     width: 100%;

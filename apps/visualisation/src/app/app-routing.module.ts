@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { BinarySearchTreeComponent } from './binary-search-tree/binary-search-tree.component';
-import { HashFunctionComponent } from './hash-function/hash-function.component';
-import { HiddenMarkovModelComponent } from './hidden-markov-model/hidden-markov-model.component';
-import { PriorityQueueComponent } from './priority-queue/priority-queue.component';
-import { QueueComponent } from './queue/queue.component';
-import { StackComponent } from './stack/stack.component';
+import { BinarySearchTreeComponent } from '@major-project/binary-tree';
+import { HashFunctionComponent } from '@major-project/hash-function';
+import { HiddenMarkovModelComponent } from '@major-project/markov-model';
+import { QueueComponent } from '@major-project/queue';
+import { PriorityQueueComponent } from '@major-project/queue-priority';
+import { StackComponent } from '@major-project/stack';
 
 export const RoutesName = {
   stack: 'stack',

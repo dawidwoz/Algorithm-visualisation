@@ -1,17 +1,17 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AppModule } from '../app.module';
+import { QueuePriorityModule } from '../queue-priority.module';
 
-import { QueueComponent } from './queue.component';
+import { PriorityQueueComponent } from './priority-queue.component';
 
-describe('QueueComponent', () => {
-  let component: QueueComponent;
-  let fixture: ComponentFixture<QueueComponent>;
+describe('PriorityQueueComponent', () => {
+  let component: PriorityQueueComponent;
+  let fixture: ComponentFixture<PriorityQueueComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppModule],
+      imports: [QueuePriorityModule],
       providers: [{provide: APP_BASE_HREF, useValue : '/' }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -19,7 +19,7 @@ describe('QueueComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QueueComponent);
+    fixture = TestBed.createComponent(PriorityQueueComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

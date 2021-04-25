@@ -1,22 +1,25 @@
-.priority-queue {
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import url("https://fonts.googleapis.com/css?family=Roboto%20Mono");
+
+.queue {
   &.__animationWrapper {
     min-height: 80vh;
     width: 100%;
     border: 1px solid #c3c3c3;
     display: inline-flex;
     flex-direction: row;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     @media screen and (max-width: 768px) {
       flex-direction: column;
     }
   }
+
   &.__animationArea {
     display: inline-flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     flex-wrap: wrap;
     width: 100%;
 
@@ -24,6 +27,7 @@
       margin-left: -3px;
     }
   }
+
   &.__animationText {
     align-self: stretch;
     display: flex;
@@ -31,23 +35,16 @@
     font-style: italic;
     justify-content: center;
     padding: 1rem;
-    text-align: center;
+    width: 25%;
+    flex: 0 0 25%;
     border: 1px solid #c3c3c3;
+    border-bottom: none;
     @media screen and (max-width: 768px) {
       width: 100%;
     }
   }
-
   &.__addInput {
     width: 15%;
-
-    @media screen and (max-width: 768px) {
-      width: 100%;
-    }
-  }
-
-  &.__result {
-    width: 25%;
 
     @media screen and (max-width: 768px) {
       width: 100%;

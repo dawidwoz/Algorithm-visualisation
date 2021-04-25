@@ -1,17 +1,16 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AppModule } from '../app.module';
+import { MarkovModelModule } from '../markov-model.module';
+import { HiddenMarkovModelComponent } from './hidden-markov-model.component';
 
-import { PriorityQueueComponent } from './priority-queue.component';
-
-describe('PriorityQueueComponent', () => {
-  let component: PriorityQueueComponent;
-  let fixture: ComponentFixture<PriorityQueueComponent>;
+describe('HiddenMarkovModelComponent', () => {
+  let component: HiddenMarkovModelComponent;
+  let fixture: ComponentFixture<HiddenMarkovModelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppModule],
+      imports: [MarkovModelModule],
       providers: [{provide: APP_BASE_HREF, useValue : '/' }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -19,7 +18,7 @@ describe('PriorityQueueComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PriorityQueueComponent);
+    fixture = TestBed.createComponent(HiddenMarkovModelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
