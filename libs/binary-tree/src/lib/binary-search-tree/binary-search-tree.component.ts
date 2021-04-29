@@ -93,7 +93,12 @@ export class BinarySearchTreeComponent {
           continue;
         }
       }
-      if (currentNumber <= valueNumber) {
+      if (currentNumber == valueNumber) {
+        this.resultInput.element.nativeElement.innerHTML = 'The element exists in the binary tree!';
+        this.actualStep = 5;
+        return;
+      }
+      if (currentNumber < valueNumber) {
         if (!this.values[2 * i + 2]) {
           this.values[2 * i + 2] = valueNumber.toString();
           this.booleanElements[2 * i + 2] = true;

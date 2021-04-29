@@ -2,7 +2,8 @@ export const insertStepsBinaryTreeSearch = [
   'Step 1: Check the first node',
   'Step 2: If x is bigger than value at this position, go to right node and go back to step 1',
   'Step 3: If x is less than value at this position, go to left node and go back to step 1',
-  'Step 4: If the node does not exist, add new node at this position with value x'
+  'Step 4: If the node does not exist, add new node at this position with value x',
+  'Step 5: If x exists in the binary tree, throw an error - The element exists in the binary tree!'
 ];
 
 export const searchStepsBinaryTreeSearch = [
