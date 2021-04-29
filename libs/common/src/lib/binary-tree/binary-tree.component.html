@@ -1,5 +1,5 @@
 <div class="binary-tree">
-  <ng-containter *ngFor="let value of values; index as row">
+  <ng-container *ngFor="let value of values; index as row">
     <div class="row" *ngIf="powerOfTwo(row + 1)">
       <div *ngFor="let number of [].constructor(row + 1); index as element">
         <major-project-binary-tree-element
@@ -10,5 +10,5 @@
         ></major-project-binary-tree-element>
       </div>
     </div>
-  </ng-containter>
+  </ng-container>
 </div>
