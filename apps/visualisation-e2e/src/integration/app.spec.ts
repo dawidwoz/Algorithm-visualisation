@@ -1,13 +1,49 @@
-import { getGreeting } from '../support/app.po';
+import { getSubTitle, getTitle, getVisualisationTitle } from '../support/app.po';
 
 describe('visualisation', () => {
   beforeEach(() => cy.visit('/'));
 
-  it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword');
+  it('should display stack visualisaton by default', () => {
+    cy.location().should((loc) => {
+      expect(loc.pathname.toString()).to.contain('/stack');
+    });
+  });
 
-    // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome to visualisation!');
+  it('should display correct title', () => {
+    getTitle().contains('Visualisation of Data Structures and Algorithms');
+  });
+
+  it('should display correct title', () => {
+    getSubTitle().contains('Aberystwyth University');
+  });
+
+  it('should redirect bad request to Stack visualisation', () => {
+    cy.visit('/adsasdsad');
+    getVisualisationTitle().contains('Stack');
+  });
+
+  it('should open Queue visualisation', () => {
+    cy.visit('/queue');
+    getVisualisationTitle().contains('Queue');
+  });
+
+  it('should open priority queue visualisation', () => {
+    cy.visit('/priority-queue');
+    getVisualisationTitle().contains('Priority Queue');
+  });
+
+  it('should open hash function visualisation', () => {
+    cy.visit('/hash-function');
+    getVisualisationTitle().contains('Hash functions with collision handling');
+  });
+
+  it('should open binary search tree visualisation', () => {
+    cy.visit('/binary-search-tree');
+    getVisualisationTitle().contains('Binary search tree');
+  });
+
+  it('should open hidden markov model visualisation', () => {
+    cy.visit('/hidden-markov-model');
+    getVisualisationTitle().contains('Hidden Markov Model');
   });
 });
