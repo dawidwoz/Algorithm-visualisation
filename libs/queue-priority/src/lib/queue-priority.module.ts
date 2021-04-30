@@ -7,7 +7,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 
-import { LocalCommonModule } from '@major-project/common';
+import { BinaryTreeComponent, ElementComponent, LocalCommonModule } from '@major-project/common';
 import { PriorityQueueComponent } from './priority-queue/priority-queue.component';
 
 @NgModule({
@@ -22,6 +22,7 @@ import { PriorityQueueComponent } from './priority-queue/priority-queue.componen
   ],
   declarations: [PriorityQueueComponent],
   exports: [PriorityQueueComponent],
-  bootstrap: [PriorityQueueComponent]
+  bootstrap: [PriorityQueueComponent],
+  entryComponents: [ElementComponent, BinaryTreeComponent]
 })
 export class QueuePriorityModule {}

@@ -1,5 +1,3 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { QueueModule } from '../queue.module';
 
@@ -11,9 +9,7 @@ describe('QueueComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QueueModule],
-      providers: [{provide: APP_BASE_HREF, useValue : '/' }],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      imports: [QueueModule]
     })
     .compileComponents();
   });
@@ -26,5 +22,27 @@ describe('QueueComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should create queue correctly', () => {
+    component.implementation = 'simple-array';
+    component.createQueue();
+    expect(component.currentSteps).toBeUndefined();
+    expect(component.currentTitle).toBeUndefined();
+    expect(component.arrowElements).toStrictEqual([]);
+  });
+
+  it('should create queue correctly', () => {
+    component.implementation = 'simple-array';
+    component.createQueue();
+    expect(component.currentSteps).toBeUndefined();
+    expect(component.currentTitle).toBeUndefined();
+    expect(component.arrowElements).toStrictEqual([]);
+  });
+
+  it('should add element to the queue correctly', () => {
+    component.elements = [];
+    component.addElement('1');
+    expect(component.elements).toHaveLength(1);
   });
 });

@@ -7,7 +7,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 
-import { LocalCommonModule } from '@major-project/common';
+import { ElementComponent, LocalCommonModule } from '@major-project/common';
 import { HashFunctionComponent } from './hash-function/hash-function.component';
 
 @NgModule({
@@ -22,6 +22,7 @@ import { HashFunctionComponent } from './hash-function/hash-function.component';
   ],
   declarations: [HashFunctionComponent],
   exports: [HashFunctionComponent],
-  bootstrap: [HashFunctionComponent]
+  bootstrap: [HashFunctionComponent],
+  entryComponents: [ElementComponent]
 })
 export class HashFunctionModule {}

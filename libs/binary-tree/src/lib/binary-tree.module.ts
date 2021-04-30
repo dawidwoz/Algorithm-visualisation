@@ -7,7 +7,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 
-import { LocalCommonModule } from '@major-project/common';
+import { BinaryTreeComponent, LocalCommonModule } from '@major-project/common';
 import { BinarySearchTreeComponent } from './binary-search-tree/binary-search-tree.component';
 
 @NgModule({
@@ -22,6 +22,6 @@ import { BinarySearchTreeComponent } from './binary-search-tree/binary-search-tr
   ],
   declarations: [BinarySearchTreeComponent],
   exports: [BinarySearchTreeComponent],
-  bootstrap: [BinarySearchTreeComponent]
+  entryComponents: [BinaryTreeComponent]
 })
 export class BinaryTreeModule {}

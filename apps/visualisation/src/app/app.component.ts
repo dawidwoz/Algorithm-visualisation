@@ -55,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
-  protected setTitleAndDescription(): void {
+  public setTitleAndDescription(): void {
     switch (this.activeRouter) {
       case RoutesName.stack:
         this.title = 'Stack';

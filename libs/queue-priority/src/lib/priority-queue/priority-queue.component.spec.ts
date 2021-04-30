@@ -1,5 +1,3 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { QueuePriorityModule } from '../queue-priority.module';
 
@@ -11,9 +9,7 @@ describe('PriorityQueueComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QueuePriorityModule],
-      providers: [{provide: APP_BASE_HREF, useValue : '/' }],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      imports: [QueuePriorityModule]
     })
     .compileComponents();
   });
@@ -26,5 +22,20 @@ describe('PriorityQueueComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should create priority queue correctly', () => {
+    component.implementation = 'min-heap-array';
+    component.createPriorityQueue();
+    expect(component.usedImplementation).toBe('min-heap-array');
+    expect(component.currentSteps).toBeUndefined();
+    expect(component.currentTitle).toBeUndefined();
+    expect(component.addedValue).toBe(0);
+  });
+
+  it('should add element to the priority queue correctly', () => {
+    component.elements = [];
+    component.addStackElement('1');
+    expect(component.elements).toHaveLength(1);
   });
 });

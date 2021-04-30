@@ -7,7 +7,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 
-import { LocalCommonModule } from '@major-project/common';
+import { ArrowComponent, ElementComponent, LocalCommonModule } from '@major-project/common';
 import { StackComponent } from './stack/stack.component';
 
 @NgModule({
@@ -22,6 +22,7 @@ import { StackComponent } from './stack/stack.component';
   ],
   declarations: [StackComponent],
   exports: [StackComponent],
-  bootstrap: [StackComponent]
+  bootstrap: [StackComponent],
+  entryComponents: [ElementComponent, ArrowComponent]
 })
 export class StackModule {}

@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 
 import { QueueComponent } from './queue/queue.component';
-import { LocalCommonModule } from '@major-project/common';
+import { ElementComponent, LocalCommonModule } from '@major-project/common';
 
 @NgModule({
   imports: [
@@ -22,6 +22,7 @@ import { LocalCommonModule } from '@major-project/common';
   ],
   declarations: [QueueComponent],
   exports: [QueueComponent],
-  bootstrap: [QueueComponent]
+  bootstrap: [QueueComponent],
+  entryComponents: [ElementComponent]
 })
 export class QueueModule {}

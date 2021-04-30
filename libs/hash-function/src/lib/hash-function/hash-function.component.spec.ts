@@ -1,20 +1,16 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HashFunctionModule } from '../hash-function.module';
+
 import { HashFunctionComponent } from './hash-function.component';
 
-describe('PriorityQueueComponent', () => {
+describe('HashFunctionComponent', () => {
   let component: HashFunctionComponent;
   let fixture: ComponentFixture<HashFunctionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HashFunctionModule],
-      providers: [{provide: APP_BASE_HREF, useValue : '/' }],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+      imports: [HashFunctionModule]
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -25,5 +21,18 @@ describe('PriorityQueueComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should create hash function correctly', () => {
+    component.createHashFunction();
+    expect(component.currentSteps).toBeUndefined();
+    expect(component.elementsLinear).toStrictEqual([]);
+    expect(component.elementsSeparateChaining).toStrictEqual([]);
+  });
+
+  it('should add element to the hash function correctly', () => {
+    component.elementsLinear = [];
+    component.addElement('1');
+    expect(component.elementsLinear).toHaveLength(1);
   });
 });
